@@ -1,0 +1,18 @@
+{
+  "site": {
+    "site_id": "synthetic-contract-example",
+    "name": "Synthetic input location — not a surveyed landing site",
+    "latitude_deg": -89.0,
+    "longitude_deg": 10.0,
+    "coordinate_reference": {
+      "latitude_type": "planetocentric",
+      "frame_id": "UNRESOLVED_EXAMPLE_FRAME",
+      "frame_realization": "not selected — contract example only",
+      "reference_surface": "not selected — no calculation permitted"
+    }
+  },
+  "provider_mode": "scientific",
+  "start_utc": "2026-11-14T00:00:00Z",
+  "end_utc": "2026-11-15T00:00:00Z",
+  "sample_step_s": 3600
+}

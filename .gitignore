@@ -58,3 +58,8 @@ Thumbs.db
 *.zip
 /backups/
 /backup-staging/
+
+# Project-local development tools and caches
+.tools/
+.uv-cache/
+.python/

@@ -6,7 +6,7 @@ LunAscend — Lunar Mission Resilience Navigator is a lunar landing-site decisio
 
 - Read ARCHITECTURE.md, SETUP.md and DEVELOPMENT_ROADMAP.md before changes. Inspect existing work and preserve it.
 - Implement only the milestone the user requests. Stop after each milestone, report actual checks and remaining limitations, and await review. Do not advance automatically.
-- Step 1 is documentation and local Git preparation only. No application, datasets, installed dependencies or scientific validation exist yet.
+- Step 2 provides backend contracts, provider dispatch and an unavailable-analysis API. No mock generator, datasets or scientific calculations exist yet.
 - Keep changes focused; avoid speculative infrastructure, databases, Docker, unnecessary dependencies and repeated installation.
 - Update documentation when contracts, assumptions, dependencies or commands change.
 
@@ -18,6 +18,10 @@ LunAscend — Lunar Mission Resilience Navigator is a lunar landing-site decisio
 - Use strict TypeScript and typed Python public interfaces. Validate requests at the API boundary; reject non-finite numbers, invalid ranges and excessive workloads.
 - Keep domain modules independent of FastAPI, React and filesystem layout. Put dataset access behind adapters. Use SI units except documented degrees and Wh; encode units in field names.
 - Use pytest for backend/domain tests; Vitest for frontend utilities/components. Add API, contract and scientific-reference checks at their relevant milestones.
+- Backend uses Python 3.12.16, uv 0.13.6 and a src layout. From backend run `uv sync --frozen`, `uv run --frozen pytest -q` and `uv run --frozen uvicorn lunascend.main:app --host 127.0.0.1 --port 8000`. Use `uv lock --check` to detect manifest drift; frozen restore does not update/check the lock.
+- Public Pydantic contracts live in contracts/common.py and contracts/models.py. Reject extra fields and non-finite numbers, require coordinate metadata and timezone-aware timestamps. Provider mode is required per request. Missing products use null; known empty collections use empty arrays.
+- Contract models are frozen and use tuples for sequence fields. Construct/revalidate changed models; Pydantic model_copy(update=...) bypasses validation. Keep providers async and independent of FastAPI.
+- Step 2 duration fields are derived nominal UTC civil seconds, not leap-second-aware scientific durations. Reject leap-second timestamp strings; resolve physical elapsed-time semantics before scientific calculations in Step 3.
 
 ## Scientific integrity
 

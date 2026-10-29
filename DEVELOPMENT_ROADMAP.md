@@ -5,7 +5,7 @@ Every step requires user review before the next. Step 1 creates a specification,
 | Step | Scope | Acceptance evidence / review gate |
 | --- | --- | --- |
 | 1 — Scientific Architecture and Portable Foundation | Architecture, contracts specification, conventions, privacy, migration, backups, ignore rules and local Git | Review five root files and local repository state; no application/dependencies/data or publication |
-| 2 — Project Setup, Scientific Data Contracts, and Backend Foundation | Confirm Windows runtime/package versions; pyproject/uv lock; Pydantic schemas, provider protocol, settings, health/capabilities, API error handling | Locked clean install, imports, schema and API validation tests; unavailable analysis explicit until providers implemented |
+| 2 — Project Setup, Scientific Data Contracts, and Backend Foundation — IMPLEMENTED AND VERIFIED | Python 3.12.16 / uv 0.13.6; pyproject/uv lock; Pydantic schemas, async provider protocol, health/info/analyze API and safe errors | Frozen install, 67 passing tests, actual Uvicorn startup and HTTP checks; unavailable analysis explicit for both modes; other-PC restore not yet tested |
 | 3 — First Validated Sun/Earth Geometry Prototype | Minimal matched kernels, local observer frames, UTC/ET and geometry; saved Horizons references | Executed comparisons with inputs, residuals, tolerances and limitations; no terrain-validity claim |
 | 4 — Deterministic Mock Scientific Data Provider | Versioned synthetic fixtures and provider covering ordinary, borderline and missing-data cases | Same contract, reproducibility, coherent intervals and visible mock provenance; offline operation |
 | 5 — React Dashboard Foundation | React/TS/Vite, Tailwind, Router, locked npm dependencies, typed API client and dashboard; navigation placeholders only where honest | Type/build/component checks, loading/error/unknown states, mock label, responsive keyboard-accessible UI |
@@ -24,4 +24,4 @@ Preserve essential site/date selection, validated geometry, terrain visibility a
 
 ## Current handoff
 
-Only Step 1 preparation is being delivered. Next authorized task should be Step 2: resolve and pin the minimal Windows-compatible Python environment, implement scientific contracts and provider interface, and establish FastAPI foundation with contract/API tests. Do not implement geometry, mock generation, frontend or scientific dataset downloads as part of Step 2.
+Step 2 backend foundation is implemented and verified locally. Stop for user review. Step 3 is the next milestone: select compatible lunar frames/kernels and establish the first independently checked Sun/Earth geometry prototype, resolving UTC/ET and physical duration semantics. No Step 3 implementation or dataset download is authorized by this handoff.

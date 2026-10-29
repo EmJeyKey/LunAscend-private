@@ -2,17 +2,71 @@
 
 ## Current status
 
-Step 1 contains documentation and ignore rules only. There is no backend, frontend, dependency lockfile, runtime service, dataset or executable application yet. Commands marked FUTURE are specifications for later milestones, not working startup instructions today. Workspace inspection found no existing project files or parent Git repository. No existing work was overwritten.
+Step 2 implements a local FastAPI backend, twelve scientific contracts, provider abstraction, unavailable-analysis behavior and tests. Python dependencies are locked in backend/uv.lock. No frontend, mock generator, scientific calculations or NASA datasets exist yet. Commands marked FUTURE remain planned. Step 1 documentation is preserved in its own local commit and step-1-foundation tag.
+
+## Verified backend quick start (Step 2)
+
+Tested on this Windows x64 computer with Python 3.12.16 and uv 0.13.6. Direct packages: FastAPI 0.162.0, Pydantic 2.14.2, Uvicorn 0.54.0, pytest 9.2.0 and HTTPX 0.28.1. Build backend: uv_build 0.13.6. Exact transitive artifacts/hashes are in uv.lock. No global Python packages are required. Scientific-library compatibility is still deferred.
+
+On a fresh Windows PC install uv 0.13.6 using the [official versioned installer](https://docs.astral.sh/uv/getting-started/installation/):
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/0.13.6/install.ps1 | iex"
+# Reopen PowerShell if uv is not yet on PATH, then enter the cloned project root.
+uv --version
+Set-Location backend
+uv python install 3.12.16
+uv sync --frozen
+uv lock --check
+uv run --frozen python --version
+uv run --frozen pytest -q
+uv run --frozen uvicorn lunascend.main:app --host 127.0.0.1 --port 8000
+```
+
+`uv sync --frozen` restores the committed lock without modifying it; it does not check manifest drift, so `uv lock --check` is a separate verification. `uv sync --locked` is also supported and rejects a stale lock. Development/test dependencies install by default. Run from backend; the src-layout package is installed into backend/.venv. Python's exact patch is recorded in backend/.python-version. Stop the server with Ctrl+C.
+
+This session used project-local ignored tooling rather than a PATH installation: uv is in .tools, its managed Python in .python, and cache in .uv-cache. To use that installation, run the following from the repository root, then substitute `..\.tools\uv.exe` for `uv` in commands after entering backend:
+
+```powershell
+$env:UV_PYTHON_INSTALL_DIR = Join-Path (Get-Location) '.python'
+$env:UV_CACHE_DIR = Join-Path (Get-Location) '.uv-cache'
+Set-Location backend
+..\.tools\uv.exe sync --frozen
+..\.tools\uv.exe run --frozen pytest -q
+..\.tools\uv.exe run --frozen uvicorn lunascend.main:app --host 127.0.0.1 --port 8000
+```
+
+Those local tooling directories are not needed in Git or on the next PC; a normal uv installation recreates the environment using the same source/lock. Startup and contract validation need no internet once dependencies are installed. No .env file or secrets are required in Step 2. Provider selection is mandatory in the JSON request, not an environment default. Host/port are command-line settings. Dataset paths, optional origins/CORS and .env templates will be added only when needed.
+
+In a second PowerShell terminal, from the repository root:
+
+```powershell
+Invoke-RestMethod http://127.0.0.1:8000/health
+Invoke-RestMethod http://127.0.0.1:8000/api/v1/info
+# Open http://127.0.0.1:8000/docs in a browser for interactive API documentation.
+$body = Get-Content backend/examples/unavailable-request.json -Raw
+try {
+    Invoke-RestMethod http://127.0.0.1:8000/api/v1/scenarios/analyze -Method Post -ContentType 'application/json' -Body $body
+} catch {
+    $_.ErrorDetails.Message  # Expected HTTP 503 and structured unavailable result
+}
+```
+
+The example contains synthetic input coordinates and unresolved frame metadata, not an actual surveyed landing site. Both mock and scientific modes return 503 without observations, horizons or engineering results. Invalid requests return 422. Info explicitly reports both analysis providers as not implemented. `/docs` and `/openapi.json` are available; interactive Swagger UI normally fetches its assets from a CDN.
+
+Windows troubleshooting: reopen the shell after installation; use `Get-Command uv` to check PATH; avoid the WindowsApps Python alias by using uv-managed Python. Quote paths containing spaces. Do not activate .venv or change execution policy permanently; `uv run` selects the environment directly. If port 8000 is occupied, identify the existing process or use `--port 8001` and update health-check URLs. On download/TLS failure, retry from an allowed connection using the official uv Windows release archive, extract it and invoke uv.exe directly; do not disable certificate verification. If antivirus/file ownership blocks pytest's optional cache, `uv run --frozen pytest -q -p no:cacheprovider` runs the same tests without that cache.
+
+Verification performed: locked dependency installation, 67 passing pytest checks, actual Uvicorn startup on 127.0.0.1:8000, live health/info/docs requests, valid-analysis 503 and invalid-analysis 422. A second empty virtual environment restored successfully with `uv sync --frozen --offline` using the populated cache; `uv lock --check --offline` and all 67 tests passed there too. This is same-computer restoration, not another-PC evidence. The test stack emits a Starlette warning that its HTTPX 0.28 compatibility path is deprecated in favor of HTTPX2; current tests pass with the pinned stack. Revisit the test client at a dependency-update milestone. A sandbox cache permission warning in the first run was avoided in the restore run with `-p no:cacheprovider`. No other-PC migration, encrypted restore or scientific validation has been executed.
 
 ## Software and compatibility plan
 
-Target Windows 11 x64 and PowerShell; verify the competition computer's architecture before locking binary packages. Install only Git for this documentation milestone. Later install from official sources:
+Target Windows 11 x64 and PowerShell; verify the competition computer's architecture before installing binary packages. Backend tools are installed in Step 2; frontend/editor/backup tools remain optional or future. Official sources:
 
 | Tool | Recommended baseline and purpose |
 | --- | --- |
 | [Git for Windows](https://git-scm.com/downloads/win) | Supported Git 2.x; local history, private remote and recovery |
-| [Python](https://www.python.org/downloads/windows/) | CPython 3.12.x x64 baseline; exact patch pinned in backend/.python-version in Step 2 after availability/import checks |
-| [uv](https://docs.astral.sh/uv/getting-started/installation/) | Python environment/lock manager; record exact tested uv version in Step 2 |
+| [Python](https://www.python.org/downloads/windows/) | CPython 3.12.16 x64; backend/.python-version, managed installation via uv supported |
+| [uv](https://docs.astral.sh/uv/getting-started/installation/) | Tested version 0.13.6; Python environment/lock manager |
 | [Node.js](https://nodejs.org/en/download) | Node 24 LTS x64 baseline with bundled npm; exact patch/npm version pinned when frontend is created |
 | [VS Code](https://code.visualstudio.com/download) | Optional editor; no editor-specific extension required to run the application |
 | [7-Zip](https://www.7-zip.org/) | Optional for encrypted offline archives; use official Windows installer |
@@ -21,23 +75,23 @@ Use official installers, enable normal PATH options, then reopen PowerShell. uv 
 
 Compatibility rationale: [Vite](https://vite.dev/guide/) requires Node 20.19+ or 22.12+, and [Node 24 is an LTS line](https://nodejs.org/en/about/previous-releases). [Rasterio 1.4.4+](https://rasterio.readthedocs.io/en/stable/installation.html) requires Python >=3.10 but native drivers/wheels must be checked; [SpiceyPy](https://spiceypy.readthedocs.io/en/stable/installation.html) supports Windows. These establish a plausible baseline, not a tested complete dependency set. Exact package versions are deliberately deferred until installation is authorized in the relevant milestone. Check Python 3.12 Windows wheels for NumPy, SpiceyPy, Rasterio and PyProj and their imports; do not assume GDAL/PROJ are already installed. Avoid source builds and global QGIS/GDAL dependencies. Frontend selection must check React/React DOM, Router, Recharts, Tailwind/Vite and later React Three Fiber/Three peer compatibility.
 
-## Dependency and environment policy — FUTURE
+## Dependency and environment policy
 
-Step 2 introduces backend/pyproject.toml, uv.lock and .python-version. Commit all three, pin direct dependencies, lock transitives and record uv version. Use `uv sync --locked` for restore; lock updates are deliberate reviewed changes. [uv locking behavior](https://docs.astral.sh/uv/concepts/projects/sync/) supports checking that the manifest and lock agree. Add science/terrain dependencies only in their milestones as optional extras so mock installations remain small.
+Step 2 includes backend/pyproject.toml, uv.lock and .python-version. All three belong in Git. Direct dependencies and build backend are pinned; transitive versions/artifact hashes are locked. Restore using the verified quick start above. [uv locking behavior](https://docs.astral.sh/uv/concepts/projects/sync/) distinguishes frozen restore from lock checks. Lock updates are deliberate reviewed changes. Add science/terrain dependencies only in their milestones as optional extras.
 
 Step 5 introduces frontend/package.json, package-lock.json and .node-version, recording exact Node/npm versions in package metadata and this document. Restore with `npm.cmd ci`; do not hand-edit lockfiles. Dependency installation normally needs internet; a fully offline restore also needs previously prepared installers and package caches/wheels for the same platform. Installed mock operation itself must not need internet.
 
-Backend root .env.example will document `LUNASCEND_PROVIDER=mock`, `LUNASCEND_DATA_DIR=./data` and explicit allowed frontend origin. Resolve relative data paths against the repository root, not the launching shell directory. The backend must explicitly load the root configuration; a .env file is not automatically read merely because it exists. Frontend .env.example will contain only a public `VITE_API_BASE_URL=http://127.0.0.1:8000`. All VITE-prefixed values are public. Never put credentials there. Initial local mode needs no credentials. Ignore real .env files; copy templates only after they exist.
+Future backend .env.example may document `LUNASCEND_DATA_DIR=./data` and explicit allowed frontend origin. Provider mode remains explicit per request. Resolve relative data paths against the repository root, not the launching shell directory. The backend must explicitly load any future configuration; .env is not automatically read merely because it exists. Frontend .env.example will contain only a public `VITE_API_BASE_URL=http://127.0.0.1:8000`. All VITE-prefixed values are public. Never put credentials there. Ignore real .env files; copy templates only after they exist.
 
-### Local services and commands — FUTURE
+### Local services — backend now, frontend FUTURE
 
-Two terminals, starting in the repository root; service module names and scripts below must be implemented and confirmed at their milestones:
+Backend command is verified; frontend commands become available only at Step 5. Start each terminal in the repository root:
 
 ```powershell
 # Step 2 onward, terminal A
 Set-Location backend
 uv sync --locked
-uv run --locked uvicorn lunascend.api.main:app --host 127.0.0.1 --port 8000
+uv run --frozen uvicorn lunascend.main:app --host 127.0.0.1 --port 8000
 ```
 
 ```powershell
@@ -49,11 +103,11 @@ npm.cmd run dev -- --host 127.0.0.1 --port 5173
 
 Backend http://127.0.0.1:8000; frontend http://127.0.0.1:5173. Stop each with Ctrl+C. Bind loopback by default and allow only the intended development origin. No database or other local service. Mock provider becomes functional in Step 4; Step 2 only supplies backend foundation.
 
-Future tests: from backend, `uv run --locked pytest`; scientific extras will have documented names before use. From frontend, `npm.cmd run test -- --run` and `npm.cmd run build` (scripts to be added). Production Vite configuration must explicitly set `build.sourcemap: false`; inspect dist for maps, secrets and Python sources. `npm.cmd run preview -- --host 127.0.0.1` is a local preview, not a production hosting solution. Keep backend deployment separate, never copy it into frontend/public or dist. Browser JavaScript is inspectable even minified. Never delete original source after building. Hosting remains undecided and requires separate authorization.
+Backend tests now work: from backend, `uv run --frozen pytest -q`. Scientific extras will have documented names before use. FUTURE frontend: `npm.cmd run test -- --run` and `npm.cmd run build` (scripts to be added). Production Vite configuration must explicitly set `build.sourcemap: false`; inspect dist for maps, secrets and Python sources. `npm.cmd run preview -- --host 127.0.0.1` is a local preview, not a production hosting solution. Keep backend deployment separate, never copy it into frontend/public or dist. Browser JavaScript is inspectable even minified. Never delete original source after building. Hosting remains undecided and requires separate authorization.
 
 ## Local Git — usable now after initialization
 
-Review locally before staging; no automatic commit is required:
+Step 1 baseline has been committed and tagged locally. The following illustrates that milestone's workflow; do not recreate the existing tag. Review before staging each later milestone:
 
 ```powershell
 git status --short --untracked-files=all
@@ -97,12 +151,12 @@ In 7-Zip's GUI select the staging folder, choose 7z format, AES-256 encryption a
 1. Install documented Git, pinned uv/Python and (once needed) Node/npm; optional editor and 7-Zip. Verify versions. No original machine paths or services may be required.
 2. With authorized private repository access: `git clone https://github.com/OWNER/lunascend.git`, then `Set-Location lunascend`. Or decrypt the offline archive, verify checksum and bundle, and `git clone lunascend.bundle lunascend`. Inspect/add the authorized remote separately after a bundle restore.
 3. Verify expected commit/tag with `git log -1` and `git status`. Restore reviewed uncommitted snapshot changes separately if any; avoid overwriting committed files blindly.
-4. At Step 1, reading these documents completes restoration; no application can run yet. At later steps copy environment templates, set local values and install via locked commands above. Restore source as well as builds so development can continue.
-5. Select mock mode first and run tests/startup when those milestones exist. Disconnect networking after installation and verify mock UI and all mock routes still work without remote imagery/fonts.
+4. At Step 2, use the verified backend quick start above, including frozen restore, lock check, pytest, server startup and health/info checks. No environment template is needed yet. Restore source as well as builds so development can continue.
+5. Both analysis modes are intentionally unavailable at Step 2. From Step 4 onward, select mock mode first; once a frontend exists, disconnect networking after installation and verify mock UI/routes work without remote imagery/fonts.
 6. Restore scientific data from permitted backup or official URLs in data/manifests. Verify SHA-256, coverage, frame/datum and versions. Missing data must produce explicit unavailable status; mock remains usable. See ARCHITECTURE.md acquisition procedure.
 7. Run saved scientific reference tests only when their exact inputs are restored. Record results, OS/runtime versions, commit and dataset hashes. A successful clone alone is not a successful migration test.
 8. Open the cloned source folder for the next development session, read AGENTS.md and request only the next approved milestone. Rehearse this on another Windows machine before the team's stated November 14–15, 2026 event dates (dates not independently confirmed here).
 
 ## Step 1 verification boundary
 
-Documentation/source references and local Git hygiene can be checked now. Lock resolution, imports, application tests, production builds, encryption/restore drills, scientific validation and fresh-PC execution are planned and must not be claimed as completed. .gitignore is preventive, not a secret scanner; inspect all tracked and staged files before commits and pushes.
+Step 1 checked documentation/source references and local Git hygiene. Step 2 adds executed locked installation, backend/API tests and live server checks described above. Production frontend builds, encryption/restore drills, scientific validation and fresh-PC execution remain planned. .gitignore is preventive, not a secret scanner; inspect all tracked and staged files before commits and pushes.

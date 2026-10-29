@@ -1,6 +1,22 @@
-# LunAscend architecture — Step 1
+# LunAscend architecture — Step 2
 
-Status: specification only, 2026-10-29. No scientific calculations or application code are implemented or validated. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+Status: backend foundation implemented, 2026-10-29. Scientific calculations, datasets and frontend remain planned and unvalidated. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+
+## Implemented backend foundation
+
+`backend/src/lunascend/main.py` creates FastAPI and safe exception handlers. `api/routes.py` exposes `GET /health`, `GET /api/v1/info` and `POST /api/v1/scenarios/analyze`, plus standard `/docs` and `/openapi.json`. These replace the Step 1 proposed endpoint names below. Health describes process availability, not scientific readiness. Info reports zero implemented analysis providers and no scientific/mock calculation capability.
+
+`contracts/common.py` defines boundary types, UTC normalization, finite numeric ranges, generic Metric and structured errors. `contracts/models.py` implements all twelve requested contracts plus coordinate metadata and scenario-comparison helper models. Models and generated OpenAPI are authoritative for current fields. The original contract table below remains a later scientific blueprint, not a claim that every proposed field exists now.
+
+`providers/__init__.py` defines an async AnalysisProvider protocol and a minimal UnavailableProvider selected explicitly from request.provider_mode. Both mock and scientific modes return HTTP 503 with an unavailable ScenarioResult, structured error, request metadata and honest provenance. Scientific products are null. No default selection or fallback exists. Unexpected provider failures return a safe 500 error envelope; validation failures return 422 with structured errors and no raw request echo.
+
+Step 2 simplifications: each EphemerisObservation groups Sun and Earth angle metrics at one UTC timestamp. HorizonProfile uses equal-length sorted azimuth/elevation arrays with null unknown sectors. VisibilityWindow duration_s is computed for output and cannot be supplied as input. Power/communication/resilience models define fields only; no engineering algorithm runs. Calculated and illustrative status are distinct; available illustrative metrics must retain mock validation. Validated/reference-compared metadata requires a report ID, but schema validation cannot verify the referenced report's scientific quality.
+
+Request limits are 366 days, 10001 samples including both endpoints, and a minimum 0.001-second positive step. The planned schedule starts at start_utc, advances by step, and includes end_utc once even if the last interval is shorter; no samples are generated yet. Longitude is normalized from any finite numeric degrees to [-180,180). Planetographic metadata is representable, but no conversion is implemented or implied. Frame ID, realization and named reference surface are mandatory; a radius is optional until a real model is selected. Earth-body metadata is rejected.
+
+Timezone-aware ISO timestamps are normalized to UTC and serialized with Z; naive timestamps, epoch-number input and leap-second strings are rejected. Step 2 interval validation and derived duration use nominal UTC civil seconds; they do not count leap seconds. This metadata behavior must be replaced or guarded for physical duration calculations in Step 3. No scientific elapsed-time accuracy is claimed.
+
+Tests cover contracts, API behavior, explicit selection, unavailable values, safe failures and schema generation. They are software checks, not scientific validation. No future domain directories were created solely as placeholders. No environment variables, secrets or services beyond Uvicorn are required; provider choice lives in each request. Dataset paths and CORS configuration are deferred until needed.
 
 ## System design
 
@@ -16,7 +32,7 @@ React views -> typed API client -> FastAPI request validation
                                        scenario metrics -> resilience
 ```
 
-Proposed directories (only the five root documentation/ignore files exist in Step 1):
+Long-term directory plan (Step 2 implements backend contracts, providers, API, main.py and tests in addition to root documents):
 
 ```text
 LunAscend/
@@ -77,7 +93,7 @@ Keep large computations bounded by time span, sample count, site count and terra
 - Visibility is visible/obstructed/borderline/unknown. Joint states are sunlight-only/Earth-only/both/neither/unknown; incomplete inputs cannot become neither. Durations and longest gaps report coverage and endpoint censoring. Percentages use a declared denominator and unknown duration is reported separately.
 - No invented uncertainty bounds. User-specified clearance is an operational margin, not measured error. Preserve source error metadata, effective resolution and sensitivity results separately.
 
-## Data contracts (proposed v1)
+## Scientific contract blueprint (Step 1 target; see implemented scope above)
 
 Canonical boundary schemas will live in Python contracts and produce OpenAPI/JSON Schema. Generate or check TypeScript types against those schemas in Step 5; never maintain two independent scientific definitions. JSON uses snake_case, finite numbers, explicit unit suffixes and null for unavailable values. Required keys remain present; empty arrays mean no items only when status is available.
 
@@ -154,4 +170,4 @@ Unit tests alone are not scientific validation. Horizons and SPICE may share und
 
 ## Risks and unresolved decisions
 
-Step 2 must confirm Windows x64 dependency compatibility and exact tool pins. Step 3 must choose matched kernels, frame realization, reference surface, Horizons comparison configuration and time support. Step 8 must resolve DEM datum/frame registration, actual driver coverage, missing far-field terrain, ray resolution and product permissions. Thin polar visibility windows may be missed by coarse sampling; numerical convergence needs measurement. Disk treatment and observer height can materially alter outcomes. Scientific uncertainty is not equivalent to UI precision. Step 13 must verify event/submission rules, privacy-compatible hosting and migration; no hosting is selected or authorized now.
+Step 2 confirms the minimal Windows x64 backend stack and tool pins; heavy scientific dependencies remain untested. Step 3 must choose matched kernels, frame realization, reference surface, Horizons comparison configuration and physical time support. Step 8 must resolve DEM datum/frame registration, actual driver coverage, missing far-field terrain, ray resolution and product permissions. Thin polar visibility windows may be missed by coarse sampling; numerical convergence needs measurement. Disk treatment and observer height can materially alter outcomes. Scientific uncertainty is not equivalent to UI precision. Step 13 must verify event/submission rules, privacy-compatible hosting and migration; no hosting is selected or authorized now.
