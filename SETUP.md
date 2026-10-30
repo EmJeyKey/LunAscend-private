@@ -2,7 +2,42 @@
 
 ## Current status
 
-Step 2 implements a local FastAPI backend, twelve scientific contracts, provider abstraction, unavailable-analysis behavior and tests. Python dependencies are locked in backend/uv.lock. No frontend, mock generator, scientific calculations or NASA datasets exist yet. Commands marked FUTURE remain planned. Step 1 documentation is preserved in its own local commit and step-1-foundation tag.
+Step 2 implements a local FastAPI backend, twelve scientific contracts, provider abstraction, unavailable-analysis behavior and tests. Step 2.5 adds a six-page React frontend preview. Python dependencies are locked in backend/uv.lock; frontend dependencies are locked in frontend/package-lock.json. No mock scientific generator, scientific calculations or NASA datasets exist yet. Commands marked FUTURE remain planned. Earlier milestones are preserved as local commits and recovery tags.
+
+## Frontend preview quick start (Step 2.5)
+
+Required and recorded in frontend/.node-version and package.json: Node.js 24.21.0 x64 with npm 11.19.0. Install the matching [official Node.js distribution](https://nodejs.org/en/download), reopen PowerShell and verify versions. The repository does not rely on a global Vite/TypeScript installation. From the cloned/restored project root:
+
+```powershell
+node --version
+npm.cmd --version
+Set-Location frontend
+npm.cmd ci
+npm.cmd run dev
+```
+
+Open **http://127.0.0.1:5173/** in Chrome. The server binds loopback only and fails clearly if the selected port is occupied. Stop it with Ctrl+C. npm.cmd avoids PowerShell's npm.ps1 execution-policy issue; no permanent execution-policy change is needed. Paths with spaces work when quoted. Do not copy node_modules from the original PC; npm ci restores the committed dependency lock. Initial installation normally requires internet; cache/installers must be prepared separately for fully offline setup.
+
+Frontend checks and local production preview, from frontend:
+
+```powershell
+npm.cmd run typecheck
+npm.cmd test
+npm.cmd run build
+npm.cmd run preview
+```
+
+Build performs a TypeScript check and writes only frontend/dist. Open **http://127.0.0.1:4173/** for local production preview. Source-map generation is explicitly false in vite.config.ts. Original source is retained. Neither dev nor preview publishes the project. node_modules, dist and TypeScript build metadata are ignored by Git. All required fonts, icons and artwork are bundled locally; the website can render without internet after installation.
+
+To run both services, use two terminals starting at the project root. In terminal A, use the backend instructions below (`uv run --frozen uvicorn lunascend.main:app --host 127.0.0.1 --port 8000`). In terminal B run the frontend commands above. The existing project-local uv installation is also documented below.
+
+The frontend works with the backend stopped and displays Backend disconnected. Start FastAPI and click the connection indicator to retry. A connected backend still has no scientific analysis capability in Step 2.5. The frontend only requests health and info; no scenario analysis is submitted.
+
+Configuration is optional. Copy frontend/.env.example to frontend/.env.local only when changing defaults; restart Vite after edits. VITE_API_BASE_URL defaults to /backend, and both dev/preview proxy that path to LUNASCEND_BACKEND_URL (default http://127.0.0.1:8000). This avoids modifying backend CORS. An absolute cross-origin VITE_API_BASE_URL needs backend CORS support, which this milestone does not add; prefer the proxy. All VITE_* settings are public and must never contain secrets. No API keys or other services are required.
+
+Selections, alternative scenarios, time cursor and delay controls change interface context only. Coordinates are synthetic examples or user inputs with unresolved scientific reference metadata. Artwork is not NASA topography or a georeferenced lunar map. Empty metrics are intentional; preview operation does not depend on NASA datasets. State resets when the browser reloads.
+
+Fresh-PC restoration: restore source and both lockfiles via the private-repository/offline procedures below, install the pinned toolchains, run npm ci and the backend frozen sync, then run tests/build and open the preview. Another-PC execution and encrypted recovery still require a future rehearsal. BrowserRouter routes work in Vite dev/preview; any future static host must explicitly fall back to index.html for application routes.
 
 ## Verified backend quick start (Step 2)
 
@@ -79,13 +114,13 @@ Compatibility rationale: [Vite](https://vite.dev/guide/) requires Node 20.19+ or
 
 Step 2 includes backend/pyproject.toml, uv.lock and .python-version. All three belong in Git. Direct dependencies and build backend are pinned; transitive versions/artifact hashes are locked. Restore using the verified quick start above. [uv locking behavior](https://docs.astral.sh/uv/concepts/projects/sync/) distinguishes frozen restore from lock checks. Lock updates are deliberate reviewed changes. Add science/terrain dependencies only in their milestones as optional extras.
 
-Step 5 introduces frontend/package.json, package-lock.json and .node-version, recording exact Node/npm versions in package metadata and this document. Restore with `npm.cmd ci`; do not hand-edit lockfiles. Dependency installation normally needs internet; a fully offline restore also needs previously prepared installers and package caches/wheels for the same platform. Installed mock operation itself must not need internet.
+Step 2.5 introduces frontend/package.json, package-lock.json and .node-version ahead of the originally planned Step 5. Restore with `npm.cmd ci`; do not hand-edit lockfiles. Dependency installation normally needs internet; a fully offline restore also needs previously prepared installers and package caches/wheels for the same platform. Installed interface preview itself does not need internet.
 
 Future backend .env.example may document `LUNASCEND_DATA_DIR=./data` and explicit allowed frontend origin. Provider mode remains explicit per request. Resolve relative data paths against the repository root, not the launching shell directory. The backend must explicitly load any future configuration; .env is not automatically read merely because it exists. Frontend .env.example will contain only a public `VITE_API_BASE_URL=http://127.0.0.1:8000`. All VITE-prefixed values are public. Never put credentials there. Ignore real .env files; copy templates only after they exist.
 
-### Local services — backend now, frontend FUTURE
+### Local services — backend and frontend
 
-Backend command is verified; frontend commands become available only at Step 5. Start each terminal in the repository root:
+Start each terminal in the repository root:
 
 ```powershell
 # Step 2 onward, terminal A
@@ -95,7 +130,7 @@ uv run --frozen uvicorn lunascend.main:app --host 127.0.0.1 --port 8000
 ```
 
 ```powershell
-# Step 5 onward, terminal B
+# Step 2.5 onward, terminal B
 Set-Location frontend
 npm.cmd ci
 npm.cmd run dev -- --host 127.0.0.1 --port 5173
@@ -103,7 +138,7 @@ npm.cmd run dev -- --host 127.0.0.1 --port 5173
 
 Backend http://127.0.0.1:8000; frontend http://127.0.0.1:5173. Stop each with Ctrl+C. Bind loopback by default and allow only the intended development origin. No database or other local service. Mock provider becomes functional in Step 4; Step 2 only supplies backend foundation.
 
-Backend tests now work: from backend, `uv run --frozen pytest -q`. Scientific extras will have documented names before use. FUTURE frontend: `npm.cmd run test -- --run` and `npm.cmd run build` (scripts to be added). Production Vite configuration must explicitly set `build.sourcemap: false`; inspect dist for maps, secrets and Python sources. `npm.cmd run preview -- --host 127.0.0.1` is a local preview, not a production hosting solution. Keep backend deployment separate, never copy it into frontend/public or dist. Browser JavaScript is inspectable even minified. Never delete original source after building. Hosting remains undecided and requires separate authorization.
+Backend tests: from backend, `uv run --frozen pytest -q`. Scientific extras will have documented names before use. Frontend tests/build: from frontend, `npm.cmd test` and `npm.cmd run build`. Vite explicitly sets `build.sourcemap: false`; inspect dist for maps, secrets and Python sources. `npm.cmd run preview` is a local preview, not a production hosting solution. Keep backend deployment separate, never copy it into frontend/public or dist. Browser JavaScript is inspectable even minified. Never delete original source after building. Hosting remains undecided and requires separate authorization.
 
 ## Local Git — usable now after initialization
 

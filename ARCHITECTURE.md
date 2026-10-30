@@ -1,6 +1,16 @@
 # LunAscend architecture — Step 2
 
-Status: backend foundation implemented, 2026-10-29. Scientific calculations, datasets and frontend remain planned and unvalidated. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+Status: backend foundation and Step 2.5 frontend preview implemented, 2026-10-29. Scientific calculations and datasets remain planned and unvalidated. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+
+## Step 2.5 frontend preview
+
+`frontend/` is a private npm package with React, TypeScript, Vite, Tailwind CSS, React Router, Lucide icons and a bundled Manrope font. It has six routes: dashboard, site explorer, Sun/Earth analysis, scenario comparison, mission resilience and methodology. Reusable shell, cards, map illustration, chart empty states and controls live in components/; pages/ compose them. React context keeps site, UTC start, duration and up to two alternative snapshots in temporary browser memory. State resets on reload; no database or browser storage is used.
+
+`src/data/preview.ts` contains synthetic input locations. `src/data/illustration.ts` contains only original SVG artwork geometry in pixels. The image is not georeferenced and uses no NASA terrain. Layer toggles change artwork visibility only. `lib/time.ts` performs UI date formatting/shifting, not ephemeris or scientific duration calculations. The analysis time cursor and landing-delay control change displayed timestamps only. All scientific metrics, curves, windows and engineering estimates remain unavailable. Recharts is unnecessary for empty chart scaffolding and is not installed.
+
+`src/types/api.ts` mirrors only the existing consumed Health and ApplicationInfo responses. Runtime response checks reject incompatible payloads. `src/api/client.ts` uses a five-second bounded check of GET /health and GET /api/v1/info; it never submits a scientific analysis. The hook cancels stale checks and offers explicit retry. Connection status does not establish scientific readiness. Both Vite dev and local build preview proxy /backend to the configurable local FastAPI service, so no backend CORS/code changes are required. VITE_API_BASE_URL is public; LUNASCEND_BACKEND_URL configures the Vite proxy. A future deployment will need an explicit equivalent proxy or narrowly scoped CORS configuration; no deployment exists here.
+
+The UI labels its preview state on every route and labels synthetic locations/artwork. No frontend mock scientific provider is implemented. All fonts, icons and illustrations are local; after installation, disconnected operation needs no external service. Production source maps are explicitly disabled. The preview advances only the visual foundation originally planned for Step 5; scientific milestones retain their numbers and review gates.
 
 ## Implemented backend foundation
 
