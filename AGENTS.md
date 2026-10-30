@@ -25,6 +25,7 @@ LunAscend — Lunar Mission Resilience Navigator is a lunar landing-site decisio
 - Frontend preview state and synthetic input locations are separate from scientific contracts. Do not submit preview locations as validated lunar sites. Artwork is SVG pixel geometry, not a DEM or georeferenced map. Never draw fabricated scientific curves to fill empty states.
 - Frontend only checks GET /health and GET /api/v1/info through /backend proxy. Keep the backend unchanged for this preview. The UI remains usable when disconnected. Frontend API types mirror consumed backend responses; generate full scientific types when real analysis is connected.
 - Keep UI pages, components, state, API client, types, styles and preview data separate. Bundle fonts/assets locally; do not require a CDN or credentials. Source maps remain disabled for production.
+- Step 2.6 visual conventions: compact mission toolbars, structured scientific plots and smaller numerical readouts. Use monospaced coordinates/timestamps/units, explicit axes and technical missing-data labels. Preserve plot dimensions when data is unavailable; never add decorative scientific curves or promotional empty-state copy. Preview/unavailable states remain distinct from any future validated result.
 - Step 2 duration fields are derived nominal UTC civil seconds, not leap-second-aware scientific durations. Reject leap-second timestamp strings; resolve physical elapsed-time semantics before scientific calculations in Step 3.
 
 ## Scientific integrity

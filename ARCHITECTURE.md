@@ -12,6 +12,14 @@ Status: backend foundation and Step 2.5 frontend preview implemented, 2026-10-29
 
 The UI labels its preview state on every route and labels synthetic locations/artwork. No frontend mock scientific provider is implemented. All fonts, icons and illustrations are local; after installation, disconnected operation needs no external service. Production source maps are explicitly disabled. The preview advances only the visual foundation originally planned for Step 5; scientific milestones retain their numbers and review gates.
 
+## Step 2.6 UI refinement
+
+The existing frontend is retained with a 220–230 px desktop sidebar, compact mission controls and technical readout typography. Sun/Earth analysis keeps the original axes and time structure, with explicit degree/UTC labels and a small unavailable-data overlay instead of a decorative empty state. Legend swatches use solid/dashed/dotted styles as well as color. Visibility rows state Solar visibility and Direct-to-Earth line of sight; unknown intervals are not plotted as measured availability.
+
+Coordinates, dates, units and numerical fields use available local monospace fonts. Other-page changes are limited to terminology and shared presentation. The preview badge and unavailable-data badges remain explicit; no validated-data badge is activated without scientific results. No dependencies, routes, providers or backend contracts changed. Navigation now retains keyboard focus without scrolling the top status bar out of view.
+
+Verification on 2026-10-30: the Step 2.5 baseline passed TypeScript, 17 frontend tests, production build and 67 backend tests before recovery commit 5bb9d81. The refinement was checked in the browser at desktop and 390 px mobile widths, including six-route navigation, UTC/site/period controls, cursor, scenario snapshots, coordinates, map-layer toggle, delay/reset and disconnected-backend retry. These are UI/software checks, not scientific validation.
+
 ## Implemented backend foundation
 
 `backend/src/lunascend/main.py` creates FastAPI and safe exception handlers. `api/routes.py` exposes `GET /health`, `GET /api/v1/info` and `POST /api/v1/scenarios/analyze`, plus standard `/docs` and `/openapi.json`. These replace the Step 1 proposed endpoint names below. Health describes process availability, not scientific readiness. Info reports zero implemented analysis providers and no scientific/mock calculation capability.

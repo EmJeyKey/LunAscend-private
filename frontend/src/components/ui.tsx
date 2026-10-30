@@ -24,7 +24,7 @@ export function MetricCard({ kind }: { kind: 'solar' | 'earth' }) {
   const solar = kind === 'solar'
   const Icon = solar ? Sun : Radio
   return <section className={`panel metric-card ${solar ? 'solar' : 'earth'}`} aria-label={solar ? 'Solar analysis' : 'Communication analysis'}>
-    <div className="metric-header"><span className="metric-icon"><Icon size={20} strokeWidth={1.6} /></span><div><h2>{solar ? 'Solar illumination' : 'Earth & communications'}</h2><p>{solar ? 'SUN ELEVATION' : 'EARTH ELEVATION'}</p></div><span className="muted-icon"><CircleDashed size={17} /></span></div>
+    <div className="metric-header"><span className="metric-icon"><Icon size={18} strokeWidth={1.6} /></span><div><h2>{solar ? 'Solar illumination' : 'Earth line of sight'}</h2><p>{solar ? 'SUN ELEVATION' : 'EARTH ELEVATION'}</p></div><StatusBadge>Unavailable</StatusBadge></div>
     <div className="primary-metric"><span aria-label="Unavailable">—</span><span className="metric-unit">deg</span><span className="metric-state">Awaiting ephemeris</span></div>
     <dl className="metric-details"><div><dt>{solar ? 'Solar visibility' : 'Earth line of sight'}</dt><dd>Unavailable</dd></div><div><dt>{solar ? 'Next sunset' : 'Next Earthset'}</dt><dd>— <span>UTC</span></dd></div><div><dt>{solar ? 'Illumination duration' : 'Communication availability'}</dt><dd>{solar ? '— h' : 'Not modeled'}</dd></div></dl>
     <p className="metric-footnote">{solar ? 'No solar geometry has been calculated.' : 'Earth visibility alone does not establish a radio link.'}</p>

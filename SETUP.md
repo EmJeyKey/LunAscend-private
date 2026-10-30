@@ -39,6 +39,10 @@ Selections, alternative scenarios, time cursor and delay controls change interfa
 
 Fresh-PC restoration: restore source and both lockfiles via the private-repository/offline procedures below, install the pinned toolchains, run npm ci and the backend frozen sync, then run tests/build and open the preview. Another-PC execution and encrypted recovery still require a future rehearsal. BrowserRouter routes work in Vite dev/preview; any future static host must explicitly fall back to index.html for application routes.
 
+## Frontend verification (Step 2.6)
+
+Frontend verification update (2026-10-30, Step 2.6): the retained Step 2.5 installation passed TypeScript, all 17 frontend tests and the production build before the recovery snapshot. All 67 backend tests also passed with the existing TestClient deprecation warning. Refined controls and navigation were checked in the browser, including desktop and 390 px mobile layouts and backend-disconnected retry. No backend code or dependencies were changed. Open http://127.0.0.1:5173/analysis after `npm.cmd run dev` to inspect the refined scientific UI. Another-PC execution and scientific validation remain unperformed.
+
 ## Verified backend quick start (Step 2)
 
 Tested on this Windows x64 computer with Python 3.12.16 and uv 0.13.6. Direct packages: FastAPI 0.162.0, Pydantic 2.14.2, Uvicorn 0.54.0, pytest 9.2.0 and HTTPX 0.28.1. Build backend: uv_build 0.13.6. Exact transitive artifacts/hashes are in uv.lock. No global Python packages are required. Scientific-library compatibility is still deferred.

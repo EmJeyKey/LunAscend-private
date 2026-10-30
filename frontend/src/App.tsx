@@ -14,6 +14,6 @@ export default function App() {
     <Route index element={<Dashboard/>}/><Route path="sites" element={<SiteExplorer/>}/>
     <Route path="analysis" element={<Analysis/>}/><Route path="compare" element={<Comparison/>}/>
     <Route path="resilience" element={<Resilience/>}/><Route path="methodology" element={<Methodology/>}/>
-    <Route path="*" element={<><EmptyState title="This orbit leads somewhere else." description="The requested page does not exist in this preview."/><Link className="button secondary" to="/">Return to dashboard</Link></>}/>
+    <Route path="*" element={<><EmptyState title="Page not found." description="The requested page does not exist in this preview."/><Link className="button secondary" to="/">Return to dashboard</Link></>}/>
   </Route></Routes></MissionProvider></BrowserRouter>
 }
