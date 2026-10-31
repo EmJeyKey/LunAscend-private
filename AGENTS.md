@@ -6,7 +6,7 @@ LunAscend — Lunar Mission Resilience Navigator is a lunar landing-site decisio
 
 - Read ARCHITECTURE.md, SETUP.md and DEVELOPMENT_ROADMAP.md before changes. Inspect existing work and preserve it.
 - Implement only the milestone the user requests. Stop after each milestone, report actual checks and remaining limitations, and await review. Do not advance automatically.
-- Step 3 adds a SPICE scientific provider for geometric Sun/Earth observations. Mock analysis remains unavailable. Stop after Step 3; no terrain or engineering calculations are authorized.
+- Step 4 adds a deterministic standard-library MockAnalysisProvider alongside the preserved Step 3 SPICE provider. Stop after Step 4; no terrain, engineering calculations or frontend integration are authorized.
 - Keep changes focused; avoid speculative infrastructure, databases, Docker, unnecessary dependencies and repeated installation.
 - Update documentation when contracts, assumptions, dependencies or commands change.
 
@@ -14,6 +14,7 @@ LunAscend — Lunar Mission Resilience Navigator is a lunar landing-site decisio
 
 - Python owns ephemeris, terrain, visibility, power, communication and resilience calculations. React only presents provider results and manages interaction.
 - MockAnalysisProvider and ScientificAnalysisProvider implement the same versioned contract. Never silently substitute mock outputs for failed scientific calculations.
+- Mock curves use mock-curves-v1, MOCK_DEMONSTRATION_FRAME, nominal UTC civil sampling and explicit MOCK / NOT LUNAR PREDICTIONS warnings. Keep all mock metrics/provenance labeled mock and observations illustrative, including unavailable polar azimuth. Do not import science libraries or external services into the mock generator. See docs/STEP_4.md.
 - Prefer small typed Python functions, explicit inputs, dependency injection at provider boundaries and deterministic tests. Use snake_case in Python and JSON; camelCase in TypeScript internals, PascalCase for components/types.
 - Use strict TypeScript and typed Python public interfaces. Validate requests at the API boundary; reject non-finite numbers, invalid ranges and excessive workloads.
 - Keep domain modules independent of FastAPI, React and filesystem layout. Put dataset access behind adapters. Use SI units except documented degrees and Wh; encode units in field names.

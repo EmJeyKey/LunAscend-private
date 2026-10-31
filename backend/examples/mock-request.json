@@ -1,0 +1,18 @@
+{
+  "site": {
+    "site_id": "mock-demo",
+    "name": "Synthetic demonstration site",
+    "latitude_deg": -89.0,
+    "longitude_deg": 10.0,
+    "coordinate_reference": {
+      "latitude_type": "planetocentric",
+      "frame_id": "MOCK_SITE_INPUT",
+      "frame_realization": "synthetic-only",
+      "reference_surface": "synthetic demonstration surface"
+    }
+  },
+  "provider_mode": "mock",
+  "start_utc": "2026-11-14T00:00:00Z",
+  "end_utc": "2026-11-14T00:10:00Z",
+  "sample_step_s": 240.0
+}

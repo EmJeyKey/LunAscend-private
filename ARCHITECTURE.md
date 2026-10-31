@@ -1,6 +1,14 @@
-# LunAscend architecture — Step 3
+# LunAscend architecture — Step 4
 
-Status: Step 3 implements geometric lunar Sun/Earth observations with executed Horizons comparisons. The frontend retains the Step 2.6 preview. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+Status: Step 4 adds an explicitly illustrative mock provider alongside the preserved Step 3 geometric scientific provider. The frontend retains the Step 2.6 preview. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+
+## Step 4 deterministic mock provider
+
+`providers/mock.py` implements the existing async AnalysisProvider interface using only the standard library and existing contracts. Explicit provider selection dispatches to mock or scientific without fallback. Info reports both implementations, mock availability true, and scientific availability according to its verified resources. Routes, request/result contracts, SPICE source, kernels and saved Step 3 evidence are preserved.
+
+The versioned generator uses arbitrary smooth sine/azimuth curves seeded by absolute UTC civil time and site latitude/longitude. It has no lunar physics, coordinate transformation, external service or random state. Repeated identical requests produce identical entire results, including a content-derived scenario ID. Samples include start/end once, with a short final interval; fractional interior offsets truncate to microseconds. Unlike SPICE sampling, this deliberately illustrative schedule uses nominal UTC civil seconds and does not count leap insertions. No physical elapsed-time claim is made.
+
+Observations use `status=illustrative`, metrics/provenance use `mock`, and the output frame is `MOCK_DEMONSTRATION_FRAME`, regardless of input frame labels. Every result warns MOCK / NOT LUNAR PREDICTIONS. Exact poles have null azimuth with a reason and partial scenario status; available elevations remain illustrative. Heights and clearance settings are not modeled. Terrain/engineering enable flags return structured INVALID_REQUEST rather than fabricated outputs. Horizon, visibility windows, power, communication and resilience remain null. See [Step 4 design and API example](docs/STEP_4.md). The historical Step 3 statement that mock is unavailable is superseded by this section. No frontend files change.
 
 ## Step 3 scientific geometry
 

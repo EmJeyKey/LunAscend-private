@@ -23,10 +23,10 @@ class ApplicationInfo(Contract):
     application_version: str = __version__
     api_version: str = "1.0"
     capabilities: tuple[str, ...] = ("contract_validation", "provider_dispatch")
-    implemented_analysis_providers: tuple[str, ...] = ("scientific",)
+    implemented_analysis_providers: tuple[str, ...] = ("mock", "scientific")
     selectable_provider_modes: tuple[ProviderMode, ...] = ("mock", "scientific")
     scientific_calculations_available: bool = False
-    mock_analysis_available: bool = False
+    mock_analysis_available: bool = True
 
 
 def provider_factory() -> Callable[[ProviderMode], AnalysisProvider]:
@@ -43,7 +43,7 @@ def info() -> ApplicationInfo:
     from lunascend.providers.scientific import scientific_available
     available = scientific_available()
     return ApplicationInfo(scientific_calculations_available=available,
-                           capabilities=("contract_validation", "provider_dispatch", "geometric_ephemeris"))
+                           capabilities=("contract_validation", "provider_dispatch", "geometric_ephemeris", "illustrative_mock"))
 
 
 @router.post("/api/v1/scenarios/analyze", response_model=ScenarioResult,

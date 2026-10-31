@@ -26,12 +26,12 @@ def test_info_is_honest(client):
     response = client.get("/api/v1/info")
     assert response.status_code == 200
     info = response.json()
-    assert info["implemented_analysis_providers"] == ["scientific"]
+    assert info["implemented_analysis_providers"] == ["mock", "scientific"]
     assert not info["scientific_calculations_available"]
-    assert not info["mock_analysis_available"]
+    assert info["mock_analysis_available"]
 
 
-@pytest.mark.parametrize("mode", ["mock", "scientific"])
+@pytest.mark.parametrize("mode", ["scientific"])
 def test_valid_request_reports_unavailable_without_results(client, request_data, mode):
     response = client.post("/api/v1/scenarios/analyze", json=request_data | {"provider_mode": mode})
     assert response.status_code == 503

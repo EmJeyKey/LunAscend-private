@@ -2,7 +2,20 @@
 
 ## Current status
 
-Step 3 adds the SPICE Sun/Earth geometry provider and executed Horizons comparisons. The six-page frontend retains its Step 2.6 preview; scientific output is currently API-only. Python dependencies are locked in backend/uv.lock; frontend dependencies are locked in frontend/package-lock.json. No mock generator, terrain or engineering calculation exists. Commands marked FUTURE remain planned. Earlier milestones are preserved as local commits and recovery tags. Historical setup sections below retain their milestone context; the following Step 3 instructions supersede their scientific-availability statements.
+Step 4 adds a deterministic, explicitly illustrative mock provider alongside the unchanged SPICE geometry provider. The six-page frontend retains its Step 2.6 preview; observation output is currently API-only. Python dependencies are locked in backend/uv.lock; frontend dependencies are locked in frontend/package-lock.json. No terrain or engineering calculation exists. Commands marked FUTURE remain planned. Earlier milestones are preserved as local commits and recovery tags. Historical setup sections below retain their milestone context; current Step 3/4 instructions supersede their earlier provider-availability statements.
+
+## Offline mock backend (Step 4)
+
+No new dependencies, kernels, credentials, fixtures or external services are required. After normal base installation, mock analysis works without SpiceyPy/NumPy. From backend run `uv sync --frozen`, `uv run --frozen pytest -q -p no:cacheprovider`, then `uv run --frozen uvicorn lunascend.main:app --host 127.0.0.1 --port 8000`. Use `--extra science` on sync/run when also retaining scientific capability as described below; base sync can remove optional packages.
+
+In another PowerShell terminal at the project root:
+
+```powershell
+$body = Get-Content backend/examples/mock-request.json -Raw
+Invoke-RestMethod http://127.0.0.1:8000/api/v1/scenarios/analyze -Method Post -ContentType 'application/json' -Body $body
+```
+
+Provider mode must explicitly be mock. The existing endpoint returns illustrative observations, mock validation and MOCK / NOT LUNAR PREDICTIONS warnings; it never claims actual lunar conditions. See [design and response excerpt](docs/STEP_4.md). The scientific mode retains its resource checks and structured errors, with no fallback. Mock sampling uses nominal UTC civil seconds, not leap-second-aware physical time. Existing frontend remains unchanged and does not consume observations yet. A fresh Windows computer still needs the pinned toolchain and source/lock restore; after dependencies are installed mock requests need no internet. Another-PC execution remains untested.
 
 ## Scientific backend quick start (Step 3)
 

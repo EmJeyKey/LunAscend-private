@@ -44,4 +44,5 @@ def get_provider(mode: ProviderMode) -> AnalysisProvider:
     if mode == "scientific":
         from .scientific import ScientificAnalysisProvider
         return ScientificAnalysisProvider()
-    return UnavailableProvider(mode)
+    from .mock import MockAnalysisProvider
+    return MockAnalysisProvider()
