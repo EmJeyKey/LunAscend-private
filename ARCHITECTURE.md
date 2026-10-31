@@ -1,6 +1,16 @@
-# LunAscend architecture — Step 5.5 lunar atlas
+# LunAscend architecture — Step 6 scenario comparison
 
-Status: Step 5 connects the existing scientific/mock providers to the frontend and includes the authorized brand refinement. The validated Step 3 engine and Step 4 mock generator are preserved. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+Status: Step 6 adds independent scientific scenario comparison to the existing Step 5 integration and Step 5.5 design. The validated Step 3 engine and Step 4 mock generator are preserved. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+
+## Step 6 multi-site and multi-date geometric comparison
+
+Step 6 supersedes the historical snapshot-only comparison descriptions below. ComparisonStore, owned by the existing MissionProvider, holds up to three site/date/options snapshots with independent analysis state and a baseline ID. Explorer saves use this same store, including provider, height and frame confirmation. Settings persist across route navigation in memory; reload clears them. The Dashboard preview follows the selected comparison baseline. There is no database or new browser persistence.
+
+Each scenario uses the unchanged buildRequest/requestAnalysis boundary and existing POST endpoint. Canonical validated requests deduplicate active transports and reuse completed results while their keys remain among current scenarios (at most three cache entries). Display renaming and baseline selection do not recalculate. Input changes invalidate only the affected result; obsolete consumers detach and orphaned requests abort. Job identity/version checks ignore late responses even if cancellation is ignored. A failed row leaves successful rows intact and can be retried. Detailed analysis copies a completed scenario into the existing single-analysis context without another request.
+
+lib/comparison.ts derives start and sampled extrema plus approximate above-0-degree fractions from returned angles. Adjacent known samples define linear segments, split analytically at the geometric horizon; missing intervals contribute neither numerator nor denominator. Coverage is displayed separately. These UTC-civil-time estimates are not exact durations, terrain-aware visibility, radio-link availability or power calculations. The SPICE engine still rejects leap-second crossings. Deltas are alternative minus baseline; mixed provider/model/frame/reference results have no numerical deltas. Fraction deltas additionally require full coverage, equal duration and equal sample step. All estimates inherit source limitations.
+
+Aligned native SVG charts prioritize elapsed time since each scenario's own UTC epoch. They share the same elapsed axis and cursor; readouts select nearest returned samples and display both target and actual UTC. Null values break paths; shorter intervals are not extrapolated. Absolute-UTC overlays are deferred and disclosed. Each scenario retains full existing provenance, assumptions and warnings. No backend, contracts, kernels, saved scientific evidence, dependencies or lockfiles change. See docs/STEP_6.md for verification.
 
 ## Step 5 live frontend and lunar atlas identity
 

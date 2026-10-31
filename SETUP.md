@@ -2,6 +2,9 @@
 
 ## Current status
 
+Step 6 adds scientific scenario comparison with no new setup requirements or dependencies. In Comparison, choose 2-3 scenarios, configure each provider/site/UTC interval independently, confirm scientific heights/frame where required, and run comparison. Duplicate a scenario to change its date. Explorer's Add to comparison preserves its current settings. Results and configurations persist through navigation in memory, not reload. See docs/STEP_6.md for sampling limits and executed checks.
+
+
 Step 5.5 refines the existing lunar workbench without changing backend calculations or either dependency lockfile. Display, interface and technical fonts are Cormorant Garamond, IBM Plex Sans and IBM Plex Mono, all served locally with OFL notices and source hashes. The Dashboard settings start collapsed and open when an invalid required field needs attention. See docs/STEP_5_5.md for the latest verification.
 
 Step 5 connects the existing website to scientific/mock observations and includes the requested logo/typography refinement. Earlier milestone descriptions below retain historical context. The backend, public contracts, scientific evidence and both dependency lockfiles remain unchanged. All fonts and the original logo are local repository assets; no runtime font CDN or new package is required.

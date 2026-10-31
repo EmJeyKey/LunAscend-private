@@ -1,9 +1,10 @@
-import { createContext, useContext, useEffect, useState, type PropsWithChildren } from 'react'
+import { createContext, useContext, useEffect, useState, useSyncExternalStore, type PropsWithChildren } from 'react'
 import { initialStartUtc, previewSites } from '../data/preview'
 import type { MissionSelection, PreviewScenario } from '../types/preview'
 import type { AnalysisOptions } from '../types/analysis'
 import { AnalysisRunner, emptyAnalysis } from '../api/analysis'
 import { buildRequest, initialOptions, observationAt } from '../lib/analysis'
+import { ComparisonStore, type ComparisonState } from './ComparisonStore'
 
 interface MissionContextValue {
   mission: MissionSelection
@@ -19,6 +20,9 @@ interface MissionContextValue {
   sampleIndex: number
   selectSample: (index: number) => void
   observation: ReturnType<typeof observationAt>
+  comparison: ComparisonState
+  comparisonStore: ComparisonStore
+  inspectScenario: (id: string) => void
 }
 
 const MissionContext = createContext<MissionContextValue | null>(null)
@@ -40,12 +44,21 @@ export function MissionProvider({ children }: PropsWithChildren) {
     catch (error) { setAnalysis({ status: 'error', result: null, message: error instanceof Error ? error.message : 'Invalid analysis inputs.' }) }
   }
   useEffect(() => () => runner.clear(), [runner])
-  const [alternatives, setAlternatives] = useState<PreviewScenario[]>([
-    { id: 'initial-alternative', site: previewSites[1], startUtc: initialStartUtc, durationHours: 48 },
-  ])
-  const saveAlternative = () => setAlternatives(previous => previous.length >= 2 ? previous : [...previous, { ...mission, id: crypto.randomUUID() }])
-  const removeAlternative = (id: string) => setAlternatives(previous => previous.filter(item => item.id !== id))
-  return <MissionContext.Provider value={{ mission, updateMission, alternatives, saveAlternative, removeAlternative, analysis, options, updateOptions, runAnalysis, invalidate, sampleIndex, selectSample, observation: observationAt(series, sampleIndex) }}>{children}</MissionContext.Provider>
+  const [comparisonStore] = useState(() => new ComparisonStore([
+    { selection: mission, options: initialOptions, name: 'Baseline' },
+    { selection: { ...mission, site: previewSites[1] }, options: initialOptions, name: 'Alternative' },
+  ]))
+  const comparison = useSyncExternalStore(comparisonStore.subscribe, comparisonStore.getSnapshot, comparisonStore.getSnapshot)
+  useEffect(() => () => comparisonStore.dispose(), [comparisonStore])
+  const alternatives: PreviewScenario[] = comparison.scenarios.filter(s => s.id !== comparison.baselineId).map(s => ({ ...s.selection, id: s.id }))
+  const saveAlternative = () => { comparisonStore.add(mission, options) }
+  const removeAlternative = (id: string) => comparisonStore.remove(id)
+  const inspectScenario = (id: string) => {
+    const scenario = comparisonStore.getSnapshot().scenarios.find(s => s.id === id)
+    if (!scenario) return
+    invalidate(); setMission(structuredClone(scenario.selection)); setOptions({ ...scenario.options }); setAnalysis(scenario.analysis)
+  }
+  return <MissionContext.Provider value={{ mission, updateMission, alternatives, saveAlternative, removeAlternative, analysis, options, updateOptions, runAnalysis, invalidate, sampleIndex, selectSample, observation: observationAt(series, sampleIndex), comparison, comparisonStore, inspectScenario }}>{children}</MissionContext.Provider>
 }
 
 export function useMission() {

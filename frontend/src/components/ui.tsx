@@ -18,7 +18,7 @@ export function PageHeader({ eyebrow, title, description, action }: { eyebrow: s
 const sectionExplanations: Record<string, string> = {
   'Lunar site overview': 'View the selected location with illustrative surface artwork. This is not a georeferenced terrain map.',
   'Sun/Earth elevation': 'Follow Sun and Earth elevations through the returned UTC samples, relative to the ideal geometric horizon.',
-  'Scenario comparison': 'Keep alternative sites and dates side by side. Engineering differences are not yet calculated.',
+  'Scenario comparison': 'Keep alternative sites and dates side by side. Open Comparison for calculated geometric differences; engineering products remain unavailable.',
   'Terrain horizon': 'Local terrain may obstruct low directions. A verified elevation model is required before calculating this horizon.',
   'Local sky view': 'Use the angular readouts to inspect sky directions. A sky diagram is not yet implemented.',
   'Locations': 'Filter the synthetic input locations and choose one to inspect.',
