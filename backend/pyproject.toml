@@ -9,6 +9,12 @@ dependencies = [
     "uvicorn==0.54.0",
 ]
 
+[project.optional-dependencies]
+science = [
+    "numpy==2.5.4",
+    "spiceypy==8.3.0",
+]
+
 [dependency-groups]
 dev = ["pytest==9.2.0", "httpx==0.28.1"]
 
@@ -19,3 +25,4 @@ build-backend = "uv_build"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
+markers = ["kernels: requires the verified local NAIF kernel set"]

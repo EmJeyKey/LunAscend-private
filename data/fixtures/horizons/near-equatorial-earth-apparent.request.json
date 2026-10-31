@@ -1,0 +1,27 @@
+{
+  "endpoint": "https://ssd.jpl.nasa.gov/api/horizons.api",
+  "parameters": {
+    "format": "json",
+    "COMMAND": "'399'",
+    "CENTER": "'coord@301'",
+    "COORD_TYPE": "'GEODETIC'",
+    "SITE_COORD": "'5.0,1.0,0'",
+    "OBJ_DATA": "'YES'",
+    "MAKE_EPHEM": "'YES'",
+    "CSV_FORMAT": "'YES'",
+    "START_TIME": "'2026-11-14 00:00:00'",
+    "STOP_TIME": "'2026-11-15 00:01:00'",
+    "STEP_SIZE": "'12 h'",
+    "TIME_TYPE": "'UT'",
+    "TIME_DIGITS": "'FRACSEC'",
+    "REF_SYSTEM": "'ICRF'",
+    "CAL_FORMAT": "'CAL'",
+    "EXTRA_PREC": "'YES'",
+    "EPHEM_TYPE": "'OBSERVER'",
+    "QUANTITIES": "'4'",
+    "APPARENT": "'AIRLESS'",
+    "ELEV_CUT": "'-90'"
+  },
+  "retrieved_at_utc": "2026-10-31T07:09:44.433112+00:00",
+  "response_sha256": "5dd278dcc41e61210e6862819aadd710488d640da74e6a5e829c32379e918195"
+}

@@ -1,0 +1,376 @@
+{
+  "schema_version": "1.0",
+  "scenario_id": "4a41c19cf47313d677db1cdfa9fc8302",
+  "request": {
+    "start_utc": "2026-11-14T00:00:00Z",
+    "end_utc": "2026-11-15T00:00:00Z",
+    "schema_version": "1.0",
+    "site": {
+      "site_id": "south-polar",
+      "name": "Synthetic south-polar validation observer",
+      "latitude_deg": -89.0,
+      "longitude_deg": 42.0,
+      "surface_elevation_m": 0.0,
+      "observer_height_m": 0.0,
+      "description": null,
+      "coordinate_reference": {
+        "body": "MOON",
+        "latitude_type": "planetocentric",
+        "longitude_convention": "east_positive",
+        "frame_id": "MOON_ME_DE440_ME421",
+        "frame_realization": "DE440/ME421",
+        "reference_surface": "MOON_SPHERE_1737400_M",
+        "reference_radius_m": 1737400.0
+      }
+    },
+    "provider_mode": "scientific",
+    "sample_step_s": 43200.0,
+    "settings": {
+      "terrain_enabled": false,
+      "power_enabled": false,
+      "communication_enabled": false,
+      "horizon_mode": "geometric_approximation",
+      "disk_policy": "center",
+      "correction_mode": "NONE",
+      "sun_clearance_deg": 0.0,
+      "earth_clearance_deg": 0.0
+    }
+  },
+  "provider_mode": "scientific",
+  "model_version": "spice-geometry-v1",
+  "status": "complete",
+  "observations": [
+    {
+      "status": "calculated",
+      "provenance_ids": [
+        "geometry-model",
+        "kernel:naif0012.tls",
+        "kernel:pck00011.tpc",
+        "kernel:de440s.bsp",
+        "kernel:moon_pa_de440_200625.bpc",
+        "kernel:moon_de440_250416.tf"
+      ],
+      "assumptions": [],
+      "time_utc": "2026-11-14T00:00:00Z",
+      "reference_frame": "MOON_ME_DE440_ME421",
+      "correction_mode": "NONE",
+      "sun_azimuth_deg": {
+        "value": 84.65099127719394,
+        "status": "available",
+        "reason": null,
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "validation": "reference_compared",
+        "validation_report_id": "step-3-horizons-v1"
+      },
+      "sun_elevation_deg": {
+        "value": 1.6500961689197666,
+        "status": "available",
+        "reason": null,
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "validation": "reference_compared",
+        "validation_report_id": "step-3-horizons-v1"
+      },
+      "earth_azimuth_deg": {
+        "value": 316.82117188544953,
+        "status": "available",
+        "reason": null,
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "validation": "reference_compared",
+        "validation_report_id": "step-3-horizons-v1"
+      },
+      "earth_elevation_deg": {
+        "value": -3.919542379188271,
+        "status": "available",
+        "reason": null,
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "validation": "reference_compared",
+        "validation_report_id": "step-3-horizons-v1"
+      }
+    },
+    {
+      "status": "calculated",
+      "provenance_ids": [
+        "geometry-model",
+        "kernel:naif0012.tls",
+        "kernel:pck00011.tpc",
+        "kernel:de440s.bsp",
+        "kernel:moon_pa_de440_200625.bpc",
+        "kernel:moon_de440_250416.tf"
+      ],
+      "assumptions": [],
+      "time_utc": "2026-11-14T12:00:00Z",
+      "reference_frame": "MOON_ME_DE440_ME421",
+      "correction_mode": "NONE",
+      "sun_azimuth_deg": {
+        "value": 78.55769103748837,
+        "status": "available",
+        "reason": null,
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "validation": "reference_compared",
+        "validation_report_id": "step-3-horizons-v1"
+      },
+      "sun_elevation_deg": {
+        "value": 1.755261636224984,
+        "status": "available",
+        "reason": null,
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "validation": "reference_compared",
+        "validation_report_id": "step-3-horizons-v1"
+      },
+      "earth_azimuth_deg": {
+        "value": 316.1197944990899,
+        "status": "available",
+        "reason": null,
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "validation": "reference_compared",
+        "validation_report_id": "step-3-horizons-v1"
+      },
+      "earth_elevation_deg": {
+        "value": -3.4010550096224104,
+        "status": "available",
+        "reason": null,
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "validation": "reference_compared",
+        "validation_report_id": "step-3-horizons-v1"
+      }
+    },
+    {
+      "status": "calculated",
+      "provenance_ids": [
+        "geometry-model",
+        "kernel:naif0012.tls",
+        "kernel:pck00011.tpc",
+        "kernel:de440s.bsp",
+        "kernel:moon_pa_de440_200625.bpc",
+        "kernel:moon_de440_250416.tf"
+      ],
+      "assumptions": [],
+      "time_utc": "2026-11-15T00:00:00Z",
+      "reference_frame": "MOON_ME_DE440_ME421",
+      "correction_mode": "NONE",
+      "sun_azimuth_deg": {
+        "value": 72.46540995520719,
+        "status": "available",
+        "reason": null,
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "validation": "reference_compared",
+        "validation_report_id": "step-3-horizons-v1"
+      },
+      "sun_elevation_deg": {
+        "value": 1.8579027567886586,
+        "status": "available",
+        "reason": null,
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "validation": "reference_compared",
+        "validation_report_id": "step-3-horizons-v1"
+      },
+      "earth_azimuth_deg": {
+        "value": 315.4163370939095,
+        "status": "available",
+        "reason": null,
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "validation": "reference_compared",
+        "validation_report_id": "step-3-horizons-v1"
+      },
+      "earth_elevation_deg": {
+        "value": -2.841008949765671,
+        "status": "available",
+        "reason": null,
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "validation": "reference_compared",
+        "validation_report_id": "step-3-horizons-v1"
+      }
+    }
+  ],
+  "horizon": null,
+  "visibility_windows": null,
+  "power": null,
+  "communication": null,
+  "resilience": null,
+  "provenance": [
+    {
+      "id": "geometry-model",
+      "provider_name": "ScientificAnalysisProvider",
+      "provider_mode": "scientific",
+      "data_source": "NAIF DE440 pinned kernel set",
+      "source_version": "spice-geometry-v1",
+      "calculation_method": "SPICE azlcpo ELLIPSOID; polar spkcpo normal projection; NONE; clockwise north; positive-up elevation; degrees",
+      "reference_frame": "MOON_ME_DE440_ME421",
+      "terrain_dataset": null,
+      "validation_status": "reference_compared",
+      "validation_report_id": "step-3-horizons-v1",
+      "assumptions": [
+        "Planetocentric coordinates; sphere radius 1737400 m; heights above that sphere.",
+        "Geometric centers; no refraction, light-time, stellar aberration, terrain or disk visibility.",
+        "LSK 0012 extrapolates its last leap-second offset at future epochs.",
+        "SpiceyPy 8.3.0; CSPICE_N0067."
+      ],
+      "source_url": null,
+      "sha256": "b9421a8a252c071423cbc099a1311a1b505636f5921787851063e866a1cb942b"
+    },
+    {
+      "id": "kernel:naif0012.tls",
+      "provider_name": "NAIF/JPL",
+      "provider_mode": "scientific",
+      "data_source": "naif0012.tls",
+      "source_version": "NAIF LSK 0012, 2016-07-14",
+      "calculation_method": "UTC/TAI/ET time conversion",
+      "reference_frame": "MOON_ME_DE440_ME421",
+      "terrain_dataset": null,
+      "validation_status": "unvalidated",
+      "validation_report_id": null,
+      "assumptions": [],
+      "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/naif0012.tls",
+      "sha256": "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b"
+    },
+    {
+      "id": "kernel:pck00011.tpc",
+      "provider_name": "NAIF/JPL",
+      "provider_mode": "scientific",
+      "data_source": "pck00011.tpc",
+      "source_version": "Generic PCK 00011",
+      "calculation_method": "Body radii for the azlcpo ellipsoid normal; IAU lunar orientation is NOT selected",
+      "reference_frame": "MOON_ME_DE440_ME421",
+      "terrain_dataset": null,
+      "validation_status": "unvalidated",
+      "validation_report_id": null,
+      "assumptions": [],
+      "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "sha256": "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1"
+    },
+    {
+      "id": "kernel:de440s.bsp",
+      "provider_name": "NAIF/JPL",
+      "provider_mode": "scientific",
+      "data_source": "de440s.bsp",
+      "source_version": "DE440 short-span planetary ephemeris",
+      "calculation_method": "Moon, Earth, Sun and barycenter trajectories",
+      "reference_frame": "MOON_ME_DE440_ME421",
+      "terrain_dataset": null,
+      "validation_status": "unvalidated",
+      "validation_report_id": null,
+      "assumptions": [],
+      "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp",
+      "sha256": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2"
+    },
+    {
+      "id": "kernel:moon_pa_de440_200625.bpc",
+      "provider_name": "NAIF/JPL",
+      "provider_mode": "scientific",
+      "data_source": "moon_pa_de440_200625.bpc",
+      "source_version": "DE440, 200625",
+      "calculation_method": "DE440 lunar principal-axis orientation",
+      "reference_frame": "MOON_ME_DE440_ME421",
+      "terrain_dataset": null,
+      "validation_status": "unvalidated",
+      "validation_report_id": null,
+      "assumptions": [],
+      "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/moon_pa_de440_200625.bpc",
+      "sha256": "60cd55aa401ea2ea97360636f567554bfe4e37bb829f901b4460a455dfaf783f"
+    },
+    {
+      "id": "kernel:moon_de440_250416.tf",
+      "provider_name": "NAIF/JPL",
+      "provider_mode": "scientific",
+      "data_source": "moon_de440_250416.tf",
+      "source_version": "2025-04-16",
+      "calculation_method": "Matched DE440 PA/ME421-aligned frame transformation",
+      "reference_frame": "MOON_ME_DE440_ME421",
+      "terrain_dataset": null,
+      "validation_status": "unvalidated",
+      "validation_report_id": null,
+      "assumptions": [],
+      "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/fk/satellites/moon_de440_250416.tf",
+      "sha256": "a47c71e9c9f33796bdafb2c9d69a7ee447b6016ecad80f71cd6f3e479f9cf768"
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    "Geometry only. Terrain, visibility windows, power and communication feasibility are not calculated.",
+    "Reference comparisons cover a finite grid; unmatched epochs/sites remain unvalidated."
+  ]
+}

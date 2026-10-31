@@ -1,0 +1,35 @@
+{
+  "start_utc": "2026-11-14T00:00:00Z",
+  "end_utc": "2026-11-15T00:00:00Z",
+  "schema_version": "1.0",
+  "site": {
+    "site_id": "south-polar",
+    "name": "Synthetic south-polar validation observer",
+    "latitude_deg": -89.0,
+    "longitude_deg": 42.0,
+    "surface_elevation_m": 0.0,
+    "observer_height_m": 0.0,
+    "description": null,
+    "coordinate_reference": {
+      "body": "MOON",
+      "latitude_type": "planetocentric",
+      "longitude_convention": "east_positive",
+      "frame_id": "MOON_ME_DE440_ME421",
+      "frame_realization": "DE440/ME421",
+      "reference_surface": "MOON_SPHERE_1737400_M",
+      "reference_radius_m": 1737400.0
+    }
+  },
+  "provider_mode": "scientific",
+  "sample_step_s": 43200.0,
+  "settings": {
+    "terrain_enabled": false,
+    "power_enabled": false,
+    "communication_enabled": false,
+    "horizon_mode": "geometric_approximation",
+    "disk_policy": "center",
+    "correction_mode": "NONE",
+    "sun_clearance_deg": 0.0,
+    "earth_clearance_deg": 0.0
+  }
+}

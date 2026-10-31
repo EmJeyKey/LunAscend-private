@@ -5,7 +5,7 @@ from typing import Annotated, Callable, Literal
 from fastapi import APIRouter, Depends, Response
 
 from lunascend import __version__
-from lunascend.contracts import ScenarioRequest, ScenarioResult
+from lunascend.contracts import ErrorResponse, ScenarioRequest, ScenarioResult
 from lunascend.contracts.common import Contract, ProviderMode
 from lunascend.providers import AnalysisProvider, get_provider
 
@@ -23,7 +23,7 @@ class ApplicationInfo(Contract):
     application_version: str = __version__
     api_version: str = "1.0"
     capabilities: tuple[str, ...] = ("contract_validation", "provider_dispatch")
-    implemented_analysis_providers: tuple[str, ...] = ()
+    implemented_analysis_providers: tuple[str, ...] = ("scientific",)
     selectable_provider_modes: tuple[ProviderMode, ...] = ("mock", "scientific")
     scientific_calculations_available: bool = False
     mock_analysis_available: bool = False
@@ -40,11 +40,14 @@ def health() -> Health:
 
 @router.get("/api/v1/info")
 def info() -> ApplicationInfo:
-    return ApplicationInfo()
+    from lunascend.providers.scientific import scientific_available
+    available = scientific_available()
+    return ApplicationInfo(scientific_calculations_available=available,
+                           capabilities=("contract_validation", "provider_dispatch", "geometric_ephemeris"))
 
 
 @router.post("/api/v1/scenarios/analyze", response_model=ScenarioResult,
-             responses={503: {"model": ScenarioResult}})
+             responses={503: {"model": ScenarioResult}, 422: {"model": ErrorResponse | ScenarioResult}})
 async def analyze(
     request: ScenarioRequest,
     response: Response,
@@ -54,5 +57,7 @@ async def analyze(
     if result.status == "unavailable":
         response.status_code = 503
     elif result.status == "failed":
-        response.status_code = 500
+        response.status_code = 422 if result.errors and result.errors[0].code in (
+            "INVALID_REQUEST", "FRAME_MISMATCH", "OUTSIDE_COVERAGE", "UNSUPPORTED_TIME", "RESOURCE_LIMIT"
+        ) else 500
     return result

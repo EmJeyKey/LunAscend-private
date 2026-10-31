@@ -41,4 +41,7 @@ class UnavailableProvider:
 
 
 def get_provider(mode: ProviderMode) -> AnalysisProvider:
+    if mode == "scientific":
+        from .scientific import ScientificAnalysisProvider
+        return ScientificAnalysisProvider()
     return UnavailableProvider(mode)

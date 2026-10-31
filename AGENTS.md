@@ -6,7 +6,7 @@ LunAscend — Lunar Mission Resilience Navigator is a lunar landing-site decisio
 
 - Read ARCHITECTURE.md, SETUP.md and DEVELOPMENT_ROADMAP.md before changes. Inspect existing work and preserve it.
 - Implement only the milestone the user requests. Stop after each milestone, report actual checks and remaining limitations, and await review. Do not advance automatically.
-- Step 2 provides backend contracts, provider dispatch and an unavailable-analysis API. No mock generator, datasets or scientific calculations exist yet.
+- Step 3 adds a SPICE scientific provider for geometric Sun/Earth observations. Mock analysis remains unavailable. Stop after Step 3; no terrain or engineering calculations are authorized.
 - Keep changes focused; avoid speculative infrastructure, databases, Docker, unnecessary dependencies and repeated installation.
 - Update documentation when contracts, assumptions, dependencies or commands change.
 
@@ -23,10 +23,13 @@ LunAscend — Lunar Mission Resilience Navigator is a lunar landing-site decisio
 - Contract models are frozen and use tuples for sequence fields. Construct/revalidate changed models; Pydantic model_copy(update=...) bypasses validation. Keep providers async and independent of FastAPI.
 - Step 2.5 adds frontend/ using React, strict TypeScript, Vite, Tailwind, React Router and Lucide icons. From frontend use `npm.cmd ci`, `npm.cmd run dev`, `npm.cmd run typecheck`, `npm.cmd test`, `npm.cmd run build` and `npm.cmd run preview`. Tested runtime target: Node 24.21.0 / npm 11.19.0.
 - Frontend preview state and synthetic input locations are separate from scientific contracts. Do not submit preview locations as validated lunar sites. Artwork is SVG pixel geometry, not a DEM or georeferenced map. Never draw fabricated scientific curves to fill empty states.
-- Frontend only checks GET /health and GET /api/v1/info through /backend proxy. Keep the backend unchanged for this preview. The UI remains usable when disconnected. Frontend API types mirror consumed backend responses; generate full scientific types when real analysis is connected.
+- Frontend only checks GET /health and GET /api/v1/info through /backend proxy. Scientific analysis is currently API-only; preview coordinates lack resolved scientific metadata. The UI remains usable when disconnected. Frontend API types mirror consumed backend responses; generate full scientific types when real analysis is connected.
 - Keep UI pages, components, state, API client, types, styles and preview data separate. Bundle fonts/assets locally; do not require a CDN or credentials. Source maps remain disabled for production.
 - Step 2.6 visual conventions: compact mission toolbars, structured scientific plots and smaller numerical readouts. Use monospaced coordinates/timestamps/units, explicit axes and technical missing-data labels. Preserve plot dimensions when data is unavailable; never add decorative scientific curves or promotional empty-state copy. Preview/unavailable states remain distinct from any future validated result.
-- Step 2 duration fields are derived nominal UTC civil seconds, not leap-second-aware scientific durations. Reject leap-second timestamp strings; resolve physical elapsed-time semantics before scientific calculations in Step 3.
+- Existing duration fields use nominal UTC civil seconds. Step 3 samples in TAI through SPICE, includes both endpoints once, and rejects intervals crossing leap-second insertions because datetime cannot encode :60. No visibility-window duration is calculated.
+- Science extra pins SpiceyPy 8.3.0 and NumPy 2.5.4 (CSPICE N0067), tested on Windows x64. Use `uv sync --frozen --extra science`; use that extra on uv run commands too. Kernel CLI: `python -m lunascend.ephemeris.manage download` / `verify`; comparison: `python -m lunascend.ephemeris.validation compare`. See SETUP.md.
+- Scientific sites require planetocentric latitude, east-positive longitude, MOON_ME_DE440_ME421, realization DE440/ME421, MOON_SPHERE_1737400_M radius 1737400 m and explicit elevation. Never silently reinterpret other lunar frames. The engine owns and serializes the process-global SPICE pool.
+- Keep kernel binaries ignored. Manifest hashes and saved Horizons reference pairs are tracked. Preserve the predeclared validation plan; rerun comparison after engine changes. Only exact compared sites/epochs with matching engine hash, versions and kernel fingerprint receive reference_compared metadata; other outputs remain unvalidated.
 
 ## Scientific integrity
 

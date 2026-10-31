@@ -1,4 +1,5 @@
 from fastapi.testclient import TestClient
+from importlib.util import find_spec
 import pytest
 
 from lunascend.main import create_app
@@ -7,7 +8,9 @@ from lunascend.providers import UnavailableProvider
 
 
 @pytest.fixture
-def client():
+def client(monkeypatch, tmp_path):
+    # Missing-resource API tests remain deterministic even on a PC with kernels.
+    monkeypatch.setenv("LUNASCEND_KERNEL_DIR", str(tmp_path / "missing-kernels"))
     with TestClient(create_app()) as client:
         yield client
 
@@ -23,7 +26,7 @@ def test_info_is_honest(client):
     response = client.get("/api/v1/info")
     assert response.status_code == 200
     info = response.json()
-    assert info["implemented_analysis_providers"] == []
+    assert info["implemented_analysis_providers"] == ["scientific"]
     assert not info["scientific_calculations_available"]
     assert not info["mock_analysis_available"]
 
@@ -36,7 +39,8 @@ def test_valid_request_reports_unavailable_without_results(client, request_data,
     assert result["provider_mode"] == mode
     assert result["request"]["provider_mode"] == mode
     assert result["status"] == "unavailable"
-    assert result["errors"][0]["code"] == "PROVIDER_UNAVAILABLE"
+    expected = "MISSING_DATA" if mode == "scientific" and find_spec("spiceypy") else "PROVIDER_UNAVAILABLE"
+    assert result["errors"][0]["code"] == expected
     assert result["provenance"][0]["calculation_method"] == "No calculation performed"
     for field in ("observations", "horizon", "visibility_windows", "power", "communication", "resilience"):
         assert result[field] is None

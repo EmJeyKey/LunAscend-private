@@ -2,7 +2,47 @@
 
 ## Current status
 
-Step 2 implements a local FastAPI backend, twelve scientific contracts, provider abstraction, unavailable-analysis behavior and tests. Step 2.5 adds a six-page React frontend preview. Python dependencies are locked in backend/uv.lock; frontend dependencies are locked in frontend/package-lock.json. No mock scientific generator, scientific calculations or NASA datasets exist yet. Commands marked FUTURE remain planned. Earlier milestones are preserved as local commits and recovery tags.
+Step 3 adds the SPICE Sun/Earth geometry provider and executed Horizons comparisons. The six-page frontend retains its Step 2.6 preview; scientific output is currently API-only. Python dependencies are locked in backend/uv.lock; frontend dependencies are locked in frontend/package-lock.json. No mock generator, terrain or engineering calculation exists. Commands marked FUTURE remain planned. Earlier milestones are preserved as local commits and recovery tags. Historical setup sections below retain their milestone context; the following Step 3 instructions supersede their scientific-availability statements.
+
+## Scientific backend quick start (Step 3)
+
+Use Windows x64, Python 3.12.16 and uv 0.13.6 as installed below. The optional science extra pins SpiceyPy 8.3.0 and NumPy 2.5.4; Windows binary installation/imports were executed successfully, using CSPICE N0067. From the project root:
+
+```powershell
+Set-Location backend
+uv sync --frozen --extra science
+uv lock --check
+uv run --frozen --extra science python -m lunascend.ephemeris.manage download
+uv run --frozen --extra science python -m lunascend.ephemeris.manage verify
+uv run --frozen --extra science pytest -q -p no:cacheprovider
+uv run --frozen --extra science python -m lunascend.ephemeris.validation compare
+uv run --frozen --extra science uvicorn lunascend.main:app --host 127.0.0.1 --port 8000
+```
+
+Keep `--extra science` on uv run commands; uv can otherwise sync away optional dependencies. With the existing project-local uv, use the ignored-tooling environment variables described below and substitute `..\.tools\uv.exe` for uv. A fresh PC needs only source, lockfiles, the manifest and the pinned toolchain; it does not need this computer's environments or paths.
+
+The download command accesses only the five official NAIF URLs in [the manifest](data/manifests/spice-kernels.json), downloads approximately 46 MB into ignored data/kernels, verifies SHA-256 and atomically installs each file. Existing verified files are reused without network access. A hash mismatch fails clearly; move the damaged file aside deliberately before retrying. Do not disable TLS or replace manifest hashes just to accept a download. Verify checks all hashes, frame/radii and actual coverage with spkcov/pckcov. The current ET intersection is [-4734072000,4735368000] seconds from J2000, nominal UTC 1849-12-25T23:59:18.816175Z through 2150-01-21T23:58:50.815541Z. The engine additionally limits UTC to 1972 onward. LSK 0012 contains offsets through 2017-01-01; future UTC assumes that last offset. A later leap-second announcement requires a reviewed LSK update and repeated validation.
+
+Default kernel paths resolve relative to the project root, regardless of shell working directory. Optionally set `$env:LUNASCEND_KERNEL_DIR = 'data/kernels'` or an absolute directory in the current process before startup; this affects the backend and CLI. No .env file is automatically read. Keep binaries outside Git. For offline restoration, copy all five exact manifest-matching files from a trusted backup into data/kernels, then run verify and tests. First-time Python/package installation still needs internet or a prepared compatible uv cache. A fresh Windows computer and encrypted backup recovery have not yet been rehearsed.
+
+In a second terminal at the project root:
+
+```powershell
+Invoke-RestMethod http://127.0.0.1:8000/health
+Invoke-RestMethod http://127.0.0.1:8000/api/v1/info
+$body = Get-Content backend/examples/scientific-request.json -Raw
+Invoke-RestMethod http://127.0.0.1:8000/api/v1/scenarios/analyze -Method Post -ContentType 'application/json' -Body $body
+```
+
+The example is a synthetic south-polar reference observer, not a surveyed landing site. Its response contains three real calculated epochs and six source records, with terrain and engineering products null. See [saved example output](docs/validation/step-3-example-result.json). Required metadata: planetocentric latitude, east-positive longitude, frame MOON_ME_DE440_ME421, realization DE440/ME421, reference_surface MOON_SPHERE_1737400_M, reference_radius_m 1737400 and explicit surface_elevation_m. Zero height is an explicit assumption, never a default for unknown elevation.
+
+The existing base backend still runs without science: `uv sync --frozen`, followed by `uv run --frozen uvicorn lunascend.main:app --host 127.0.0.1 --port 8000`. Health/info and contracts work; scientific analysis returns structured HTTP 503 with PROVIDER_UNAVAILABLE. With science installed but a missing/corrupt kernel it returns MISSING_DATA. No data is fabricated and no mock fallback occurs. Base pytest runs skip the optional science test module when SpiceyPy is absent; with science installed but no kernels, kernel integration tests are explicitly skipped. Full scientific acceptance requires the extra and all verified kernels.
+
+Troubleshooting: FRAME_MISMATCH means site frame/latitude/sphere metadata is incompatible; do not rename another frame to bypass it. INVALID_REQUEST can mean missing elevation or enabled terrain/engineering settings. OUTSIDE_COVERAGE means the whole interval does not fit a continuous measured coverage window. UNSUPPORTED_TIME covers pre-1972 UTC and intervals crossing leap-second insertions; leap-second strings are rejected by the unchanged datetime contract. Request limits remain 366 days/10001 samples/minimum 0.001 s. Unexpected SPICE errors return a safe CALCULATION_FAILED response, never raw internals. Pole/zenith azimuth is null with a reason, not zero.
+
+Validation is reproducible offline with `validation compare` using the committed request/raw-response pairs in data/fixtures/horizons. The command writes docs/validation/step-3-results.json and exits nonzero when the predeclared criteria fail. To acquire references explicitly, run `uv run --frozen --extra science python -m lunascend.ephemeris.validation fetch`; verified saved pairs are reused. Archive the existing pairs before intentionally obtaining a different live reference release; never silently overwrite evidence. See [the predeclared plan](docs/validation/STEP_3_PLAN.md) and [results](docs/validation/STEP_3_RESULTS.md). Preserve the original plan and thresholds when updating evidence. Agreement is a finite cross-implementation comparison, not global physical accuracy. No solar-limb, terrain or radio feasibility claim follows.
+
+The frontend requires no changes or science packages: run its existing typecheck, tests and build commands below. It still consumes only health/info and labels scientific metrics unavailable. A connected backend can now have scientific capability, but the preview does not submit its unresolved site inputs.
 
 ## Frontend preview quick start (Step 2.5)
 

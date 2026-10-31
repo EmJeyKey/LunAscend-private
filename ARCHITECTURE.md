@@ -1,6 +1,22 @@
-# LunAscend architecture — Step 2
+# LunAscend architecture — Step 3
 
-Status: backend foundation and Step 2.5 frontend preview implemented, 2026-10-29. Scientific calculations and datasets remain planned and unvalidated. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+Status: Step 3 implements geometric lunar Sun/Earth observations with executed Horizons comparisons. The frontend retains the Step 2.6 preview. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+
+## Step 3 scientific geometry
+
+`ephemeris/kernels.py` verifies the pinned manifest and every file hash, loads the kernel set once per analysis, checks actual SPK/PCK coverage and serializes access to SPICE's process-global pool. This module owns that pool; other code must not load or clear it independently. `manage.py` provides explicit download/verify commands. Requests never download data. Missing optional libraries or missing/corrupt kernels produce structured unavailable responses, without fallback.
+
+`ephemeris/engine.py` calculates Sun and Earth center directions with NAIF azlcpo ELLIPSOID and correction NONE. Positions use planetocentric latitude, east-positive longitude, a 1737400 m sphere and explicit surface elevation plus observer height. SI input heights are converted to km for SPICE georec. The exact frame is MOON_ME_DE440_ME421 (31009), a fixed ME421 alignment of the DE440 principal-axis orientation MOON_PA_DE440 (31008). The matched FK/binary PCK supply that transformation; IAU_MOON is never selected. On the sphere, geodetic and planetocentric latitudes coincide. The horizon is the plane perpendicular to the radial normal, without terrain or atmospheric refraction. Azimuth is clockwise from local north in [0,360); elevation is positive upward in [-90,90]. Exact poles use spkcpo and normal projection for elevation, with null azimuth; numerical zenith/nadir also have null azimuth. These yield partial observations, not fabricated angles.
+
+Aware timestamps normalize to UTC. SPICE str2et converts UTC to ET/TDB; unitim supplies uniform TAI sampling. Both interval endpoints appear once, with a shorter final interval when needed; output timestamps have microsecond precision. Existing request limits remain 366 days, 10001 samples and a 0.001 s minimum step. UTC before 1972 and intervals crossing leap-second insertions are explicitly rejected. The effective upper bound is the measured kernel intersection, currently 2150-01-21T23:58:50.815541Z. Future UTC conversion assumes no new leap seconds beyond LSK 0012; this is an assumption, not a prediction.
+
+`ScientificAnalysisProvider` runs the engine in a worker thread and returns the existing ScenarioResult/EphemerisObservation/Metric contracts. `/api/v1/info` reports implementation separately from current verified resource availability. Analysis returns 200 with observations, 503 for unavailable resources, 422 for unsupported frame/time/workload inputs and 500 for safe calculation failures. Terrain, windows, power, communication and resilience remain null; enabling unsupported analysis settings is rejected. The mock provider remains unavailable.
+
+Provenance includes every kernel version, official URL and SHA-256, the kernel-set fingerprint, method, frame and software versions. Public calculations use NONE only. Validation additionally uses CN+S as an internal diagnostic against Horizons apparent AIRLESS AZ/EL. No apparent-mode extension was added to the public contract. Only exact saved comparison cases matching engine hash, kernel fingerprint and SpiceyPy version are reference_compared; other sites/epochs remain unvalidated. The report ID identifies a local evidence artifact, not a global accuracy certification.
+
+See [predeclared criteria](docs/validation/STEP_3_PLAN.md), [executed results and limitations](docs/validation/STEP_3_RESULTS.md), [numerical report](docs/validation/step-3-results.json) and [kernel manifest](data/manifests/spice-kernels.json). Saved Horizons geometric vectors share the NAIF frame rotation during projection; the complementary direct apparent comparison checks the observer orientation independently. Both systems share JPL ephemeris heritage. These finite comparisons do not establish independent physical truth or terrain/mission suitability.
+
+Frontend integration is deferred: its synthetic site state has unresolved frame metadata, and it does not yet consume ScenarioResult. Connecting it properly requires a dedicated contract/state integration. No frontend code or charts changed in Step 3. Historical sections below describe their named milestones; the Step 3 behavior above supersedes earlier unavailable-science statements.
 
 ## Step 2.5 frontend preview
 

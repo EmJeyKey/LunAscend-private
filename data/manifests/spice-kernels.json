@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "kernel_set_id": "de440-me421-v1",
+  "frame_id": "MOON_ME_DE440_ME421",
+  "reference_radius_m": 1737400.0,
+  "kernels": [
+    {
+      "filename": "naif0012.tls",
+      "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/naif0012.tls",
+      "purpose": "UTC/TAI/ET time conversion",
+      "version": "NAIF LSK 0012, 2016-07-14",
+      "coverage_note": "Leapsecond table through 2017-01-01; later epochs assume no additional leap seconds",
+      "sha256": "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b"
+    },
+    {
+      "filename": "pck00011.tpc",
+      "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "purpose": "Body radii for the azlcpo ellipsoid normal; IAU lunar orientation is NOT selected",
+      "version": "Generic PCK 00011",
+      "coverage_note": "Constants; lunar high-accuracy orientation comes from binary PCK",
+      "sha256": "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1"
+    },
+    {
+      "filename": "de440s.bsp",
+      "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp",
+      "purpose": "Moon, Earth, Sun and barycenter trajectories",
+      "version": "DE440 short-span planetary ephemeris",
+      "coverage_note": "Nominal 1849-2150; exact windows read with spkcov after download",
+      "sha256": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2"
+    },
+    {
+      "filename": "moon_pa_de440_200625.bpc",
+      "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/moon_pa_de440_200625.bpc",
+      "purpose": "DE440 lunar principal-axis orientation",
+      "version": "DE440, 200625",
+      "coverage_note": "1549-12-31 to 2650-01-25 TDB per NAIF comments; actual windows read with pckcov",
+      "sha256": "60cd55aa401ea2ea97360636f567554bfe4e37bb829f901b4460a455dfaf783f"
+    },
+    {
+      "filename": "moon_de440_250416.tf",
+      "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/fk/satellites/moon_de440_250416.tf",
+      "purpose": "Matched DE440 PA/ME421-aligned frame transformation",
+      "version": "2025-04-16",
+      "coverage_note": "Fixed frame definitions; use with the matching DE440 binary PCK",
+      "sha256": "a47c71e9c9f33796bdafb2c9d69a7ee447b6016ecad80f71cd6f3e479f9cf768"
+    }
+  ],
+  "verified_intersection": {
+    "coverage_et_s": [
+      [
+        -4734072000.0,
+        4735368000.0
+      ]
+    ],
+    "coverage_utc": [
+      [
+        "1849-12-25T23:59:18.816175Z",
+        "2150-01-21T23:58:50.815541Z"
+      ]
+    ],
+    "verification_method": "spkcov 301/3/10/399 intersect pckcov 31008; UTC conversion with LSK 0012",
+    "engine_utc_lower_bound": "1972-01-01T00:00:00Z"
+  }
+}
