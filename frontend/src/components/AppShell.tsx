@@ -16,7 +16,7 @@ const navigation = [
 ]
 
 function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
-  return <><NavLink to="/" className="brand" onClick={onNavigate} aria-label="LunAscend home"><img src="/favicon.svg" alt="" width="39" height="39"/><div><strong>LunAscend</strong><p>LUNAR MISSION RESILIENCE NAVIGATOR</p></div></NavLink>
+  return <><NavLink to="/" className="brand" onClick={onNavigate} aria-label="LunAscend home"><img src="/brand/lunascend-original.png" alt="LunAscend golden lunar orbit logo" width="190" height="143"/></NavLink>
     <div className="sidebar-label">MISSION WORKSPACE</div><nav aria-label="Main navigation">{navigation.map(({ to, title, icon: Icon }) => <NavLink key={to} to={to} end={to === '/'} onClick={onNavigate} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}><Icon size={18} strokeWidth={1.6}/><span>{title}</span><ChevronRight size={13} className="nav-chevron"/></NavLink>)}</nav>
     <div className="sidebar-bottom"><div className="integrity-note"><ShieldCheck size={20}/><strong>Scientific status</strong><p>Inspect geometric directions with their source, assumptions and validation scope. Terrain and engineering models remain pending.</p><NavLink to="/methodology" onClick={onNavigate}>Methods & assumptions<ArrowUpRight size={13}/></NavLink></div><div className="sidebar-version"><span className="tiny-dot"/>LOCAL WORKSPACE<span>v0.5</span></div></div></>
 }
