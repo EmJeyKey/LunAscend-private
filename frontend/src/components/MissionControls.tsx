@@ -20,6 +20,7 @@ export function MissionControls() {
     runAnalysis({ site, startUtc, durationHours: Number(hours) })
   }
   return <div className="mission-controls-wrap"><form className="panel analysis-form" onSubmit={apply} onChange={() => { invalidate(); setMessage('') }}>
+    <header className="section-introduction"><h2>Mission configuration</h2><p>Choose the site, UTC interval and data source used for this analysis.</p></header>
     <div className="mission-controls">
       <label className="control-field"><span><MapPin size={13}/>LANDING SITE</span><select aria-label="Landing site" value={site.id} onChange={event => setSite(previewSites.find(item => item.id === event.target.value) || { ...site, id: 'custom' })}>{previewSites.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}<option value="custom">Custom coordinates</option></select></label>
       <label className="control-field"><span><CalendarDays size={13}/>START TIME (UTC)</span><input key={mission.startUtc} name="start_utc" aria-label="Landing date and time in UTC" type="datetime-local" step="0.001" required defaultValue={mission.startUtc.replace(/Z$/, '').replace(/\.000$/, '')}/></label>

@@ -599,7 +599,7 @@ body, .app-main { background: var(--bg); }
 .elevation-plot text { font-size: 11px; }
 .elevation-plot { background: #0f1721; }
 .sun-curve { stroke: #f2d38b; } .earth-curve { stroke: #7bbfd0; }
-.atlas-introduction { display: grid; grid-template-columns: 1.03fr 1fr; gap: 18px; align-items: center; margin-bottom: 22px; border-bottom: 1px solid #34332d; padding-bottom: 18px; }
+.atlas-introduction { display: grid; grid-template-columns: 1fr; gap: 18px; align-items: center; margin-bottom: 22px; border-bottom: 1px solid #34332d; padding-bottom: 18px; }
 .atlas-introduction-copy { padding: 12px 6px; min-width: 0; }
 .atlas-introduction h1 { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(34px, 3.5vw, 49px); font-weight: 500; line-height: 1.1; color: #f0eee9; margin: 12px 0; letter-spacing: -.5px; }
 .atlas-deck { font-size: 12px; color: #a9b2bd; max-width: 44ch; line-height: 1.9; }
@@ -660,5 +660,72 @@ body, .app-main { background: var(--bg); }
 .atlas-brand-art { background: transparent; }
 .atlas-brand-art img { -webkit-mask-image: radial-gradient(ellipse closest-side, #000 66%, #000d 79%, transparent 100%); mask-image: radial-gradient(ellipse closest-side, #000 66%, #000d 79%, transparent 100%); }
 .brand { display: block; padding: 0; margin-bottom: 22px; }
-.brand img { width: 100%; height: auto; max-height: 165px; object-fit: contain; display: block; -webkit-mask-image: radial-gradient(ellipse closest-side, #000 65%, transparent 100%); mask-image: radial-gradient(ellipse closest-side, #000 65%, transparent 100%); }
+.brand img { width: 72%; max-width: 142px; height: auto; margin-inline: auto; object-fit: contain; display: block; -webkit-mask-image: radial-gradient(ellipse closest-side, #000 65%, transparent 100%); mask-image: radial-gradient(ellipse closest-side, #000 65%, transparent 100%); }
 .mobile-drawer .brand { margin-bottom: 22px; }
+
+/* Open section layout requested in visual review. */
+.content .panel,
+.content .scenario-card,
+.content .methodology-card,
+.content .add-scenario-card {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.content .panel,
+.content .comparison-preview,
+.content .atlas-introduction,
+.content .scenario-grid,
+.content .methodology-grid {
+  border-top: 4px solid #e8c16c;
+  border-image: var(--gold-metal) 1;
+  padding-top: 18px;
+}
+.content .atlas-introduction { border-top: 0; border-bottom: 0; padding-top: 0; }
+.content .scenario-grid { background: transparent; border-right: 0; border-bottom: 0; border-left: 0; border-radius: 0; gap: 20px; }
+.content .scenario-grid > * { background: transparent; }
+.content .analysis-form { border-radius: 0; }
+.content .analysis-settings { border-top: 0; }
+.content .metric-card { padding-inline: 0; }
+.content .elevation-plot, .content .empty-chart { background: transparent; }
+.content .chart-legend { border-top: 0; }
+.content .provenance-panel { padding-inline: 0; }
+.content .context-note { padding-bottom: 18px; }
+.content .panel + .panel { margin-top: 6px; }
+.content .mission-controls { background: transparent; border: 0; border-radius: 0; }
+
+/* Lighter gold actions and explanatory introductions for each section. */
+.button.primary {
+  background: linear-gradient(#121923, #0c131d) padding-box, linear-gradient(115deg, #a78343, #f1dca6, #ba9858) border-box;
+  border: 1px solid transparent;
+  color: #f2dbaa;
+  border-radius: 3px;
+  box-shadow: none;
+  padding: 8px 17px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: .25px;
+}
+.button.primary:hover { background: linear-gradient(#24241f, #161c24) padding-box, linear-gradient(115deg, #c1a366, #fff0c7, #c1a366) border-box; border-color: transparent; color: #fff0cf; box-shadow: none; }
+.section-introduction { padding: 0 14px 10px; }
+.section-introduction h2, .content .panel-title h2, .content .metric-header h2, .content .provenance-panel > h2 {
+  color: #ecd29a;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: .15px;
+}
+.section-introduction p, .section-explanation { color: #c8ac78; font-size: 11px; font-weight: 400; line-height: 1.85; max-width: 75ch; }
+.section-introduction p { margin-top: 5px; }
+.section-explanation { padding: 0 16px 14px; margin: 0; }
+.metric-card .section-explanation, .provenance-panel > .section-explanation { padding-inline: 0; padding-bottom: 10px; }
+.atlas-actions .button.primary { font-size: 20px; }
+@media (max-width: 480px) {
+  .section-introduction h2, .content .panel-title h2, .content .metric-header h2 { font-size: 21px; }
+  .section-introduction p, .section-explanation { font-size: 11px; }
+}
+.content .methodology-card h2, .content .sources-panel h2, .content .methodology-intro h2 { color: #ecd29a; }
+.content .methodology-card p, .content .sources-panel > p, .content .methodology-intro p { color: #c8ac78; }

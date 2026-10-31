@@ -15,8 +15,22 @@ export function PageHeader({ eyebrow, title, description, action }: { eyebrow: s
   return <header className="page-header"><div><p className="eyebrow">{eyebrow}</p><h1>{title}</h1><p className="page-description">{description}</p></div>{action}</header>
 }
 
+const sectionExplanations: Record<string, string> = {
+  'Lunar site overview': 'View the selected location with illustrative surface artwork. This is not a georeferenced terrain map.',
+  'Sun/Earth elevation': 'Follow Sun and Earth elevations through the returned UTC samples, relative to the ideal geometric horizon.',
+  'Scenario comparison': 'Keep alternative sites and dates side by side. Engineering differences are not yet calculated.',
+  'Terrain horizon': 'Local terrain may obstruct low directions. A verified elevation model is required before calculating this horizon.',
+  'Local sky view': 'Use the angular readouts to inspect sky directions. A sky diagram is not yet implemented.',
+  'Locations': 'Filter the synthetic input locations and choose one to inspect.',
+  'Site coordinates': 'Enter a location, then confirm its reference frame and height before scientific analysis.',
+  'Engineering trade-offs': 'This area will compare supported engineering results when those models are available.',
+  'Landing delay preview': 'Shift the proposed arrival time to inspect the date change. Conditions are not recalculated here.',
+  'Power & battery resilience': 'Electrical generation and storage require engineering models that are not yet implemented.',
+  'Communication interruptions': 'Terrain clearance and radio-link modeling are required before predicting communication interruptions.',
+}
+
 export function PanelHeader({ icon: Icon, title, detail, action }: { icon?: LucideIcon; title: string; detail?: string; action?: ReactNode }) {
-  return <div className="panel-header"><div className="panel-title">{Icon && <Icon size={17} aria-hidden="true" />}<h2>{title}</h2>{detail && <span className="panel-detail">{detail}</span>}</div>{action}</div>
+  return <><div className="panel-header"><div className="panel-title">{Icon && <Icon size={17} aria-hidden="true" />}<h2>{title}</h2>{detail && <span className="panel-detail">{detail}</span>}</div>{action}</div>{sectionExplanations[title] && <p className="section-explanation">{sectionExplanations[title]}</p>}</>
 }
 
 export function EmptyState({ icon: Icon = CircleDashed, title, description }: { icon?: LucideIcon; title: string; description: string }) {
@@ -30,6 +44,7 @@ export function PositionReadout({ kind, observation, provider }: { kind: 'solar'
   const azimuth = observation?.[solar ? 'sun_azimuth_deg' : 'earth_azimuth_deg']
   return <section className={`panel metric-card ${solar ? 'solar' : 'earth'}`} aria-label={solar ? 'Sun position' : 'Earth position'}>
     <div className="metric-header"><span className="metric-icon"><Icon size={18} strokeWidth={1.6}/></span><div><h2>{solar ? 'Sun position' : 'Earth position'}</h2><p>{solar ? 'SUN ELEVATION' : 'EARTH ELEVATION'}</p></div><StatusBadge>{observation ? provider === 'mock' ? 'MOCK DATA' : 'SPICE' : 'Unavailable'}</StatusBadge></div>
+    <p className="section-explanation">Inspect {solar ? 'the Sun’s' : 'Earth’s'} direction at the selected returned UTC sample.</p>
     <div className="primary-metric"><span className={!elevation || elevation.value === null ? 'unavailable-value' : ''}>{formatAngle(elevation, true)}</span></div>
     <dl className="metric-details"><div><dt>Azimuth / clockwise north</dt><dd>{formatAngle(azimuth)}</dd></div><div><dt>Observation UTC</dt><dd className="observation-time">{observation?.time_utc || 'Unavailable'}</dd></div><div><dt>Metric validation</dt><dd>{elevation?.validation || 'Unavailable'}</dd></div><div><dt>{solar ? 'Terrain illumination' : 'Radio link feasibility'}</dt><dd>NOT YET CALCULATED</dd></div></dl>
     <p className="metric-footnote">{azimuth?.reason || (provider === 'mock' ? 'MOCK DATA — NOT LUNAR PREDICTIONS' : 'Center direction relative to the geometric horizon. Terrain visibility is unknown.')}</p>

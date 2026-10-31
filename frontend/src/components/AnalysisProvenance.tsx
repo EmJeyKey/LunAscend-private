@@ -4,6 +4,7 @@ import { useMission } from '../state/MissionContext'
 export function ResultProvenance({ result }: { result: ScenarioResult }) {
   return <section className="panel provenance-panel" aria-label="Scientific data provenance">
     <h2>Data source & assumptions</h2>
+    <p className="section-explanation">Inspect where these observations came from, how they were produced and the limits of their validation.</p>
     <p className={result.provider_mode === 'mock' ? 'mock-warning' : 'source-indicator'}>{result.provider_mode === 'mock' ? 'MOCK DATA — NOT LUNAR PREDICTIONS' : 'SPICE EPHEMERIS · geometric Sun/Earth center directions'}</p>
     <p>Scenario {result.status} · model {result.model_version}. Source identity does not establish global accuracy. Validation labels apply only to the documented scope.</p>
     <ul>{result.warnings.map((warning, index) => <li key={index}>{warning}</li>)}</ul>
