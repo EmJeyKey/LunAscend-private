@@ -1,5 +1,5 @@
 // Mirrors the existing backend Health/ApplicationInfo contracts in api/routes.py.
-// Full scientific result types will be generated from OpenAPI when consumed.
+// Consumed analysis request/result fields are mirrored and checked in types/analysis.ts and api/analysis.ts.
 export interface Health {
   status: 'ok'
   application_name: string

@@ -2,6 +2,18 @@
 
 ## Current status
 
+Step 5 connects the existing website to scientific/mock observations and includes the requested logo/typography refinement. Earlier milestone descriptions below retain historical context. The backend, public contracts, scientific evidence and both dependency lockfiles remain unchanged. All fonts and the original logo are local repository assets; no runtime font CDN or new package is required.
+
+## Integrated website (Step 5)
+
+Use two PowerShell terminals from the restored project root. Backend: `Set-Location backend`, `uv sync --frozen --extra science`, verify/restore the pinned kernels as below, then `uv run --frozen --extra science uvicorn lunascend.main:app --host 127.0.0.1 --port 8000`. For mock-only operation omit the science extra; no kernels are needed. Frontend: `Set-Location frontend`, `npm.cmd ci`, then `npm.cmd run dev`. Open http://127.0.0.1:5173/. Existing VITE_API_BASE_URL / LUNASCEND_BACKEND_URL configuration and loopback defaults remain unchanged.
+
+Select Scientific SPICE or Mock Demonstration explicitly and click Run Analysis. For scientific use, enter coordinates in MOON_ME_DE440_ME421, an explicit height above the 1737400 m sphere, and confirm the frame. Unknown height is never silently zero. To reproduce the documented reference, enter latitude -89, longitude 42, height 0, observer height 0, UTC 2026-11-14T00:00, duration 24 hours and step 43200 s. Sun at the first sample displays 84.651 degrees azimuth and +1.650 degrees elevation. The synthetic reference observer is not a surveyed landing site.
+
+The chart and time slider use returned samples; moving between Dashboard/Analysis reuses them. Input edits clear old results, errors preserve inputs, and scientific failures never switch to mock. Coordinates/heights collapse after success and reopen for editing/errors. An unavailable backend or missing kernels shows an error and no invented curves. The source selector and returned source labels remain distinct. Browser refresh clears transient state.
+
+From frontend run `npm.cmd run typecheck`, `npm.cmd test`, `npm.cmd run build`; from backend run `uv run --frozen --extra science pytest -q -p no:cacheprovider`. Tested: 37 frontend tests, TypeScript/build and 115 backend tests, including unchanged scientific reference checks. Both lockfiles are preserved. Local font assets include their licenses and source hashes; restore them with the repository, not from the original computer. Fresh-PC and encrypted-backup rehearsals remain unperformed. See docs/STEP_5.md and docs/DESIGN_REFINEMENT.md for browser QA and assets.
+
 Step 4 adds a deterministic, explicitly illustrative mock provider alongside the unchanged SPICE geometry provider. The six-page frontend retains its Step 2.6 preview; observation output is currently API-only. Python dependencies are locked in backend/uv.lock; frontend dependencies are locked in frontend/package-lock.json. No terrain or engineering calculation exists. Commands marked FUTURE remain planned. Earlier milestones are preserved as local commits and recovery tags. Historical setup sections below retain their milestone context; current Step 3/4 instructions supersede their earlier provider-availability statements.
 
 ## Offline mock backend (Step 4)

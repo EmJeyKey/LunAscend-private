@@ -1,27 +1,35 @@
 import { Crosshair, Info, MapPin } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { LunarMapPlaceholder } from '../components/LunarMapPlaceholder'
-import { PageHeader, PanelHeader, StatusBadge } from '../components/ui'
+import { PageHeader, PanelHeader, StatusBadge, TextLink } from '../components/ui'
 import { previewSites } from '../data/preview'
 import { useMission } from '../state/MissionContext'
+import { formatCoordinate } from '../lib/time'
 
 export function SiteExplorer() {
   const { mission, updateMission } = useMission()
   const [latitude, setLatitude] = useState(String(mission.site.latitude))
   const [longitude, setLongitude] = useState(String(mission.site.longitude))
+  const [name, setName] = useState(mission.site.name)
+  const [query, setQuery] = useState('')
   const [message, setMessage] = useState('')
   function apply(event: FormEvent) {
     event.preventDefault()
     const lat = Number(latitude), lon = Number(longitude)
-    if (latitude.trim() === '' || longitude.trim() === '' || !Number.isFinite(lat) || !Number.isFinite(lon) || lat < -90 || lat > 90 || lon < -180 || lon >= 180) {
-      setMessage('Use latitude −90 to +90 and east-positive longitude −180 to less than +180.'); return
+    if (!name.trim() || latitude.trim() === '' || longitude.trim() === '' || !Number.isFinite(lat) || !Number.isFinite(lon) || lat < -90 || lat > 90 || lon < -180 || lon >= 180) {
+      setMessage('Enter a site name, latitude −90 to +90 and east-positive longitude −180 to less than +180.'); return
     }
-    updateMission({ ...mission, site: { id: 'custom', name: 'Custom preview location', latitude: lat, longitude: lon, description: 'User-entered coordinates. Reference frame and elevation are not assigned.' } })
-    setMessage('Custom coordinates selected. The artwork is not georeferenced.')
+    updateMission({ ...mission, site: { id: 'custom', name, latitude: lat, longitude: lon, description: 'User-entered coordinates. Confirm the scientific frame and elevation before analysis.' } })
+    setMessage('Custom coordinates selected. Confirm the reference frame and height on the Analysis page.')
   }
-  return <><PageHeader eyebrow="SITE EXPLORATION / CONTEXT" title="Lunar Site Explorer" description="Synthetic location selection and custom lunar coordinate inputs."/>
-    <div className="explorer-grid"><LunarMapPlaceholder large/><div className="explorer-sidebar"><section className="panel"><PanelHeader icon={MapPin} title="Preview locations"/><div className="site-options">{previewSites.map(site => <button key={site.id} className={`site-option ${mission.site.id === site.id ? 'selected' : ''}`} onClick={() => { updateMission({ ...mission, site }); setLatitude(String(site.latitude)); setLongitude(String(site.longitude)); setMessage('Synthetic preview location selected.') }}><span><strong>{site.name}</strong><small>Synthetic location · not surveyed</small></span><span className="selection-ring"/></button>)}</div></section>
-    <section className="panel"><PanelHeader icon={Crosshair} title="Custom coordinates"/><form className="coordinate-form" onSubmit={apply}><label>Latitude / degrees<input type="number" step="any" min="-90" max="90" required value={latitude} onChange={event => setLatitude(event.target.value)}/><small>North positive · planetocentric input</small></label><label>Longitude / degrees<input type="number" step="any" min="-180" max="179.999999999" required value={longitude} onChange={event => setLongitude(event.target.value)}/><small>East positive · [−180°, +180°)</small></label><button className="button primary" type="submit">Use preview coordinates<MapPin size={15}/></button><p className="form-feedback" role="status">{message}</p></form></section></div></div>
-    <div className="info-banner"><Info size={19}/><div><strong>Lunar terrain data unavailable.</strong><p>No scale, projection or terrain registration is applied to this illustration. Real sites will require a named lunar frame, reference surface and elevation source.</p></div><StatusBadge>Terrain unavailable</StatusBadge></div>
+  const sites = previewSites.filter(site => site.name.toLowerCase().includes(query.toLowerCase()))
+  return <><PageHeader eyebrow="LUNAR ATLAS / SITE CONTEXT" title="Lunar Site Explorer" description="Select a location or enter coordinates. The exploration canvas is illustrative, with no terrain registration."/>
+    <div className="explorer-grid">
+      <section className="panel atlas-sites"><PanelHeader icon={MapPin} title="Locations"/><div className="atlas-site-filter"><input aria-label="Filter locations" placeholder="Filter locations" value={query} onChange={event => setQuery(event.target.value)}/></div><div className="site-options">{sites.map(site => <button key={site.id} className={`site-option ${mission.site.id === site.id ? 'selected' : ''}`} onClick={() => { updateMission({ ...mission, site }); setLatitude(String(site.latitude)); setLongitude(String(site.longitude)); setName(site.name); setMessage('Synthetic input location selected.') }}><span><strong>{site.name}</strong><small>Synthetic · not surveyed</small></span><span className="selection-ring"/></button>)}{!sites.length && <p role="status">No matching locations.</p>}</div></section>
+      <LunarMapPlaceholder large/>
+      <aside className="explorer-sidebar"><section className="panel"><PanelHeader icon={Crosshair} title="Site coordinates"/><form className="coordinate-form" onSubmit={apply}><label>Site name<input aria-label="Custom site name" required maxLength={500} value={name} onChange={event => setName(event.target.value)}/></label><label>Latitude / degrees<input aria-label="Custom latitude" type="number" step="any" min="-90" max="90" required value={latitude} onChange={event => setLatitude(event.target.value)}/><small>North positive · planetocentric</small></label><label>Longitude / degrees<input aria-label="Custom longitude" type="number" step="any" min="-180" max="179.999999999" required value={longitude} onChange={event => setLongitude(event.target.value)}/><small>East positive · [−180°, +180°)</small></label><button className="button primary" type="submit">Select coordinates<MapPin size={14}/></button><p className="form-feedback" role="status">{message}</p></form>
+      <div className="selected-site-detail"><span className="eyebrow">SELECTED LOCATION</span><strong>{mission.site.name}</strong><p>{formatCoordinate(mission.site.latitude, true)}<br/>{formatCoordinate(mission.site.longitude, false)}</p><p>Height and lunar reference must be confirmed for scientific analysis.</p><TextLink to="/analysis">Configure analysis</TextLink></div></section></aside>
+    </div>
+    <div className="info-banner"><Info size={19}/><div><strong>Illustrative canvas · lunar terrain unavailable.</strong><p>The symbolic marker has no coordinate-to-image transformation. Georeferenced imagery, south-polar mapping and terrain inspection await verified data.</p></div><StatusBadge>Terrain pending</StatusBadge></div>
   </>
 }

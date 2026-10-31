@@ -1,6 +1,14 @@
-# LunAscend architecture — Step 4
+# LunAscend architecture — Step 5 and brand refinement
 
-Status: Step 4 adds an explicitly illustrative mock provider alongside the preserved Step 3 geometric scientific provider. The frontend retains the Step 2.6 preview. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+Status: Step 5 connects the existing scientific/mock providers to the frontend and includes the authorized brand refinement. The validated Step 3 engine and Step 4 mock generator are preserved. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+
+## Step 5 live frontend and lunar atlas identity
+
+Step 5 supersedes historical preview-only descriptions below. The existing React shell/routes remain; native SVG charts now consume real API observations. types/analysis.ts mirrors consumed request/result fields; lib/analysis.ts validates UI selections and constructs the existing ScenarioRequest, including explicit provider mode and fixed scientific metadata only after user confirmation of frame and explicit elevation. api/analysis.ts checks returned identity, finite angular bounds, chronological UTC samples, metric/provider labels and resolved provenance before accepting a result. Failed/unavailable responses remain structured errors and never invoke another provider.
+
+MissionContext owns a cancellable/versioned request runner, options, current result and returned-sample index shared across pages. Editing controls invalidates old data immediately. The date control is read as a UTC wall-clock value through FormData, retaining seconds/milliseconds; browser-local time conversion is not used. The slider selects actual returned samples without requests or interpolation. SVG curves break at null values, show separate Sun/Earth styles and a 0-degree ideal geometric horizon; responsive axis labels, pointer inspection and position cards share data. Source identity and validation scope are displayed separately. Unimplemented terrain/engineering products remain null/unavailable. No backend algorithms, contracts or saved scientific evidence changed.
+
+The authorized visual refinement adds a complete, unchanged original logo in a Dashboard brand area, a compact navigation fallback, local Cormorant Garamond display typography, Manrope interface text and IBM Plex Mono numerical text. public/fonts contains SIL OFL notices and SHA-256/source records for the added fonts. The Explorer uses filtered synthetic input locations, an illustrative canvas and coordinate details; no coordinate-to-image mapping is implied. Comparison and resilience layouts remain previews for future engineering work. See docs/STEP_5.md and docs/DESIGN_REFINEMENT.md for executed checks, scope and remaining limitations.
 
 ## Step 4 deterministic mock provider
 

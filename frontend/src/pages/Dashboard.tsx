@@ -1,16 +1,17 @@
-import { ArrowRight, ArrowUpRight, Compass, GitCompareArrows, Info } from 'lucide-react'
+import { ArrowRight, GitCompareArrows, Info } from 'lucide-react'
 import { Link } from 'react-router'
 import { MissionControls } from '../components/MissionControls'
 import { LunarMapPlaceholder } from '../components/LunarMapPlaceholder'
 import { ScientificChartPanel } from '../components/ScientificChartPanel'
-import { MetricCard, PageHeader, PanelHeader, ScenarioCard, TextLink } from '../components/ui'
+import { MetricCard, PanelHeader, ScenarioCard, TextLink } from '../components/ui'
 import { useMission } from '../state/MissionContext'
 import { AnalysisProvenance } from '../components/AnalysisProvenance'
+import { AtlasIntroduction } from '../components/AtlasIntroduction'
 
 export function Dashboard() {
   const { mission, alternatives } = useMission()
-  return <><PageHeader eyebrow="MISSION PLANNING / OVERVIEW" title="Mission Dashboard" description="Mission configuration, site context and scientific data availability." action={<Link className="button secondary" to="/methodology"><Compass size={16}/>Scientific methodology<ArrowUpRight size={14}/></Link>}/>
-    <MissionControls/>
+  return <><AtlasIntroduction/>
+    <div id="mission-configuration"><MissionControls/></div>
     <div className="dashboard-grid"><LunarMapPlaceholder/><div className="metrics-stack"><MetricCard kind="solar"/><MetricCard kind="earth"/></div></div>
     <div className="context-note"><Info size={14}/><span>Geometry uses the selected provider. Surface artwork remains illustrative; terrain and engineering results are not yet calculated.</span><Link to="/sites">Explore locations<ArrowRight size={13}/></Link></div>
     <ScientificChartPanel/>

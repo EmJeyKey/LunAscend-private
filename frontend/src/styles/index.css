@@ -2,7 +2,7 @@
 
 @theme {
   --font-sans: 'Manrope Variable', 'Segoe UI', sans-serif;
-  --font-mono: 'Cascadia Code', Consolas, 'Liberation Mono', monospace;
+  --font-mono: 'IBM Plex Mono', 'Cascadia Code', Consolas, 'Liberation Mono', monospace;
   --color-gold: #edc384;
   --color-cyan: #79c9de;
 }
@@ -107,7 +107,7 @@ svg { flex-shrink: 0; }
 .map-art-label { position: absolute; bottom: 25px; right: 18px; text-align: right; color: #ddd3bd; letter-spacing: 1px; font-size: 8.5px; line-height: 1.9; }
 .map-art-label span { color: #b7c1cc; font-size: 7.5px; letter-spacing: .5px; }
 .map-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 15px 19px; border-top: 1px solid var(--border); background: #131c26; color: #bdc6d0; font-size: 9px; }
-.map-footer > span:first-child { display: flex; align-items: center; gap: 9px; font-family: Consolas, 'Courier New', monospace; }
+.map-footer > span:first-child { display: flex; align-items: center; gap: 9px; font-family: var(--font-mono); }
 .map-footer i { font-style: normal; color: #485b6c; }
 .map-footer > span:last-child { color: #8f9cac; font-size: 8px; }
 .metrics-stack { display: grid; gap: 16px; }
@@ -178,7 +178,7 @@ svg { flex-shrink: 0; }
 .scenario-label { font-size: 8px; letter-spacing: 1.1px; text-transform: uppercase; }
 .scenario-card h3 { font-size: 14px; font-weight: 600; margin: 12px 0 7px; }
 .scenario-time { font-size: 9px; color: #a4b1c1; }
-.scenario-time span { font-family: Consolas, monospace; font-size: 8px; color: #8494a7; margin-left: 4px; }
+.scenario-time span { font-family: var(--font-mono); font-size: 8px; color: #8494a7; margin-left: 4px; }
 .scenario-metrics { display: grid; gap: 8px; margin: 17px 0; }
 .scenario-metrics > div { display: flex; align-items: center; gap: 7px; font-size: 9px; color: #a5b2c1; }
 .scenario-metrics > div:first-child svg { color: #c9a970; }
@@ -228,7 +228,7 @@ svg { flex-shrink: 0; }
 .section-gap { margin-top: 16px; }
 .time-control { padding: 12px 16px; border-top: 1px solid var(--border); background: #101820; }
 .time-control label { display: flex; align-items: center; gap: 8px; font-size: 10px; }
-.time-control label span { margin-left: auto; color: #dbc094; font-family: Consolas, monospace; font-size: 9px; }
+.time-control label span { margin-left: auto; color: #dbc094; font-family: var(--font-mono); font-size: 9px; }
 .time-control input { margin: 8px 0 5px; min-height: 24px; }
 .time-control p { color: #9babbc; font-size: 9px; }
 .chart-cursor { position: absolute; top: 0; bottom: 0; border-left: 1px solid #bfa476; z-index: 2; pointer-events: none; }
@@ -253,7 +253,7 @@ svg { flex-shrink: 0; }
 .methodology-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; margin-top: 30px; }
 .methodology-card { padding: 21px 0 24px; border-top: 1px solid #33404e; }
 .methodology-card > div { display: flex; justify-content: space-between; align-items: center; color: #cbb38f; }
-.methodology-card > div span { font-family: Consolas, monospace; color: #8090a2; font-size: 10px; }
+.methodology-card > div span { font-family: var(--font-mono); color: #8090a2; font-size: 10px; }
 .methodology-card h2 { font-weight: 500; color: #dce3eb; font-size: 13px; line-height: 1.8; margin: 18px 0 9px; }
 .methodology-card p { color: #a2b0c0; line-height: 2; font-size: 10px; }
 .sources-panel { padding: 22px 25px; margin-top: 8px; }
@@ -524,16 +524,16 @@ svg { flex-shrink: 0; }
 .analysis-settings summary { padding: 12px 0; cursor: pointer; color: #d1d8e1; }
 .analysis-input-grid { display: grid; grid-template-columns: 1.4fr repeat(5, 1fr); gap: 12px; }
 .analysis-input-grid label { display: grid; gap: 7px; font-size: 10px; }
-.analysis-input-grid input { background: #101822; color: #e0e5eb; border: 1px solid #303c49; border-radius: 5px; padding: 8px; font: 11px monospace; }
+.analysis-input-grid input { background: #101822; color: #e0e5eb; border: 1px solid #303c49; border-radius: 5px; padding: 8px; font: 11px var(--font-mono); }
 .analysis-settings p { margin: 10px 0 5px; line-height: 1.6; }
-.frame-note { font-family: monospace; overflow-wrap: anywhere; }
+.frame-note { font-family: var(--font-mono); overflow-wrap: anywhere; }
 .frame-confirm { display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; padding-top: 8px; }
 .analysis-form .frame-confirm input { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; }
 .analysis-error { color: #ffb3aa; padding: 12px 14px; border: 1px solid #794a46; border-radius: 6px; background: #2b1d20; font-size: 12px; overflow-wrap: anywhere; }
 .mock-warning { color: #edc07c; font-size: 11px; font-weight: 700; }
 .chart-warning { margin: 0; padding: 8px 16px; border-bottom: 1px solid #57452d; }
 .elevation-plot { width: 100%; display: block; touch-action: pan-y; }
-.elevation-plot text { fill: #a2afbf; font: 11px monospace; }
+.elevation-plot text { fill: #a2afbf; font: 11px var(--font-mono); }
 .elevation-grid { stroke: #2a3542; stroke-width: 1; }
 .geometric-line { stroke: #8a99a9; stroke-dasharray: 4 5; }
 .sun-curve, .earth-curve { fill: none; stroke-width: 2; stroke-linejoin: round; }
@@ -543,9 +543,9 @@ svg { flex-shrink: 0; }
 .sun-text { color: #e7b76e; } .earth-text { color: #74c9d8; }
 .sample-cursor { stroke: #c2cad5; stroke-width: 1; stroke-dasharray: 3 4; }
 .elevation-plot .horizon-label { font-size: 10px; fill: #7f8d9d; }
-.chart-tooltip { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 2px 16px 12px; padding: 10px; background: #101823; border: 1px solid #2b3948; font: 11px monospace; }
+.chart-tooltip { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 2px 16px 12px; padding: 10px; background: #101823; border: 1px solid #2b3948; font: 11px var(--font-mono); }
 .geometry-note { padding: 0 16px; color: #a4afbc; font-size: 10px; line-height: 1.7; }
-.metric-card .primary-metric { font-size: clamp(24px, 2.7vw, 36px); padding-block: 12px; font-family: monospace; }
+.metric-card .primary-metric { font-size: clamp(24px, 2.7vw, 36px); padding-block: 12px; font-family: var(--font-mono); }
 .metric-card .primary-metric .unavailable-value { font-size: 20px; color: #8e9ba9; }
 .metric-details .observation-time { font-size: 9px; overflow-wrap: anywhere; }
 .provenance-panel { padding: 16px; margin-top: 18px; font-size: 11px; line-height: 1.7; color: #a8b4c2; }
@@ -554,7 +554,7 @@ svg { flex-shrink: 0; }
 .provenance-panel summary { cursor: pointer; color: #cee0ec; }
 .provenance-panel article { border-top: 1px solid #2b3644; margin-top: 12px; padding-top: 10px; }
 .provenance-panel dl > div { display: grid; grid-template-columns: 120px 1fr; gap: 12px; margin-bottom: 6px; }
-.provenance-panel dd { margin: 0; overflow-wrap: anywhere; font-family: monospace; }
+.provenance-panel dd { margin: 0; overflow-wrap: anywhere; font-family: var(--font-mono); }
 .provenance-panel ul { padding-left: 18px; }
 .source-indicator { color: #7fcbd7; font-weight: 700; }
 @media (max-width: 1100px) {
@@ -568,4 +568,81 @@ svg { flex-shrink: 0; }
   .elevation-plot text { font-size: 13px; }
   .provenance-panel dl > div { grid-template-columns: 1fr; gap: 2px; }
   .metric-card .primary-metric { font-size: 30px; }
+}
+
+/* LunAscend brand refinement: local fonts, original identity, restrained surfaces. */
+@font-face { font-family: 'Cormorant Garamond'; src: url('/fonts/CormorantGaramond.ttf') format('truetype'); font-weight: 300 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'IBM Plex Mono'; src: url('/fonts/IBMPlexMono-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+:root { --bg: #080d15; --panel: #111923; --border: #29333f; --muted: #95a3b2; --gold: #d6ad70; --cyan: #7bbfd0; background: var(--bg); color: #f0eee9; }
+body, .app-main { background: var(--bg); }
+.panel { background: var(--panel); border-color: var(--border); border-radius: 5px; box-shadow: none; }
+.sidebar, .mobile-drawer { background: #0d141e; }
+.topbar { background: #0b121b; }
+.page-header h1 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: 35px; line-height: 1.13; letter-spacing: -.4px; color: #f0eee9; }
+.page-description { max-width: 68ch; line-height: 1.7; }
+.brand strong { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 27px; font-weight: 500; color: #d6ad70; letter-spacing: .3px; }
+.brand p { font-size: 7px; letter-spacing: 1.1px; }
+.nav-item { border-radius: 3px; }
+.nav-item.active { background: #211e19; border-color: #51412a; }
+.button.primary { background: #d6ad70; color: #121822; border-color: #d6ad70; }
+.button.primary:hover { background: #e8c38e; }
+.scenario-card, .methodology-card { border-radius: 3px; box-shadow: none; }
+.scenario-grid { gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.scenario-grid > * { border: 0; border-radius: 0; background: #111923; }
+.scenario-top { border-bottom: 1px solid #29333f; padding-bottom: 12px; }
+.methodology-grid { gap: 0 28px; }
+.methodology-card { border-top: 1px solid #2e3742; background: transparent; }
+.methodology-intro h2 { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 29px; font-weight: 500; }
+.methodology-intro { background: #111923; border-left: 2px solid #b38f5c; }
+.sources-panel, .provenance-panel { border-radius: 3px; }
+.metric-card .primary-metric, .metric-details dd, .scenario-time, .map-footer, .delay-number, .frame-note, .observation-time, .topbar-context > span, .elevation-plot text, .chart-tooltip { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.elevation-plot text { font-size: 11px; }
+.elevation-plot { background: #0f1721; }
+.sun-curve { stroke: #e9b968; } .earth-curve { stroke: #7bbfd0; }
+.atlas-introduction { display: grid; grid-template-columns: 1.03fr 1fr; gap: 18px; align-items: center; margin-bottom: 22px; border-bottom: 1px solid #34332d; padding-bottom: 18px; }
+.atlas-introduction-copy { padding: 12px 6px; min-width: 0; }
+.atlas-introduction h1 { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(34px, 3.5vw, 49px); font-weight: 500; line-height: 1.1; color: #f0eee9; margin: 12px 0; letter-spacing: -.5px; }
+.atlas-deck { font-size: 12px; color: #a9b2bd; max-width: 44ch; line-height: 1.9; }
+.atlas-brand-art { margin: 0; min-width: 0; background: #060d15; }
+.atlas-brand-art img { width: 100%; height: auto; display: block; object-fit: contain; }
+.atlas-brand-art figcaption { font: 8px var(--font-mono); letter-spacing: .7px; color: #8f9cab; padding: 8px 12px; text-align: center; }
+.atlas-mission-facts { display: grid; gap: 14px; margin: 20px 0; }
+.atlas-mission-facts dt { font-size: 8px; letter-spacing: 1.6px; color: #bd9b68; }
+.atlas-mission-facts dd { margin: 5px 0 2px; font-size: 12px; }
+.atlas-mission-facts small { font: 9px var(--font-mono); color: #a3afbd; overflow-wrap: anywhere; }
+.atlas-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.atlas-actions .text-link { font-size: 10px; }
+#mission-configuration { scroll-margin-top: 15px; }
+.atlas-sites { align-self: start; }
+.atlas-sites .site-options { padding: 12px; }
+.atlas-sites .site-option { padding: 14px 8px; border-radius: 0; border-width: 0 0 1px; }
+.atlas-sites .site-option.selected { border-left: 2px solid var(--gold); }
+.atlas-sites .site-option strong { font-size: 11px; }
+.atlas-site-filter { padding: 12px; border-bottom: 1px solid #29333f; }
+.atlas-site-filter input { border: 1px solid #35404b; border-radius: 3px; padding: 8px; font-size: 11px; }
+.explorer-grid .lunar-panel { min-width: 0; }
+.selected-site-detail { padding: 14px; border-top: 1px solid #303945; font-size: 11px; color: #aeb7c3; line-height: 1.8; }
+.selected-site-detail strong { color: #e4c08d; display: block; }
+.selected-site-detail .text-link { margin-top: 12px; }
+.workflow-strip { display: flex; gap: 14px; padding: 12px 0 18px; align-items: center; color: #a3b0bf; font: 10px var(--font-mono); }
+.workflow-strip span { color: #d6ad70; }
+@media (min-width: 1201px) { .sidebar { width: 214px; padding-inline: 11px; } .app-main { margin-left: 214px; } .nav-item { font-size: 11px; gap: 8px; } }
+@media (min-width: 1350px) { .explorer-grid { grid-template-columns: 185px minmax(0, 1fr) 245px; gap: 14px; } .explorer-grid .lunar-art { min-height: 530px; } }
+@media (max-width: 1349px) { .explorer-grid { grid-template-columns: 1fr 1fr; } .explorer-grid > .lunar-panel { grid-column: 1 / -1; grid-row: 1; } }
+@media (max-width: 760px) {
+  .atlas-introduction { grid-template-columns: 1fr; gap: 8px; }
+  .atlas-brand-art { order: -1; max-width: 500px; width: 100%; justify-self: center; }
+  .atlas-introduction h1 { font-size: 35px; }
+  .atlas-mission-facts { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .atlas-mission-facts small { font-size: 8px; }
+  .page-header h1 { font-size: 30px; }
+  .workflow-strip { flex-wrap: wrap; font-size: 9px; }
+}
+@media (max-width: 480px) {
+  .explorer-grid { grid-template-columns: 1fr; }
+  .atlas-introduction h1 { font-size: 32px; }
+  .page-header { align-items: flex-start; }
+  .page-header h1 { font-size: 29px; }
+  .atlas-actions .button { font-size: 10px; }
+  .metric-details dd { max-width: 175px; }
 }

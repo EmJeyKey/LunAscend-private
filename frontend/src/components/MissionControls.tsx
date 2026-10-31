@@ -9,13 +9,12 @@ export function MissionControls() {
   const { mission, analysis, options, updateOptions, runAnalysis, invalidate } = useMission()
   const [site, setSite] = useState(mission.site)
   const [hours, setHours] = useState(String(mission.durationHours))
-  const [start, setStart] = useState(mission.startUtc.replace(/Z$/, '').replace(/\.000$/, ''))
   const [message, setMessage] = useState('')
-  useEffect(() => { setSite(mission.site); setHours(String(mission.durationHours)); setStart(mission.startUtc.replace(/Z$/, '').replace(/\.000$/, '')) }, [mission])
+  useEffect(() => { setSite(mission.site); setHours(String(mission.durationHours)) }, [mission])
   const scientific = options.providerMode === 'scientific'
   function apply(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const startUtc = toUtc(start)
+    const startUtc = toUtc(String(new FormData(event.currentTarget).get('start_utc') || ''))
     if (!startUtc) { invalidate(); setMessage('Enter a valid UTC date and time.'); return }
     setMessage('')
     runAnalysis({ site, startUtc, durationHours: Number(hours) })
@@ -23,12 +22,12 @@ export function MissionControls() {
   return <div className="mission-controls-wrap"><form className="panel analysis-form" onSubmit={apply} onChange={() => { invalidate(); setMessage('') }}>
     <div className="mission-controls">
       <label className="control-field"><span><MapPin size={13}/>LANDING SITE</span><select aria-label="Landing site" value={site.id} onChange={event => setSite(previewSites.find(item => item.id === event.target.value) || { ...site, id: 'custom' })}>{previewSites.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}<option value="custom">Custom coordinates</option></select></label>
-      <label className="control-field"><span><CalendarDays size={13}/>START TIME (UTC)</span><input aria-label="Landing date and time in UTC" type="datetime-local" step="0.001" required value={start} onChange={event => setStart(event.target.value)}/></label>
+      <label className="control-field"><span><CalendarDays size={13}/>START TIME (UTC)</span><input key={mission.startUtc} name="start_utc" aria-label="Landing date and time in UTC" type="datetime-local" step="0.001" required defaultValue={mission.startUtc.replace(/Z$/, '').replace(/\.000$/, '')}/></label>
       <label className="control-field period-field"><span><Clock3 size={13}/>DURATION (HOURS)</span><input aria-label="Analysis duration in hours" type="number" min="0.000001" max="8784" step="any" list="analysis-periods" required value={hours} onChange={event => setHours(event.target.value)}/><datalist id="analysis-periods">{durationOptions.map(value => <option key={value} value={value}/>)}</datalist></label>
       <label className="control-field"><span>DATA SOURCE</span><select aria-label="Data source" value={options.providerMode} onChange={event => updateOptions({ ...options, providerMode: event.target.value as ProviderMode })}><option value="scientific">Scientific SPICE</option><option value="mock">Mock Demonstration</option></select></label>
       <button className="button primary" type="submit" disabled={analysis.status === 'loading'}>{analysis.status === 'loading' ? 'Calculating…' : 'Run Analysis'}<ArrowRight size={16}/></button>
     </div>
-    <details className="analysis-settings" open><summary>Coordinates, heights & sampling</summary><div className="analysis-input-grid">
+    <details className="analysis-settings" open={analysis.status !== 'success'}><summary>Coordinates, heights & sampling</summary><div className="analysis-input-grid">
       <label>Site name<input aria-label="Site name" maxLength={500} required value={site.name} onChange={event => setSite({ ...site, name: event.target.value })}/></label>
       <label>Latitude / ° N<input aria-label="Latitude in degrees" type="number" min="-90" max="90" step="any" required value={Number.isNaN(site.latitude) ? '' : site.latitude} onChange={event => setSite({ ...site, id: 'custom', latitude: event.target.value === '' ? NaN : Number(event.target.value) })}/></label>
       <label>Longitude / ° E<input aria-label="Longitude in degrees" type="number" min="-180" max="179.999999999" step="any" required value={Number.isNaN(site.longitude) ? '' : site.longitude} onChange={event => setSite({ ...site, id: 'custom', longitude: event.target.value === '' ? NaN : Number(event.target.value) })}/></label>

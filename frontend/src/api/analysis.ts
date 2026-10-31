@@ -69,7 +69,7 @@ export async function requestAnalysis(request: ScenarioRequest, signal: AbortSig
     throw new AnalysisFailure('Cannot reach the backend, the connection was interrupted, or analysis timed out. Check the local backend and retry.')
   }
   let value: unknown
-  try { value = await response.json() } catch { throw new AnalysisFailure(`Backend returned an unreadable response (HTTP ${response.status}).`) }
+  try { value = await response.json() } catch { throw new AnalysisFailure(`Backend is unavailable or returned an unreadable response (HTTP ${response.status}). Check the local backend and retry.`) }
   const errors = parseErrors(value)
   if (!response.ok) throw new AnalysisFailure(errors.length ? errors.map(e => `${e.code}: ${e.message}`).join(' ') : `Backend request failed (HTTP ${response.status}).`, errors)
   const result = parseResult(value, request)

@@ -3,3 +3,5 @@ backend/src/lunascend/ephemeris/*.py text eol=lf
 docs/validation/* text eol=lf
 # Preserve unmodified Horizons API response bytes for SHA-256 verification.
 data/fixtures/horizons/*.response.json -text
+# Preserve upstream font license bytes, including original whitespace.
+frontend/public/fonts/*-OFL.txt -text whitespace=-blank-at-eol
