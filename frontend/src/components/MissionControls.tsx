@@ -5,7 +5,7 @@ import { toUtc } from '../lib/time'
 import { useMission } from '../state/MissionContext'
 import type { ProviderMode } from '../types/analysis'
 
-export function MissionControls() {
+export function MissionControls({ compact = false }: { compact?: boolean }) {
   const { mission, analysis, options, updateOptions, runAnalysis, invalidate } = useMission()
   const [site, setSite] = useState(mission.site)
   const [hours, setHours] = useState(String(mission.durationHours))
@@ -19,7 +19,7 @@ export function MissionControls() {
     setMessage('')
     runAnalysis({ site, startUtc, durationHours: Number(hours) })
   }
-  return <div className="mission-controls-wrap"><form className="panel analysis-form" onSubmit={apply} onChange={() => { invalidate(); setMessage('') }}>
+  return <div className="mission-controls-wrap"><form className="panel analysis-form" onSubmit={apply} onInvalid={event => { const details = (event.target as HTMLElement).closest('details'); if (details) details.open = true }} onChange={() => { invalidate(); setMessage('') }}>
     <header className="section-introduction"><h2>Mission configuration</h2><p>Choose the site, UTC interval and data source used for this analysis.</p></header>
     <div className="mission-controls">
       <label className="control-field"><span><MapPin size={13}/>LANDING SITE</span><select aria-label="Landing site" value={site.id} onChange={event => setSite(previewSites.find(item => item.id === event.target.value) || { ...site, id: 'custom' })}>{previewSites.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}<option value="custom">Custom coordinates</option></select></label>
@@ -28,7 +28,7 @@ export function MissionControls() {
       <label className="control-field"><span>DATA SOURCE</span><select aria-label="Data source" value={options.providerMode} onChange={event => updateOptions({ ...options, providerMode: event.target.value as ProviderMode })}><option value="scientific">Scientific SPICE</option><option value="mock">Mock Demonstration</option></select></label>
       <button className="button primary" type="submit" disabled={analysis.status === 'loading'}>{analysis.status === 'loading' ? 'Calculating…' : 'Run Analysis'}<ArrowRight size={16}/></button>
     </div>
-    <details className="analysis-settings" open={analysis.status !== 'success'}><summary>Coordinates, heights & sampling</summary><div className="analysis-input-grid">
+    <details className="analysis-settings" open={compact ? undefined : analysis.status !== 'success'}><summary>Coordinates, heights & sampling</summary><div className="analysis-input-grid">
       <label>Site name<input aria-label="Site name" maxLength={500} required value={site.name} onChange={event => setSite({ ...site, name: event.target.value })}/></label>
       <label>Latitude / ° N<input aria-label="Latitude in degrees" type="number" min="-90" max="90" step="any" required value={Number.isNaN(site.latitude) ? '' : site.latitude} onChange={event => setSite({ ...site, id: 'custom', latitude: event.target.value === '' ? NaN : Number(event.target.value) })}/></label>
       <label>Longitude / ° E<input aria-label="Longitude in degrees" type="number" min="-180" max="179.999999999" step="any" required value={Number.isNaN(site.longitude) ? '' : site.longitude} onChange={event => setSite({ ...site, id: 'custom', longitude: event.target.value === '' ? NaN : Number(event.target.value) })}/></label>

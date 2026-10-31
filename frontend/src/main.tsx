@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import '@fontsource-variable/manrope'
 import './styles/index.css'
 import App from './App'
 

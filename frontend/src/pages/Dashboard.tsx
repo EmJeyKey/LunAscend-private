@@ -11,8 +11,11 @@ import { AtlasIntroduction } from '../components/AtlasIntroduction'
 export function Dashboard() {
   const { mission, alternatives } = useMission()
   return <><AtlasIntroduction/>
-    <div id="mission-configuration"><MissionControls/></div>
-    <div className="dashboard-grid"><LunarMapPlaceholder/><div className="metrics-stack"><MetricCard kind="solar"/><MetricCard kind="earth"/></div></div>
+    <div className="dashboard-workbench">
+      <div id="mission-configuration"><MissionControls compact/></div>
+      <LunarMapPlaceholder/>
+      <aside className="metrics-stack" aria-label="Selected sample geometry"><MetricCard kind="solar"/><MetricCard kind="earth"/></aside>
+    </div>
     <div className="context-note"><Info size={14}/><span>Geometry uses the selected provider. Surface artwork remains illustrative; terrain and engineering results are not yet calculated.</span><Link to="/sites">Explore locations<ArrowRight size={13}/></Link></div>
     <ScientificChartPanel/>
     <AnalysisProvenance/>

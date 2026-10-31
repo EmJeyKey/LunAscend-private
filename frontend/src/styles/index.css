@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Manrope Variable', 'Segoe UI', sans-serif;
+  --font-sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', 'Cascadia Code', Consolas, 'Liberation Mono', monospace;
   --color-gold: #f2d38b;
   --color-cyan: #79c9de;
@@ -729,3 +729,86 @@ body, .app-main { background: var(--bg); }
 }
 .content .methodology-card h2, .content .sources-panel h2, .content .methodology-intro h2 { color: #ecd29a; }
 .content .methodology-card p, .content .sources-panel > p, .content .methodology-intro p { color: #c8ac78; }
+
+/* Step 5.5: a lunar workbench with locally bundled interface typography. */
+@font-face { font-family: 'IBM Plex Sans'; src: url('/fonts/IBMPlexSans-Latin.woff2') format('woff2'); font-style: normal; font-weight: 400 600; font-display: swap; }
+:root { --bg: #080d15; --panel: #111923; --muted: #95a3b2; --cyan: #7bbfd0; background: var(--bg); color: #f0eee9; }
+body, .app-main { background: var(--bg); }
+.button.primary { font-family: var(--font-sans); font-size: 13px; font-weight: 400; letter-spacing: .2px; padding: 9px 14px; }
+.atlas-actions .button.primary { font-size: 13px; }
+.atlas-introduction { margin-bottom: 22px; }
+.atlas-introduction-copy { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(230px, 1fr); gap: 5px 28px; padding: 4px 0; }
+.atlas-introduction-copy > .eyebrow, .atlas-introduction h1, .atlas-deck { grid-column: 1; }
+.atlas-introduction h1 { font-size: clamp(32px, 3vw, 43px); margin: 5px 0; }
+.atlas-deck { max-width: 60ch; line-height: 1.65; }
+.atlas-mission-facts { grid-column: 2; grid-row: 1 / 4; margin: 0; align-self: center; gap: 12px; }
+.atlas-mission-facts dt { font-size: 9px; }
+.atlas-mission-facts small { font-size: 10px; }
+.atlas-actions { grid-column: 1 / -1; margin-top: 10px; }
+.dashboard-workbench { display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: 24px; align-items: start; }
+.dashboard-workbench > .lunar-panel { grid-column: 1; grid-row: 1; }
+.dashboard-workbench > .metrics-stack { grid-column: 2; grid-row: 1; gap: 16px; }
+.dashboard-workbench > #mission-configuration { grid-column: 1 / -1; grid-row: 2; min-width: 0; }
+.dashboard-workbench .lunar-art { min-height: 440px; background: #080d15; }
+.dashboard-workbench .metric-card .primary-metric { font-size: 27px; }
+.atlas-view-switch { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 0 14px 12px; }
+.atlas-view-switch button { border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: transparent; color: #95a3b2; font-size: 11px; padding: 7px 9px; }
+.atlas-view-switch button[aria-pressed='true'] { color: #f2d38b; border-bottom-color: #d6ad70; }
+.atlas-view-switch span { color: #95a3b2; font-size: 9px; margin-left: auto; }
+.lunar-art { background: #080d15; }
+.art-caption { pointer-events: none; }
+.map-art-label { max-width: 80%; }
+.map-site-label { max-width: 65%; }
+.map-site-label strong { overflow-wrap: anywhere; }
+.explorer-grid .coordinate-form { padding: 12px; }
+.explorer-grid .coordinate-form label { font-size: 11px; }
+.explorer-grid .coordinate-form input { font-family: var(--font-mono); font-size: 12px; }
+.explorer-grid .lunar-art { background: #080d15; }
+.explorer-sidebar .selected-site-detail { border: 0; }
+.comparison-save { margin: 20px 0 8px; width: 100%; }
+.selected-site-detail > p { margin: 10px 0; overflow-wrap: anywhere; }
+.selected-site-detail > strong { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 25px; font-weight: 500; }
+.page-header h1 { font-size: 32px; }
+.workflow-strip { line-height: 1.8; }
+@media (min-width: 1600px) {
+  .content { max-width: 1850px; }
+  .dashboard-workbench { grid-template-columns: 270px minmax(0, 1fr) 220px; gap: 20px; }
+  .dashboard-workbench > #mission-configuration { grid-column: 1; grid-row: 1; }
+  .dashboard-workbench > .lunar-panel { grid-column: 2; }
+  .dashboard-workbench > .metrics-stack { grid-column: 3; }
+  .dashboard-workbench .mission-controls { display: grid; grid-template-columns: 1fr; padding: 0 10px; gap: 14px; }
+  .dashboard-workbench .analysis-input-grid { grid-template-columns: 1fr; }
+  .dashboard-workbench .section-introduction { padding-inline: 10px; }
+  .dashboard-workbench .analysis-settings { padding-inline: 10px; }
+  .dashboard-workbench .lunar-art { min-height: 560px; }
+}
+@media (min-width: 1350px) { .explorer-grid { grid-template-columns: 220px minmax(0, 1fr) 235px; gap: 18px; } }
+@media (max-width: 1000px) {
+  .dashboard-workbench { grid-template-columns: minmax(0, 1fr); }
+  .dashboard-workbench > .metrics-stack { grid-column: 1; grid-row: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dashboard-workbench > #mission-configuration { grid-column: 1; grid-row: 3; }
+  .atlas-introduction-copy { grid-template-columns: 1fr; }
+  .atlas-mission-facts { grid-column: 1; grid-row: auto; grid-template-columns: 1fr 1fr; margin-top: 10px; }
+}
+@media (max-width: 600px) {
+  .atlas-introduction h1 { font-size: 34px; }
+  .atlas-mission-facts { grid-template-columns: 1fr; }
+  .dashboard-workbench > .metrics-stack { grid-template-columns: 1fr; }
+  .dashboard-workbench .lunar-art, .explorer-grid .lunar-art { min-height: 360px; }
+  .atlas-view-switch span { width: 100%; margin-left: 9px; }
+  .map-footer { flex-wrap: wrap; gap: 8px; font-size: 9px; }
+  .map-art-label { font-size: 8px; }
+  .art-caption { left: 14px; top: 16px; }
+  .map-site-label { left: 14px; bottom: 56px; }
+}
+.dashboard-workbench .metric-header { flex-wrap: wrap; gap: 8px; }
+.dashboard-workbench .metric-header h2 { font-size: 21px; }
+.dashboard-workbench .metric-header > .status-badge { margin-left: 0; }
+.dashboard-workbench .metric-header > div { flex: 1; }
+@media (max-width: 600px) {
+  .lunar-art.globe-view > svg { width: 180%; left: -40%; }
+  .dashboard-workbench > #mission-configuration { grid-row: 2; }
+  .dashboard-workbench > .metrics-stack { grid-row: 3; }
+}
+.selected-site-detail .scientific-coordinates { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.atlas-sites .site-option { background: transparent; }

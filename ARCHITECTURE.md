@@ -1,4 +1,4 @@
-# LunAscend architecture — Step 5 and brand refinement
+# LunAscend architecture — Step 5.5 lunar atlas
 
 Status: Step 5 connects the existing scientific/mock providers to the frontend and includes the authorized brand refinement. The validated Step 3 engine and Step 4 mock generator are preserved. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
 
@@ -8,7 +8,11 @@ Step 5 supersedes historical preview-only descriptions below. The existing React
 
 MissionContext owns a cancellable/versioned request runner, options, current result and returned-sample index shared across pages. Editing controls invalidates old data immediately. The date control is read as a UTC wall-clock value through FormData, retaining seconds/milliseconds; browser-local time conversion is not used. The slider selects actual returned samples without requests or interpolation. SVG curves break at null values, show separate Sun/Earth styles and a 0-degree ideal geometric horizon; responsive axis labels, pointer inspection and position cards share data. Source identity and validation scope are displayed separately. Unimplemented terrain/engineering products remain null/unavailable. No backend algorithms, contracts or saved scientific evidence changed.
 
-The authorized visual refinement adds a complete, unchanged original logo in a Dashboard brand area, a compact navigation fallback, local Cormorant Garamond display typography, Manrope interface text and IBM Plex Mono numerical text. public/fonts contains SIL OFL notices and SHA-256/source records for the added fonts. The Explorer uses filtered synthetic input locations, an illustrative canvas and coordinate details; no coordinate-to-image mapping is implied. Comparison and resilience layouts remain previews for future engineering work. See docs/STEP_5.md and docs/DESIGN_REFINEMENT.md for executed checks, scope and remaining limitations.
+Step 5.5 retains the complete, unchanged original logo as a small, feathered navigation image; the repeated Dashboard logo was removed following visual review. Local Cormorant Garamond display typography, IBM Plex Sans interface text and IBM Plex Mono numerical text establish the shared hierarchy. public/fonts contains SIL OFL notices and SHA-256/source records for the added fonts. The Explorer uses filtered synthetic input locations, an illustrative canvas and coordinate details; no coordinate-to-image mapping is implied. Comparison and resilience layouts remain previews for future engineering work. See docs/STEP_5.md and docs/DESIGN_REFINEMENT.md for executed checks, scope and remaining limitations.
+
+## Step 5.5 visual workbench
+
+The Dashboard prioritizes a large lunar viewport with adjacent controls and returned Sun/Earth readouts on wide screens; smaller layouts stack these sections above the UTC chart. Explorer groups filtering and custom coordinates beside the viewport and selected-site context. Its comparison action reuses existing in-memory configuration snapshots only. Globe/surface presentation and grid/contour toggles affect original SVG artwork, not scientific geometry. The globe has no mapped hemisphere, coordinate registration or calculated lighting. Scientific positions remain in angular readouts and the synchronized chart. Compact Dashboard settings open on invalid fields; the existing UTC FormData handling and provider boundary remain intact. All six routes, explicit unavailable states and scientific documentation are retained. See docs/STEP_5_5.md for the executed verification and remaining scope.
 
 ## Step 4 deterministic mock provider
 
