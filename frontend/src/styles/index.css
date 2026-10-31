@@ -515,3 +515,57 @@ svg { flex-shrink: 0; }
   .metric-footnote { font-size: 10px; }
   .metric-card { padding: 14px 16px 10px; }
 }
+
+/* Step 5 retains the workstation layout and connects its existing panels. */
+.analysis-form .mission-controls { display: grid; grid-template-columns: 1.3fr 1.5fr .8fr 1.15fr auto; padding: 14px; gap: 12px; }
+.analysis-form .control-field { min-width: 0; padding: 0; border: 0; }
+.analysis-form input, .analysis-form select { width: 100%; min-width: 0; }
+.analysis-settings { padding: 0 16px 14px; border-top: 1px solid #28313c; color: #a6b0bf; font-size: 11px; }
+.analysis-settings summary { padding: 12px 0; cursor: pointer; color: #d1d8e1; }
+.analysis-input-grid { display: grid; grid-template-columns: 1.4fr repeat(5, 1fr); gap: 12px; }
+.analysis-input-grid label { display: grid; gap: 7px; font-size: 10px; }
+.analysis-input-grid input { background: #101822; color: #e0e5eb; border: 1px solid #303c49; border-radius: 5px; padding: 8px; font: 11px monospace; }
+.analysis-settings p { margin: 10px 0 5px; line-height: 1.6; }
+.frame-note { font-family: monospace; overflow-wrap: anywhere; }
+.frame-confirm { display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; padding-top: 8px; }
+.analysis-form .frame-confirm input { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; }
+.analysis-error { color: #ffb3aa; padding: 12px 14px; border: 1px solid #794a46; border-radius: 6px; background: #2b1d20; font-size: 12px; overflow-wrap: anywhere; }
+.mock-warning { color: #edc07c; font-size: 11px; font-weight: 700; }
+.chart-warning { margin: 0; padding: 8px 16px; border-bottom: 1px solid #57452d; }
+.elevation-plot { width: 100%; display: block; touch-action: pan-y; }
+.elevation-plot text { fill: #a2afbf; font: 11px monospace; }
+.elevation-grid { stroke: #2a3542; stroke-width: 1; }
+.geometric-line { stroke: #8a99a9; stroke-dasharray: 4 5; }
+.sun-curve, .earth-curve { fill: none; stroke-width: 2; stroke-linejoin: round; }
+.sun-curve { stroke: #e7b76e; }
+.earth-curve { stroke: #74c9d8; stroke-dasharray: 7 3; }
+.sun-point { fill: #e7b76e; } .earth-point { fill: #74c9d8; }
+.sun-text { color: #e7b76e; } .earth-text { color: #74c9d8; }
+.sample-cursor { stroke: #c2cad5; stroke-width: 1; stroke-dasharray: 3 4; }
+.elevation-plot .horizon-label { font-size: 10px; fill: #7f8d9d; }
+.chart-tooltip { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 2px 16px 12px; padding: 10px; background: #101823; border: 1px solid #2b3948; font: 11px monospace; }
+.geometry-note { padding: 0 16px; color: #a4afbc; font-size: 10px; line-height: 1.7; }
+.metric-card .primary-metric { font-size: clamp(24px, 2.7vw, 36px); padding-block: 12px; font-family: monospace; }
+.metric-card .primary-metric .unavailable-value { font-size: 20px; color: #8e9ba9; }
+.metric-details .observation-time { font-size: 9px; overflow-wrap: anywhere; }
+.provenance-panel { padding: 16px; margin-top: 18px; font-size: 11px; line-height: 1.7; color: #a8b4c2; }
+.provenance-panel h2 { font-size: 13px; color: #e2e7ed; margin: 0 0 8px; }
+.provenance-panel h3 { font-size: 12px; color: #c8d3df; }
+.provenance-panel summary { cursor: pointer; color: #cee0ec; }
+.provenance-panel article { border-top: 1px solid #2b3644; margin-top: 12px; padding-top: 10px; }
+.provenance-panel dl > div { display: grid; grid-template-columns: 120px 1fr; gap: 12px; margin-bottom: 6px; }
+.provenance-panel dd { margin: 0; overflow-wrap: anywhere; font-family: monospace; }
+.provenance-panel ul { padding-left: 18px; }
+.source-indicator { color: #7fcbd7; font-weight: 700; }
+@media (max-width: 1100px) {
+  .analysis-form .mission-controls { grid-template-columns: 1fr 1fr; }
+  .analysis-input-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 600px) {
+  .analysis-form .mission-controls { grid-template-columns: 1fr; gap: 12px; }
+  .analysis-input-grid { grid-template-columns: 1fr 1fr; }
+  .elevation-plot { min-height: 195px; }
+  .elevation-plot text { font-size: 13px; }
+  .provenance-panel dl > div { grid-template-columns: 1fr; gap: 2px; }
+  .metric-card .primary-metric { font-size: 30px; }
+}

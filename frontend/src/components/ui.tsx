@@ -3,6 +3,9 @@ import { Link } from 'react-router'
 import type { PropsWithChildren, ReactNode } from 'react'
 import type { MissionSelection } from '../types/preview'
 import { formatUtc } from '../lib/time'
+import { useMission } from '../state/MissionContext'
+import { formatAngle } from '../lib/analysis'
+import type { EphemerisObservation, ProviderMode } from '../types/analysis'
 
 export function StatusBadge({ children, tone = 'neutral' }: PropsWithChildren<{ tone?: 'gold' | 'cyan' | 'green' | 'neutral' }>) {
   return <span className={`status-badge ${tone}`}><span className="status-dot" />{children}</span>
@@ -20,15 +23,22 @@ export function EmptyState({ icon: Icon = CircleDashed, title, description }: { 
   return <div className="empty-state"><span className="empty-icon"><Icon size={22} strokeWidth={1.4} aria-hidden="true" /></span><h3>{title}</h3><p>{description}</p></div>
 }
 
-export function MetricCard({ kind }: { kind: 'solar' | 'earth' }) {
+export function PositionReadout({ kind, observation, provider }: { kind: 'solar' | 'earth'; observation?: EphemerisObservation; provider?: ProviderMode }) {
   const solar = kind === 'solar'
   const Icon = solar ? Sun : Radio
-  return <section className={`panel metric-card ${solar ? 'solar' : 'earth'}`} aria-label={solar ? 'Solar analysis' : 'Communication analysis'}>
-    <div className="metric-header"><span className="metric-icon"><Icon size={18} strokeWidth={1.6} /></span><div><h2>{solar ? 'Solar illumination' : 'Earth line of sight'}</h2><p>{solar ? 'SUN ELEVATION' : 'EARTH ELEVATION'}</p></div><StatusBadge>Unavailable</StatusBadge></div>
-    <div className="primary-metric"><span aria-label="Unavailable">—</span><span className="metric-unit">deg</span><span className="metric-state">Awaiting ephemeris</span></div>
-    <dl className="metric-details"><div><dt>{solar ? 'Solar visibility' : 'Earth line of sight'}</dt><dd>Unavailable</dd></div><div><dt>{solar ? 'Next sunset' : 'Next Earthset'}</dt><dd>— <span>UTC</span></dd></div><div><dt>{solar ? 'Illumination duration' : 'Communication availability'}</dt><dd>{solar ? '— h' : 'Not modeled'}</dd></div></dl>
-    <p className="metric-footnote">{solar ? 'No solar geometry has been calculated.' : 'Earth visibility alone does not establish a radio link.'}</p>
+  const elevation = observation?.[solar ? 'sun_elevation_deg' : 'earth_elevation_deg']
+  const azimuth = observation?.[solar ? 'sun_azimuth_deg' : 'earth_azimuth_deg']
+  return <section className={`panel metric-card ${solar ? 'solar' : 'earth'}`} aria-label={solar ? 'Sun position' : 'Earth position'}>
+    <div className="metric-header"><span className="metric-icon"><Icon size={18} strokeWidth={1.6}/></span><div><h2>{solar ? 'Sun position' : 'Earth position'}</h2><p>{solar ? 'SUN ELEVATION' : 'EARTH ELEVATION'}</p></div><StatusBadge>{observation ? provider === 'mock' ? 'MOCK DATA' : 'SPICE' : 'Unavailable'}</StatusBadge></div>
+    <div className="primary-metric"><span className={!elevation || elevation.value === null ? 'unavailable-value' : ''}>{formatAngle(elevation, true)}</span></div>
+    <dl className="metric-details"><div><dt>Azimuth / clockwise north</dt><dd>{formatAngle(azimuth)}</dd></div><div><dt>Observation UTC</dt><dd className="observation-time">{observation?.time_utc || 'Unavailable'}</dd></div><div><dt>Metric validation</dt><dd>{elevation?.validation || 'Unavailable'}</dd></div><div><dt>{solar ? 'Terrain illumination' : 'Radio link feasibility'}</dt><dd>NOT YET CALCULATED</dd></div></dl>
+    <p className="metric-footnote">{azimuth?.reason || (provider === 'mock' ? 'MOCK DATA — NOT LUNAR PREDICTIONS' : 'Center direction relative to the geometric horizon. Terrain visibility is unknown.')}</p>
   </section>
+}
+
+export function MetricCard({ kind }: { kind: 'solar' | 'earth' }) {
+  const { observation, analysis } = useMission()
+  return <PositionReadout kind={kind} observation={observation} provider={analysis.result?.provider_mode}/>
 }
 
 export function ScenarioCard({ selection, label, baseline = false, onRemove }: { selection: MissionSelection; label: string; baseline?: boolean; onRemove?: () => void }) {

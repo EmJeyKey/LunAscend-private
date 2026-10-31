@@ -1,7 +1,8 @@
 export function toUtc(input: string): string | null {
-  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(input)) return null
-  const date = new Date(`${input}:00Z`)
-  if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 16) !== input) return null
+  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,3})?)?$/.test(input)) return null
+  const expanded = input.length === 16 ? `${input}:00` : input
+  const date = new Date(`${expanded}Z`)
+  if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 19) !== expanded.slice(0, 19)) return null
   return date.toISOString().replace('.000Z', 'Z')
 }
 

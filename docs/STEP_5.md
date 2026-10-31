@@ -1,0 +1,7 @@
+# Step 5 integration and design verification
+
+The existing frontend now submits the existing ScenarioRequest to POST /api/v1/scenarios/analyze through the configurable /backend proxy. Typed request construction, runtime response checks, explicit provider selection, cancellation/version protection and shared mission state connect returned samples to the chart, sample slider, four angular readouts and provenance. Scientific frame confirmation and explicit sphere-relative elevation are required; unknown preview metadata is never silently converted. No backend, scientific model, contracts or dependencies changed.
+
+The chart uses native SVG and actual returned timestamps/angles, with separate gold Sun and dashed cyan Earth curves, missing-value gaps, a 0-degree geometric reference, pointer inspection and keyboard sample selection. Both pages share the selected sample without additional requests. All terrain and engineering outputs remain unavailable. Mock results retain persistent warnings and mock metric/provenance labels.
+
+Integration checkpoint: TypeScript, 37 frontend tests, production build and 115 backend tests passed. The unchanged Horizons regression test executed its saved 36-row comparison. Browser checks verified mock analysis, keyboard sample selection and shared results across Dashboard/Analysis. Scientific and error-state browser verification, followed by the user-requested visual refinement, remain in progress at this checkpoint.
