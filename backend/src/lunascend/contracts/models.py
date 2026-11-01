@@ -157,6 +157,19 @@ class HorizonProfile(ScientificProduct):
     elevation_deg: tuple[Elevation | None, ...] = ()
     terrain_source: Text | None = None
     spatial_resolution_m: Positive | None = None
+    # Optional v1 extension: finite sampled terrain is never a global horizon certificate.
+    obstruction_distance_m: tuple[NonNegative | None, ...] = ()
+    sampled_distance_m: tuple[NonNegative, ...] = ()
+    first_missing_distance_m: tuple[NonNegative | None, ...] = ()
+    ray_coverage: tuple[Literal["sampled_radius", "boundary", "nodata", "boundary_and_nodata", "unknown"], ...] = ()
+    valid_sample_fraction: tuple[Annotated[Number, Field(ge=0, le=1)], ...] = ()
+    observer_height_m: NonNegative | None = None
+    surface_elevation_m: Number | None = None
+    reference_radius_m: Positive | None = None
+    max_search_radius_m: Positive | None = None
+    radial_step_m: Positive | None = None
+    azimuth_step_deg: Positive | None = None
+    global_horizon_complete: Literal[False] | None = None
 
     @model_validator(mode="after")
     def matching_samples(self) -> "HorizonProfile":
@@ -166,6 +179,11 @@ class HorizonProfile(ScientificProduct):
             raise ValueError("Horizon azimuths must be strictly increasing")
         if self.status in ("unavailable", "not_requested") and any(v is not None for v in self.elevation_deg):
             raise ValueError("Unavailable horizon cannot contain terrain measurements")
+        for values in (self.obstruction_distance_m, self.sampled_distance_m, self.first_missing_distance_m, self.ray_coverage, self.valid_sample_fraction):
+            if values and len(values) != len(self.azimuth_deg):
+                raise ValueError("Optional horizon arrays must match azimuth length")
+        if self.global_horizon_complete is False and self.status == "calculated":
+            raise ValueError("Finite-radius profiles must remain partial")
         return self
 
 

@@ -2,6 +2,9 @@
 
 ## Current status
 
+Step 7 adds the optional terrain backend, with no frontend redesign. From backend, use `uv sync --frozen --extra science --extra terrain`, restore/verify the original kernels, then `python -m lunascend.terrain.manage download` and `python -m lunascend.terrain.manage verify`. The 41 MB NASA DEM and two small additional frame kernels are hash-pinned and ignored; no credentials or system GDAL installation is needed with the verified Windows wheels. Native DE421 terrain can run with the terrain extra alone; cross-frame requests also require science and both kernel sets. See docs/TERRAIN_DATA.md for exact conventions, portable paths, API examples and restoration; docs/STEP_7.md records actual verification.
+
+
 Step 6 adds scientific scenario comparison with no new setup requirements or dependencies. In Comparison, choose 2-3 scenarios, configure each provider/site/UTC interval independently, confirm scientific heights/frame where required, and run comparison. Duplicate a scenario to change its date. Explorer's Add to comparison preserves its current settings. Results and configurations persist through navigation in memory, not reload. See docs/STEP_6.md for sampling limits and executed checks.
 
 

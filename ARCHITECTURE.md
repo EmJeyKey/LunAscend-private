@@ -1,6 +1,16 @@
-# LunAscend architecture — Step 6 scenario comparison
+# LunAscend architecture — Step 7 LOLA terrain
 
 Status: Step 6 adds independent scientific scenario comparison to the existing Step 5 integration and Step 5.5 design. The validated Step 3 engine and Step 4 mock generator are preserved. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+
+## Step 7 optional lunar terrain pipeline
+
+Step 7 adds a standalone terrain-only API and preserves the existing geometry/mock provider behavior, frontend and Step 3 evidence. The optional terrain extra pins Rasterio/PyProj while retaining existing NumPy/SpiceyPy versions. data/manifests/lola-site01.json identifies the authentic NASA 5 m/pixel Site01 Connecting ridge DEM and metadata; large source data remains ignored. Native DEM coordinates are MOON_ME_DE421, planetocentric/east-positive, polar stereographic on a 1737400 m sphere; raw scaled values are sphere-relative meter heights. Raster CRS parameters, scale/offset, registration, nodata and hash are verified before bounded local reads and conservative four-neighbor bilinear sampling.
+
+TerrainRequest requires an explicit supported reference frame. A DE440/ME421 observer additionally requires a UTC coordinate epoch. A one-shot isolated process computes the exact NAIF pxform rotation using separately pinned DE421 kernels plus the original kernel set; the original process-global SPICE pool, ephemeris source and kernel manifest are untouched. PyProj performs the lunar map projection only. Rays originate in the requested frame's local radial ENU and sample great circles, rotated into the DEM frame when needed. Exact spherical range/height geometry accounts for curvature and observer height without flat-Earth approximations.
+
+POST /api/v1/terrain/horizon returns the existing HorizonProfile with backward-compatible optional distance/coverage fields, DEM surface elevation, transform/epoch/kernel identity, provenance and limitations. Every profile remains globally partial; requested sample coverage never certifies terrain outside the radius or between samples. First missing distance, furthest known sampled distance, valid fraction and boundary/nodata flags preserve gaps. A bounded local grid helper exports at most 4096 original cells with origin, spacing, WKT, vertical datum and null mask for future viewers. No terrain visualization or engineering calculation is added. Existing ScenarioResult.horizon stays null and its frontend parser is unchanged.
+
+Requests are bounded to 500000 samples, 720 azimuths and local windows of 4500000 pixels. Optional dependency/data/kernel failures are explicit structured errors; synthetic fixtures cannot substitute for a missing registered NASA dataset. Saved real-data metadata, frame cases, finite profiles, sampling sensitivity and memory/timing evidence live in docs/validation/step-7-results.json, separately from unchanged Step 3 validation. See docs/TERRAIN_DATA.md and docs/STEP_7.md for reproduction and limitations. No independently matched external terrain-horizon accuracy comparison is claimed.
 
 ## Step 6 multi-site and multi-date geometric comparison
 

@@ -6,7 +6,7 @@ LunAscend — Lunar Mission Resilience Navigator is a lunar landing-site decisio
 
 - Read ARCHITECTURE.md, SETUP.md and DEVELOPMENT_ROADMAP.md before changes. Inspect existing work and preserve it.
 - Implement only the milestone the user requests. Stop after each milestone, report actual checks and remaining limitations, and await review. Do not advance automatically.
-- Step 6 authorizes bounded multi-site/date geometric scenario comparison using the existing API, with display summaries of returned observations. Preserve Step 5.5 branding. Stop after Step 6; Step 7 terrain and engineering calculations remain unauthorized.
+- Step 7 authorizes the optional NASA LOLA terrain reader, exact frame bridge, bounded spherical horizon engine and terrain-only API. Preserve the SPICE/mock engines and Step 5.5/6 frontend. Stop after Step 7; visibility windows, power, communications and 3D remain unauthorized.
 - Keep changes focused; avoid speculative infrastructure, databases, Docker, unnecessary dependencies and repeated installation.
 - Update documentation when contracts, assumptions, dependencies or commands change.
 
@@ -33,6 +33,9 @@ LunAscend — Lunar Mission Resilience Navigator is a lunar landing-site decisio
 - Science extra pins SpiceyPy 8.3.0 and NumPy 2.5.4 (CSPICE N0067), tested on Windows x64. Use `uv sync --frozen --extra science`; use that extra on uv run commands too. Kernel CLI: `python -m lunascend.ephemeris.manage download` / `verify`; comparison: `python -m lunascend.ephemeris.validation compare`. See SETUP.md.
 - Scientific sites require planetocentric latitude, east-positive longitude, MOON_ME_DE440_ME421, realization DE440/ME421, MOON_SPHERE_1737400_M radius 1737400 m and explicit elevation. Never silently reinterpret other lunar frames. The engine owns and serializes the process-global SPICE pool.
 - Keep kernel binaries ignored. Manifest hashes and saved Horizons reference pairs are tracked. Preserve the predeclared validation plan; rerun comparison after engine changes. Only exact compared sites/epochs with matching engine hash, versions and kernel fingerprint receive reference_compared metadata; other outputs remain unvalidated.
+
+- Terrain uses the pinned Site01 5 m GeoTIFF in MOON_ME_DE421 and heights above the 1737400 m sphere. Raster metadata, masks and hashes are mandatory. DE440/ME421 requests require an explicit epoch and the isolated exact-name NAIF frame bridge; never alias the frames or load terrain kernels into the existing process-global ephemeris pool.
+- All terrain horizons remain globally partial. Known sampled angles are model lower bounds; boundary/nodata, first missing/furthest known distance, observer height and finite radius must remain visible. No inference of unobstructed directions or visibility windows. Keep terrain libraries optional, reads/workloads bounded and synthetic fixtures explicitly synthetic. See docs/TERRAIN_DATA.md.
 
 ## Scientific integrity
 

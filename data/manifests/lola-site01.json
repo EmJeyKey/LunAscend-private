@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "lola-site01-5m-v2020",
+  "name": "NASA PGDA LOLA Site01 Connecting ridge, adjusted surface DEM",
+  "product_version": "Site01_final_adj_5mpp_surf; source Last-Modified 2020-06-05",
+  "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_final_adj_5mpp_surf.tif",
+  "documentation_url": "https://pgda.gsfc.nasa.gov/products/78",
+  "readme_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/README",
+  "citation": "Barker et al. (2021), Planetary and Space Science 203, 105119, doi:10.1016/j.pss.2020.105119",
+  "path": "data/raw/lola-site01/Site01_final_adj_5mpp_surf.tif",
+  "format": "GeoTIFF",
+  "bytes": 40980810,
+  "sha256": "3ba7b97cb00a2bcf21189c3aeb535f65afc21207154ab9f0d43c5bdc1f7e747e",
+  "reference_frame": "MOON_ME_DE421",
+  "latitude_type": "planetocentric",
+  "longitude_convention": "east_positive",
+  "projection": "+proj=stere +lat_0=-90 +lat_ts=-90 +lon_0=0 +x_0=0 +y_0=0 +R=1737400 +units=m +no_defs",
+  "vertical_reference": "Height in meters above 1737400 m sphere",
+  "reference_radius_m": 1737400.0,
+  "scale": 1.0,
+  "offset": 0.0,
+  "units": "m",
+  "nodata": "NaN",
+  "width": 3200,
+  "height": 3200,
+  "transform": [
+    5.0,
+    0.0,
+    -19000.0,
+    0.0,
+    -5.0,
+    -4000.0
+  ],
+  "projected_bounds_m": [
+    -19000.0,
+    -20000.0,
+    -3000.0,
+    -4000.0
+  ],
+  "pixel_resolution_m": 5.0,
+  "pixel_registration": "Area; sample at centers (corner affine + half pixel)",
+  "uncertainty": "Product 78 offers separate total-Z uncertainty, slope uncertainty, count and clone layers. Not downloaded or propagated; interpolated DEM pixels are not independent measurements. 5 m spacing is not 5 m effective resolution.",
+  "readme_sha256": "e985a2337c9de1cd665b0ddad8b7f1fac88d65c96d1e47d1b975a91c8e53e7bd",
+  "download_command": "python -m lunascend.terrain.manage download",
+  "verification_command": "python -m lunascend.terrain.manage verify",
+  "source_kind": "official",
+  "dtype": "float32",
+  "vertical_reference_sources": [
+    "https://ntrs.nasa.gov/citations/20205009660",
+    "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/document/rdrsis.htm"
+  ],
+  "checksum_note": "Locally computed SHA-256 over HTTPS-acquired bytes; no publisher checksum was supplied. Restoration is pinned to these exact bytes.",
+  "uncertainty_layers": {
+    "total_z_rms_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_final_adj_5mpp_toterr.tif",
+    "return_counts_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_final_adj_5mpp_ldec.tif",
+    "status": "Available upstream; not downloaded or propagated in Step 7"
+  }
+}

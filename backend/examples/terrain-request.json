@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "lola-site01-5m-v2020",
+  "site_id": "site01-pixel-1600-1600",
+  "latitude_deg": -89.4631577569723,
+  "longitude_deg": -137.50198490762307,
+  "reference_frame": "MOON_ME_DE421",
+  "observer_height_m": 2.0,
+  "reference_radius_m": 1737400.0,
+  "azimuth_samples": 360,
+  "max_search_radius_m": 2500.0,
+  "radial_step_m": 5.0
+}
