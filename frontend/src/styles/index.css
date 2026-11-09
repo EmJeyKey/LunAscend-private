@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  --font-sans: 'Manrope', 'Segoe UI', sans-serif;
+  --font-display: 'Marcellus', Georgia, serif;
   --font-mono: 'IBM Plex Mono', 'Cascadia Code', Consolas, 'Liberation Mono', monospace;
   --color-gold: #f2d38b;
   --color-cyan: #79c9de;
@@ -94,7 +95,7 @@ svg { flex-shrink: 0; }
 .lunar-art > svg { display: block; width: 100%; height: 100%; position: absolute; inset: 0; }
 .art-caption { position: absolute; top: 22px; left: 23px; display: grid; gap: 6px; }
 .art-caption .eyebrow { color: #c0c5c6; font-size: 8px; letter-spacing: 2px; }
-.art-caption > span:last-child { font: 9px Consolas, monospace; letter-spacing: .5px; color: #95a2ac; }
+.art-caption > span:last-child { font: 9px var(--font-mono); letter-spacing: .5px; color: #95a2ac; }
 .map-tools { position: absolute; top: 18px; right: 18px; display: flex; flex-direction: column; background: #111923e6; border: 1px solid #3a4654; border-radius: 5px; overflow: hidden; }
 .map-tools > * { padding: 8px; background: transparent; border: 0; border-bottom: 1px solid #313b49; color: #95a5b5; display: grid; place-items: center; }
 .map-tools > *:last-child { border: 0; }
@@ -141,7 +142,7 @@ svg { flex-shrink: 0; }
 .gold-line { background: #f2d38b; }
 .cyan-line { border-top: 2px dashed #79c9de; }
 .gray-line { border-top: 2px dotted #a3aebb; }
-.chart-legend .chart-unit { margin-left: auto; color: #91a0af; font: 8px Consolas, monospace; letter-spacing: .7px; }
+.chart-legend .chart-unit { margin-left: auto; color: #91a0af; font: 8px var(--font-mono); letter-spacing: .7px; }
 .empty-chart { position: relative; height: 220px; margin: 0 24px 0 14px; background: #0e151e; }
 .chart-grid { position: absolute; inset: 12px 0 8px 58px; display: flex; flex-direction: column; justify-content: space-between; border-left: 1px solid #667386; background-image: linear-gradient(to right, #53637324 1px, transparent 1px); background-size: 25% 100%; }
 .chart-grid > div { height: 1px; border-bottom: 1px dashed #34404d; position: relative; }
@@ -571,16 +572,16 @@ svg { flex-shrink: 0; }
 }
 
 /* LunAscend brand refinement: local fonts, original identity, restrained surfaces. */
-@font-face { font-family: 'Cormorant Garamond'; src: url('/fonts/CormorantGaramond.ttf') format('truetype'); font-weight: 300 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Marcellus'; src: url('/fonts/Marcellus-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: 'IBM Plex Mono'; src: url('/fonts/IBMPlexMono-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
 :root { --bg: #080d15; --panel: #111923; --border: #29333f; --muted: #95a3b2; --gold: #f2d38b; --cyan: #7bbfd0; background: var(--bg); color: #f0eee9; }
 body, .app-main { background: var(--bg); }
 .panel { background: var(--panel); border-color: var(--border); border-radius: 5px; box-shadow: none; }
 .sidebar, .mobile-drawer { background: #0d141e; }
 .topbar { background: #0b121b; }
-.page-header h1 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: 35px; line-height: 1.13; letter-spacing: -.4px; color: #f0eee9; }
+.page-header h1 { font-family: var(--font-display); font-weight: 500; font-size: 35px; line-height: 1.13; letter-spacing: -.4px; color: #f0eee9; }
 .page-description { max-width: 68ch; line-height: 1.7; }
-.brand strong { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 27px; font-weight: 500; color: #f2d38b; letter-spacing: .3px; }
+.brand strong { font-family: var(--font-display); font-size: 27px; font-weight: 500; color: #f2d38b; letter-spacing: .3px; }
 .brand p { font-size: 7px; letter-spacing: 1.1px; }
 .nav-item { border-radius: 3px; }
 .nav-item.active { background: #211e19; border-color: #51412a; }
@@ -592,7 +593,7 @@ body, .app-main { background: var(--bg); }
 .scenario-top { border-bottom: 1px solid #29333f; padding-bottom: 12px; }
 .methodology-grid { gap: 0 28px; }
 .methodology-card { border-top: 1px solid #2e3742; background: transparent; }
-.methodology-intro h2 { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 29px; font-weight: 500; }
+.methodology-intro h2 { font-family: var(--font-display); font-size: 29px; font-weight: 500; }
 .methodology-intro { background: #111923; border-left: 2px solid #f2d38b; }
 .sources-panel, .provenance-panel { border-radius: 3px; }
 .metric-card .primary-metric, .metric-details dd, .scenario-time, .map-footer, .delay-number, .frame-note, .observation-time, .topbar-context > span, .elevation-plot text, .chart-tooltip { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
@@ -601,7 +602,7 @@ body, .app-main { background: var(--bg); }
 .sun-curve { stroke: #f2d38b; } .earth-curve { stroke: #7bbfd0; }
 .atlas-introduction { display: grid; grid-template-columns: 1fr; gap: 18px; align-items: center; margin-bottom: 22px; border-bottom: 1px solid #34332d; padding-bottom: 18px; }
 .atlas-introduction-copy { padding: 12px 6px; min-width: 0; }
-.atlas-introduction h1 { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(34px, 3.5vw, 49px); font-weight: 500; line-height: 1.1; color: #f0eee9; margin: 12px 0; letter-spacing: -.5px; }
+.atlas-introduction h1 { font-family: var(--font-display); font-size: clamp(34px, 3.5vw, 49px); font-weight: 500; line-height: 1.1; color: #f0eee9; margin: 12px 0; letter-spacing: -.5px; }
 .atlas-deck { font-size: 12px; color: #a9b2bd; max-width: 44ch; line-height: 1.9; }
 .atlas-brand-art { margin: 0; min-width: 0; background: #060d15; }
 .atlas-brand-art img { width: 100%; height: auto; display: block; object-fit: contain; }
@@ -703,7 +704,7 @@ body, .app-main { background: var(--bg); }
   border-radius: 3px;
   box-shadow: none;
   padding: 8px 17px;
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--font-display);
   font-size: 20px;
   font-weight: 500;
   line-height: 1.25;
@@ -713,7 +714,7 @@ body, .app-main { background: var(--bg); }
 .section-introduction { padding: 0 14px 10px; }
 .section-introduction h2, .content .panel-title h2, .content .metric-header h2, .content .provenance-panel > h2 {
   color: #ecd29a;
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--font-display);
   font-size: 22px;
   font-weight: 500;
   letter-spacing: .15px;
@@ -731,7 +732,7 @@ body, .app-main { background: var(--bg); }
 .content .methodology-card p, .content .sources-panel > p, .content .methodology-intro p { color: #c8ac78; }
 
 /* Step 5.5: a lunar workbench with locally bundled interface typography. */
-@font-face { font-family: 'IBM Plex Sans'; src: url('/fonts/IBMPlexSans-Latin.woff2') format('woff2'); font-style: normal; font-weight: 400 600; font-display: swap; }
+@font-face { font-family: 'Manrope'; src: url('/fonts/Manrope-Latin.woff2') format('woff2'); font-style: normal; font-weight: 200 800; font-display: swap; }
 :root { --bg: #080d15; --panel: #111923; --muted: #95a3b2; --cyan: #7bbfd0; background: var(--bg); color: #f0eee9; }
 body, .app-main { background: var(--bg); }
 .button.primary { font-family: var(--font-sans); font-size: 13px; font-weight: 400; letter-spacing: .2px; padding: 9px 14px; }
@@ -767,7 +768,7 @@ body, .app-main { background: var(--bg); }
 .explorer-sidebar .selected-site-detail { border: 0; }
 .comparison-save { margin: 20px 0 8px; width: 100%; }
 .selected-site-detail > p { margin: 10px 0; overflow-wrap: anywhere; }
-.selected-site-detail > strong { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 25px; font-weight: 500; }
+.selected-site-detail > strong { font-family: var(--font-display); font-size: 25px; font-weight: 500; }
 .page-header h1 { font-size: 32px; }
 .workflow-strip { line-height: 1.8; }
 @media (min-width: 1600px) {
@@ -858,3 +859,34 @@ body, .app-main { background: var(--bg); }
 @media (max-width: 900px) { .comparison-workspace { grid-template-columns: 1fr; } .comparison-fields { grid-template-columns: 1fr 1fr; gap: 12px; } }
 @media (max-width: 480px) { .comparison-scenario .status-badge { font-size: 10px; } .comparison-toolbar .button { width: 100%; } }
 .button.primary:hover:not(:disabled) { background: linear-gradient(#24241f, #161c24) padding-box, linear-gradient(115deg, #c1a366, #fff0c7, #c1a366) border-box; border-color: transparent; color: #fff0cf; }
+
+/* Brand typography: restrained Roman display, clear interface, aligned science. */
+.page-header h1, .atlas-introduction h1, .brand strong,
+.methodology-intro h2, .selected-site-detail > strong,
+.section-introduction h2, .content .panel-title h2,
+.content .metric-header h2, .content .provenance-panel > h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: .015em;
+}
+.page-header > div { min-width: 0; }
+.page-header h1 { font-size: clamp(26px, 2.3vw, 34px); line-height: 1.25; text-wrap: balance; }
+.atlas-introduction h1 { font-size: clamp(28px, 2.6vw, 38px); line-height: 1.22; text-wrap: balance; }
+.section-introduction h2, .content .panel-title h2,
+.content .metric-header h2, .content .provenance-panel > h2 { font-size: 20px; line-height: 1.35; }
+.selected-site-detail > strong { font-size: 23px; line-height: 1.35; }
+.button, .atlas-actions .button.primary { font-family: var(--font-sans); font-weight: 500; letter-spacing: .025em; }
+.nav-item { font-weight: 500; letter-spacing: .005em; }
+.control-field input, input[type='number'], input[type='datetime-local'],
+.atlas-mission-facts > div:last-child dd {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: 0;
+}
+@media (min-width: 1001px) {
+  .atlas-introduction-copy { grid-template-columns: minmax(0, 1.6fr) minmax(210px, 1fr); gap: 5px 24px; }
+}
+@media (max-width: 600px) {
+  .page-header h1, .atlas-introduction h1 { font-size: clamp(25px, 6.7vw, 30px); letter-spacing: .01em; }
+}
