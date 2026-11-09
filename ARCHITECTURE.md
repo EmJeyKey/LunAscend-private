@@ -1,6 +1,10 @@
-# LunAscend architecture — Step 7 LOLA terrain
+# LunAscend architecture — Step 7.5 terrain-center visibility
 
 Status: Step 6 adds independent scientific scenario comparison to the existing Step 5 integration and Step 5.5 design. The validated Step 3 engine and Step 4 mock generator are preserved. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+
+## Step 7.5 optional terrain-center visibility
+
+Explicit scientific terrain scenarios use visibility/engine.py and isolated visibility/_worker.py. Input coordinates are DE440/ME421 at the start epoch; the observer is fixed in DEM-native DE421 thereafter. DEM height replaces null input surface height, then radial observer height is added once. Exact pxform rotations reconcile observer and directions at every timestamp while reusing the original ephemeris functions and one native terrain profile. Existing geometric-only execution remains unchanged. Circular-linear masked horizons yield center clearance and four qualified states; approximate sampled windows/linear crossing brackets never imply global visibility. Optional ScenarioResult.terrain_visibility and extended VisibilityWindow classifications preserve existing products. Analysis/comparison expose results and coverage without disk, power or link-budget claims. See docs/STEP_7_5.md for actual evidence, API example and limits.
 
 ## Step 7 optional lunar terrain pipeline
 

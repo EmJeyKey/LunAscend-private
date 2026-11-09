@@ -890,3 +890,30 @@ body, .app-main { background: var(--bg); }
 @media (max-width: 600px) {
   .page-header h1, .atlas-introduction h1 { font-size: clamp(25px, 6.7vw, 30px); letter-spacing: .01em; }
 }
+
+/* Step 7.5: qualified terrain readouts within the existing scientific workbench. */
+.terrain-options { margin: 18px 0; padding: 12px 0; border: 0; border-top: 1px solid #343b43; }
+.terrain-options legend, .terrain-visibility h3 { color: var(--gold); font-size: 13px; font-weight: 500; }
+.terrain-options .terrain-toggle { display: flex; align-items: center; gap: 10px; }
+.terrain-toggle input { width: auto; accent-color: var(--gold); }
+.terrain-options p, .terrain-visibility p { color: var(--muted); font-size: 12px; line-height: 1.75; margin: 10px 0; }
+.terrain-example { margin-bottom: 12px; border: 0; background: transparent; font-size: 12px; text-align: left; }
+.terrain-visibility { margin-top: 24px; }
+.terrain-visibility .terrain-limitation { color: #d8bd87; }
+.terrain-utc, .terrain-readouts dd, .terrain-table td, .terrain-table button { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.terrain-readouts { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 24px; margin: 18px 0 24px; }
+.terrain-body { min-width: 0; border-left: 2px solid var(--gold); padding-left: 14px; }
+.terrain-body.earth { border-color: var(--cyan); }
+.terrain-readouts dl > div { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; margin: 8px 0; font-size: 12px; }
+.terrain-readouts dd { margin: 0; }
+.terrain-status.modeled_obstruction { color: #d9b99a; }
+.terrain-status.conditional_clearance { color: #e9d49c; }
+.terrain-status.indeterminate, .terrain-status.unavailable { color: #a5b1c1; }
+.terrain-table-scroll { max-height: 310px; overflow: auto; margin: 14px 0 24px; }
+.terrain-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; }
+.terrain-table th, .terrain-table td { padding: 10px 12px; border-bottom: 1px solid #28323f; vertical-align: top; min-width: 150px; font-weight: 400; }
+.terrain-table thead th { position: sticky; top: 0; background: var(--bg); color: var(--muted); }
+.terrain-table button { border: 0; background: transparent; padding: 0; color: inherit; text-align: left; cursor: pointer; }
+.terrain-table tr[aria-current='time'] { background: #d6ad7010; color: #ffedb5; }
+.terrain-visibility details { font-size: 12px; line-height: 1.8; }
+@media (max-width: 600px) { .terrain-readouts { grid-template-columns: minmax(0, 1fr); } }

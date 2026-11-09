@@ -5,6 +5,7 @@ from uuid import uuid4
 
 from lunascend.contracts import AnalysisError, DataProvenance, ScenarioRequest, ScenarioResult
 from lunascend.ephemeris.kernels import GeometryError, KernelConfiguration
+from lunascend.terrain.errors import TerrainError
 
 
 class ScientificAnalysisProvider:
@@ -15,10 +16,15 @@ class ScientificAnalysisProvider:
         if request.provider_mode != "scientific":
             raise ValueError("Provider selection mismatch")
         try:
+            if request.settings.terrain_enabled:
+                from lunascend.visibility.engine import analyze_visibility
+                return await asyncio.to_thread(analyze_visibility, request, self.configuration)
             from lunascend.ephemeris.engine import analyze_geometry
             return await asyncio.to_thread(analyze_geometry, request, self.configuration)
-        except GeometryError as exc:
+        except (GeometryError, TerrainError) as exc:
             error = exc.error
+        except ImportError:
+            error = AnalysisError(code="PROVIDER_UNAVAILABLE", module="terrain", message="Install the locked science and terrain extras for terrain-aware analysis.")
         except Exception:
             error = AnalysisError(code="CALCULATION_FAILED", module="ephemeris",
                                   message="SPICE geometry could not be completed with the configured resources.")

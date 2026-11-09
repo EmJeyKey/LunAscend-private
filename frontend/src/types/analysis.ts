@@ -17,7 +17,7 @@ export interface ScenarioRequest {
   schema_version: '1.0'
   site: { site_id: string; name: string; latitude_deg: number; longitude_deg: number; surface_elevation_m: number | null; observer_height_m: number; coordinate_reference: CoordinateReference }
   provider_mode: ProviderMode; start_utc: string; end_utc: string; sample_step_s: number
-  settings: { terrain_enabled: false; power_enabled: false; communication_enabled: false; horizon_mode: 'geometric_approximation'; disk_policy: 'center'; correction_mode: 'NONE'; sun_clearance_deg: 0; earth_clearance_deg: 0 }
+  settings: { terrain_enabled: boolean; terrain_options?: { dataset_id: string; coordinate_epoch_utc: string; max_search_radius_m: number; radial_step_m: number; azimuth_samples: number } | null; power_enabled: false; communication_enabled: false; horizon_mode: 'geometric_approximation' | 'terrain'; disk_policy: 'center'; correction_mode: 'NONE'; sun_clearance_deg: 0; earth_clearance_deg: 0 }
 }
 export interface EphemerisObservation {
   time_utc: string; reference_frame: string; correction_mode: 'NONE'
@@ -35,9 +35,16 @@ export interface AnalysisError { code: string; message: string; module: string |
 export interface ScenarioResult {
   schema_version: '1.0'; scenario_id: string; request: ScenarioRequest; provider_mode: ProviderMode; model_version: string
   status: 'complete' | 'partial' | 'failed' | 'unavailable'; observations: EphemerisObservation[] | null
-  horizon: null; visibility_windows: null; power: null; communication: null; resilience: null
+  horizon: TerrainHorizon | null; visibility_windows: TerrainWindow[] | null; terrain_visibility?: TerrainVisibility | null; power: null; communication: null; resilience: null
   provenance: DataProvenance[]; errors: AnalysisError[]; warnings: string[]
 }
 export interface AnalysisOptions {
   providerMode: ProviderMode; surfaceElevationM: string; observerHeightM: string; sampleStepS: string; frameConfirmed: boolean
+  terrainEnabled?: boolean; terrainRadiusM?: string; terrainAzimuthSamples?: string; terrainRadialStepM?: string
 }
+export type TerrainClassification = 'modeled_obstruction' | 'conditional_clearance' | 'indeterminate' | 'unavailable'
+export interface TerrainBody { azimuth_deg: number | null; elevation_deg: number | null; horizon_elevation_deg: number | null; clearance_deg: number | null; classification: TerrainClassification; coverage: 'sampled_radius' | 'partial' | 'unknown'; reason: string }
+export interface TerrainRow { time_utc: string; reference_frame: 'MOON_ME_DE421'; sun: TerrainBody; earth: TerrainBody; status: 'partial' | 'unavailable' }
+export interface TerrainHorizon { reference_frame: string; terrain_source: string; azimuth_deg: number[]; elevation_deg: (number | null)[]; ray_coverage: string[]; global_horizon_complete: false; surface_elevation_m: number; observer_height_m: number; max_search_radius_m: number; azimuth_step_deg: number; radial_step_m: number; provenance_ids: string[] }
+export interface TerrainWindow { target: 'sun' | 'earth' | 'joint'; classification: TerrainClassification; start_utc: string; end_utc: string; duration_s: number; resolution_s: number; method: 'sampled_support' | 'piecewise_linear_clearance'; start_censored: boolean; end_censored: boolean }
+export interface TerrainVisibility { model_version: 'terrain-center-visibility-v1'; validation_status: 'unvalidated'; disk_policy: 'center'; global_visibility_confirmed: false; dataset_id: string; surface_elevation_m: number; observer_height_m: number; observer_radius_m: number; native_latitude_deg: number; native_longitude_deg: number; max_search_radius_m: number; azimuth_step_deg: number; radial_step_m: number; observations: TerrainRow[]; transitions: {target: 'sun' | 'earth'; bracket_start_utc: string; bracket_end_utc: string; estimate_utc: string; resolution_s: number; method: 'piecewise_linear_clearance'}[]; provenance_ids: string[]; assumptions: string[] }

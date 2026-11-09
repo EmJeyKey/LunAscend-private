@@ -47,7 +47,7 @@ export function PositionReadout({ kind, observation, provider }: { kind: 'solar'
     <p className="section-explanation">Inspect {solar ? 'the Sun’s' : 'Earth’s'} direction at the selected returned UTC sample.</p>
     <div className="primary-metric"><span className={!elevation || elevation.value === null ? 'unavailable-value' : ''}>{formatAngle(elevation, true)}</span></div>
     <dl className="metric-details"><div><dt>Azimuth / clockwise north</dt><dd>{formatAngle(azimuth)}</dd></div><div><dt>Observation UTC</dt><dd className="observation-time">{observation?.time_utc || 'Unavailable'}</dd></div><div><dt>Metric validation</dt><dd>{elevation?.validation || 'Unavailable'}</dd></div><div><dt>{solar ? 'Terrain illumination' : 'Radio link feasibility'}</dt><dd>NOT YET CALCULATED</dd></div></dl>
-    <p className="metric-footnote">{azimuth?.reason || (provider === 'mock' ? 'MOCK DATA — NOT LUNAR PREDICTIONS' : 'Center direction relative to the geometric horizon. Terrain visibility is unknown.')}</p>
+    <p className="metric-footnote">{azimuth?.reason || (provider === 'mock' ? 'MOCK DATA — NOT LUNAR PREDICTIONS' : 'Center direction relative to the geometric horizon. Inspect optional terrain center classifications on Analysis; global visibility remains unknown.')}</p>
   </section>
 }
 

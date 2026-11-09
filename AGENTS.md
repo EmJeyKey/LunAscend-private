@@ -7,6 +7,7 @@ LunAscend — Lunar Mission Resilience Navigator is a lunar landing-site decisio
 - Read ARCHITECTURE.md, SETUP.md and DEVELOPMENT_ROADMAP.md before changes. Inspect existing work and preserve it.
 - Implement only the milestone the user requests. Stop after each milestone, report actual checks and remaining limitations, and await review. Do not advance automatically.
 - Step 7 authorizes the optional NASA LOLA terrain reader, exact frame bridge, bounded spherical horizon engine and terrain-only API. Preserve the SPICE/mock engines and Step 5.5/6 frontend. Stop after Step 7; visibility windows, power, communications and 3D remain unauthorized.
+- Step 7.5 authorizes coverage-qualified terrain-center visibility and sampled operational intervals in the existing scenario API/Analysis/comparison UI. Preserve original geometry/terrain engines; use exact per-epoch frame reconciliation and DEM elevation plus observer height once. Stop after Step 7.5; no disk illumination, power, link budget or optimization.
 - Keep changes focused; avoid speculative infrastructure, databases, Docker, unnecessary dependencies and repeated installation.
 - Update documentation when contracts, assumptions, dependencies or commands change.
 

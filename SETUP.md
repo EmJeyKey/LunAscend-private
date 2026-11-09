@@ -272,3 +272,6 @@ In 7-Zip's GUI select the staging folder, choose 7z format, AES-256 encryption a
 ## Step 1 verification boundary
 
 Step 1 checked documentation/source references and local Git hygiene. Step 2 adds executed locked installation, backend/API tests and live server checks described above. Production frontend builds, encryption/restore drills, scientific validation and fresh-PC execution remain planned. .gitignore is preventive, not a secret scanner; inspect all tracked and staged files before commits and pushes.
+
+
+Step 7.5 terrain-aware analysis uses the same science/terrain extras, manifests and restoration commands as Step 7. POST backend/examples/terrain-visibility-request.json to the existing /api/v1/scenarios/analyze endpoint. Set terrain_enabled, horizon_mode=terrain and explicit terrain_options; surface_elevation_m must be null for DEM-derived height, and coordinate_epoch_utc must equal start_utc. The Analysis page offers a Site01 example and explicit opt-in. Reproduce saved evidence from backend with `python -m lunascend.visibility.validation`. See docs/STEP_7_5.md; no additional dependencies or services.

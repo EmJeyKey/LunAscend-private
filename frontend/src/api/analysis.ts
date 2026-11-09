@@ -7,6 +7,59 @@ function object(value: unknown): value is Record<string, unknown> { return !!val
 function strings(value: unknown): value is string[] { return Array.isArray(value) && value.every(v => typeof v === 'string') }
 const finite = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value)
 const validation = (v: unknown) => ['mock', 'unvalidated', 'reference_compared', 'validated'].includes(String(v))
+const classification = (v: unknown) => ['modeled_obstruction', 'conditional_clearance', 'indeterminate', 'unavailable'].includes(String(v))
+const utc = (v: unknown) => typeof v === 'string' && /(Z|\+00:00)$/.test(v) && Number.isFinite(Date.parse(v))
+function terrainProducts(v: Record<string, unknown>, request: ScenarioRequest, sources: Set<string>): boolean {
+  const t = v.terrain_visibility, h = v.horizon, rows = v.observations
+  if (!request.settings.terrain_enabled) return (t === null || t === undefined) && h === null && v.visibility_windows === null
+  if (['failed', 'unavailable'].includes(String(v.status))) return t === null && h === null && v.visibility_windows === null
+  const options = request.settings.terrain_options
+  if (request.provider_mode !== 'scientific' || !options || !object(t) || !object(h) || !Array.isArray(rows)
+    || t.model_version !== 'terrain-center-visibility-v1' || t.validation_status !== 'unvalidated' || t.disk_policy !== 'center' || t.global_visibility_confirmed !== false
+    || t.dataset_id !== options.dataset_id || t.max_search_radius_m !== options.max_search_radius_m || t.radial_step_m !== options.radial_step_m
+    || t.azimuth_step_deg !== 360 / options.azimuth_samples || t.observer_height_m !== request.site.observer_height_m
+    || !finite(t.surface_elevation_m) || !finite(t.observer_radius_m) || Math.abs(t.observer_radius_m - (1737400 + t.surface_elevation_m + t.observer_height_m)) > 1e-6
+    || !finite(t.native_latitude_deg) || Math.abs(t.native_latitude_deg) >= 90 || !finite(t.native_longitude_deg) || t.native_longitude_deg < -180 || t.native_longitude_deg >= 180
+    || !strings(t.assumptions) || !strings(t.provenance_ids) || !t.provenance_ids.every(id => sources.has(id))
+    || h.reference_frame !== 'MOON_ME_DE421' || h.terrain_source !== t.dataset_id || h.global_horizon_complete !== false
+    || h.surface_elevation_m !== t.surface_elevation_m || h.observer_height_m !== t.observer_height_m || h.max_search_radius_m !== t.max_search_radius_m
+    || h.radial_step_m !== t.radial_step_m || h.azimuth_step_deg !== t.azimuth_step_deg
+    || !Array.isArray(h.azimuth_deg) || h.azimuth_deg.length !== options.azimuth_samples || !Array.isArray(h.elevation_deg) || h.elevation_deg.length !== h.azimuth_deg.length
+    || !strings(h.ray_coverage) || h.ray_coverage.length !== h.azimuth_deg.length || !strings(h.provenance_ids) || !h.provenance_ids.every(id => sources.has(id))) return false
+  for (let i = 0; i < h.azimuth_deg.length; i++) {
+    if (!finite(h.azimuth_deg[i]) || Math.abs(h.azimuth_deg[i] - i * 360 / options.azimuth_samples) > 1e-9
+      || (h.elevation_deg[i] !== null && (!finite(h.elevation_deg[i]) || Math.abs(h.elevation_deg[i]) > 90))
+      || !['sampled_radius', 'boundary', 'nodata', 'boundary_and_nodata', 'unknown'].includes(h.ray_coverage[i])) return false
+  }
+  if (!Array.isArray(t.observations) || t.observations.length !== rows.length || rows.length > 1001 || !Array.isArray(t.transitions) || !Array.isArray(v.visibility_windows)) return false
+  for (let i = 0; i < rows.length; i++) {
+    const r = t.observations[i]
+    if (!object(r) || !object(rows[i]) || r.time_utc !== rows[i].time_utc || r.reference_frame !== 'MOON_ME_DE421' || !['partial', 'unavailable'].includes(String(r.status))) return false
+    for (const body of ['sun', 'earth']) {
+      const b = r[body]
+      if (!object(b) || !classification(b.classification) || !['sampled_radius', 'partial', 'unknown'].includes(String(b.coverage)) || typeof b.reason !== 'string') return false
+      for (const key of ['azimuth_deg', 'elevation_deg', 'horizon_elevation_deg', 'clearance_deg']) if (b[key] !== null && !finite(b[key])) return false
+      if (finite(b.azimuth_deg) && (b.azimuth_deg < 0 || b.azimuth_deg >= 360) || finite(b.elevation_deg) && Math.abs(b.elevation_deg) > 90 || finite(b.horizon_elevation_deg) && Math.abs(b.horizon_elevation_deg) > 90) return false
+      if (b.clearance_deg !== null && (!finite(b.elevation_deg) || !finite(b.horizon_elevation_deg) || Math.abs(Number(b.clearance_deg) - (b.elevation_deg - b.horizon_elevation_deg)) > 1e-8)) return false
+      if (b.classification === 'conditional_clearance' && (b.coverage !== 'sampled_radius' || !finite(b.clearance_deg) || b.clearance_deg <= 0)) return false
+      if (b.classification === 'modeled_obstruction' && (!finite(b.clearance_deg) || b.clearance_deg >= 0)) return false
+      if (b.classification === 'unavailable' && (b.clearance_deg !== null || b.horizon_elevation_deg !== null)) return false
+    }
+  }
+  for (const w of v.visibility_windows) {
+    if (!object(w) || !['sun', 'earth', 'joint'].includes(String(w.target)) || !classification(w.classification)
+      || !utc(w.start_utc) || !utc(w.end_utc) || Date.parse(String(w.start_utc)) < Date.parse(request.start_utc) || Date.parse(String(w.end_utc)) > Date.parse(request.end_utc)
+      || Date.parse(String(w.end_utc)) <= Date.parse(String(w.start_utc)) || !finite(w.resolution_s) || w.resolution_s <= 0
+      || !finite(w.duration_s) || Math.abs(w.duration_s - (Date.parse(String(w.end_utc)) - Date.parse(String(w.start_utc))) / 1000) > .002
+      || !['sampled_support', 'piecewise_linear_clearance'].includes(String(w.method)) || typeof w.start_censored !== 'boolean' || typeof w.end_censored !== 'boolean') return false
+  }
+  for (const transition of t.transitions) {
+    if (!object(transition) || !['sun', 'earth'].includes(String(transition.target)) || transition.method !== 'piecewise_linear_clearance'
+      || !utc(transition.bracket_start_utc) || !utc(transition.bracket_end_utc) || !utc(transition.estimate_utc) || !finite(transition.resolution_s) || transition.resolution_s <= 0
+      || !(Date.parse(String(transition.bracket_start_utc)) < Date.parse(String(transition.estimate_utc)) && Date.parse(String(transition.estimate_utc)) < Date.parse(String(transition.bracket_end_utc)))) return false
+  }
+  return true
+}
 function metric(v: unknown, azimuth: boolean, mode: ProviderMode): v is Metric {
   if (!object(v) || !strings(v.provenance_ids) || !validation(v.validation) || (mode === 'mock' ? v.validation !== 'mock' : v.validation === 'mock')) return false
   if (v.reason !== null && typeof v.reason !== 'string') return false
@@ -27,6 +80,13 @@ export function parseResult(v: unknown, request: ScenarioRequest): ScenarioResul
     || !Array.isArray(v.errors) || !Array.isArray(v.provenance) || !v.provenance.length) throw invalid()
   // Validate the echoed identity at the presentation boundary, accepting UTC spelling/longitude normalization.
   const echoed = v.request
+  if (!object(echoed.settings) || echoed.settings.terrain_enabled !== request.settings.terrain_enabled) throw invalid()
+  if (request.settings.terrain_enabled) {
+    const actual = echoed.settings.terrain_options, expected = request.settings.terrain_options
+    if (!object(actual) || !expected || actual.dataset_id !== expected.dataset_id || actual.max_search_radius_m !== expected.max_search_radius_m
+      || actual.radial_step_m !== expected.radial_step_m || actual.azimuth_samples !== expected.azimuth_samples
+      || Date.parse(String(actual.coordinate_epoch_utc)) !== Date.parse(expected.coordinate_epoch_utc)) throw invalid()
+  }
   if (!object(echoed.site) || Date.parse(String(echoed.start_utc)) !== Date.parse(request.start_utc)
     || Date.parse(String(echoed.end_utc)) !== Date.parse(request.end_utc) || echoed.sample_step_s !== request.sample_step_s
     || echoed.site.site_id !== request.site.site_id || echoed.site.latitude_deg !== request.site.latitude_deg
@@ -39,8 +99,9 @@ export function parseResult(v: unknown, request: ScenarioRequest): ScenarioResul
       || !validation(source.validation_status) || (request.provider_mode === 'mock' ? source.validation_status !== 'mock' : source.validation_status === 'mock')) throw invalid()
     for (const key of ['source_version', 'reference_frame', 'validation_report_id', 'source_url', 'sha256', 'terrain_dataset']) if (source[key] !== null && typeof source[key] !== 'string') throw invalid()
   }
-  if (['horizon', 'visibility_windows', 'power', 'communication', 'resilience'].some(key => v[key] !== null)) throw invalid()
+  if (['power', 'communication', 'resilience'].some(key => v[key] !== null)) throw invalid()
   const sources = new Set(v.provenance.map(source => (source as DataProvenance).id))
+  if (!terrainProducts(v, request, sources)) throw invalid()
   if (v.observations !== null && !Array.isArray(v.observations)) throw invalid()
   let previous = -Infinity
   for (const row of (v.observations || []) as unknown[]) {

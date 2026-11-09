@@ -4,6 +4,7 @@ import { PageHeader } from '../components/ui'
 import { ComparisonScenarioPanel } from '../components/ComparisonScenarioPanel'
 import { ComparisonCharts } from '../components/ComparisonCharts'
 import { ComparisonMetrics } from '../components/ComparisonMetrics'
+import { TerrainComparison } from '../components/TerrainComparison'
 
 export function Comparison() {
   const { comparison, comparisonStore: store, mission, options } = useMission()
@@ -17,6 +18,7 @@ export function Comparison() {
     <div className="comparison-workspace" style={{ '--scenario-count': Math.max(1, scenarios.length) } as CSSProperties}>{scenarios.map(scenario => <ComparisonScenarioPanel key={scenario.id} scenario={scenario}/>)}</div>
     {scenarios.length < 2 && <p className="form-feedback">Add or duplicate a scenario to compare at least two configurations.</p>}
     {scenarios.length > 0 && <><ComparisonMetrics scenarios={scenarios} baselineId={baselineId}/><ComparisonCharts scenarios={scenarios} baselineId={baselineId}/></>}
-    <p className="page-footnote">GEOMETRY ONLY - terrain-aware illumination, radio-link windows, power and battery feasibility remain unavailable. Scenarios, settings and results persist during navigation in this session; reload clears them. Absolute-UTC overlay mode is deferred; each chart and readout retains its own UTC epoch.</p>
+    <TerrainComparison/>
+    <p className="page-footnote">Geometric curves remain separate from optional, coverage-qualified terrain center classifications. Full-disk illumination, radio links, power and battery feasibility remain unavailable. Scenarios, settings and results persist during navigation in this session; reload clears them. Absolute-UTC overlay mode is deferred; each chart and readout retains its own UTC epoch.</p>
   </>
 }

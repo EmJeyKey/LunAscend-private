@@ -37,6 +37,20 @@ class LunarSite(Contract):
         return (value + 180.0) % 360.0 - 180.0
 
 
+class TerrainVisibilitySettings(Contract):
+    dataset_id: Text
+    coordinate_epoch_utc: UTCDateTime
+    azimuth_samples: Annotated[int, Field(strict=True, ge=4, le=720)] = 360
+    max_search_radius_m: Annotated[Number, Field(ge=1, le=50000)] = 2500.0
+    radial_step_m: Annotated[Number, Field(ge=1, le=5)] = 5.0
+
+    @model_validator(mode="after")
+    def workload(self) -> "TerrainVisibilitySettings":
+        if self.radial_step_m > self.max_search_radius_m or self.azimuth_samples * (ceil(self.max_search_radius_m / self.radial_step_m) + 1) > 500000:
+            raise ValueError("Terrain visibility exceeds the bounded radial/azimuth workload")
+        return self
+
+
 class AnalysisSettings(Contract):
     terrain_enabled: bool = False
     power_enabled: bool = False
@@ -46,9 +60,12 @@ class AnalysisSettings(Contract):
     correction_mode: Literal["NONE"] = "NONE"
     sun_clearance_deg: Annotated[NonNegative, Field(le=90)] = 0.0
     earth_clearance_deg: Annotated[NonNegative, Field(le=90)] = 0.0
+    terrain_options: TerrainVisibilitySettings | None = None
 
     @model_validator(mode="after")
     def terrain_policy(self) -> "AnalysisSettings":
+        if self.terrain_options is not None and not self.terrain_enabled:
+            raise ValueError("Terrain options require terrain_enabled")
         if self.horizon_mode == "terrain" and not self.terrain_enabled:
             raise ValueError("Terrain horizon requires terrain_enabled")
         return self
@@ -192,10 +209,12 @@ class VisibilityWindow(AnalysisInterval, ScientificProduct):
     classification: Literal[
         "visible", "obstructed", "borderline", "unknown",
         "sunlight_only", "earth_only", "both", "neither",
+        "modeled_obstruction", "conditional_clearance", "indeterminate", "unavailable",
     ]
     start_censored: bool = False
     end_censored: bool = False
     resolution_s: Positive | None = None
+    method: Literal["sampled_support", "piecewise_linear_clearance"] | None = None
 
     @computed_field
     @property
@@ -261,6 +280,59 @@ class ResilienceAnalysis(ScientificProduct):
     alternatives: tuple[ScenarioComparison, ...] | None = None
 
 
+VisibilityClassification = Literal["modeled_obstruction", "conditional_clearance", "indeterminate", "unavailable"]
+
+
+class TerrainBodyVisibility(Contract):
+    azimuth_deg: Azimuth | None = None
+    elevation_deg: Elevation | None = None
+    horizon_elevation_deg: Elevation | None = None
+    clearance_deg: Number | None = None
+    classification: VisibilityClassification
+    coverage: Literal["sampled_radius", "partial", "unknown"]
+    reason: Text
+
+
+class TerrainVisibilityObservation(Contract):
+    time_utc: UTCDateTime
+    reference_frame: Literal["MOON_ME_DE421"] = "MOON_ME_DE421"
+    sun: TerrainBodyVisibility
+    earth: TerrainBodyVisibility
+    status: Literal["partial", "unavailable"] = "partial"
+
+
+class TerrainTransition(Contract):
+    target: Literal["sun", "earth"]
+    bracket_start_utc: UTCDateTime
+    bracket_end_utc: UTCDateTime
+    estimate_utc: UTCDateTime
+    from_classification: VisibilityClassification
+    to_classification: VisibilityClassification
+    method: Literal["piecewise_linear_clearance"] = "piecewise_linear_clearance"
+    resolution_s: Positive
+
+
+class TerrainVisibility(Contract):
+    model_version: Literal["terrain-center-visibility-v1"] = "terrain-center-visibility-v1"
+    validation_status: Literal["unvalidated"] = "unvalidated"
+    disk_policy: Literal["center"] = "center"
+    global_visibility_confirmed: Literal[False] = False
+    dataset_id: Text
+    surface_elevation_m: Number
+    observer_height_m: NonNegative
+    observer_radius_m: Positive
+    native_latitude_deg: Number
+    native_longitude_deg: Number
+    max_search_radius_m: Positive
+    azimuth_step_deg: Positive
+    radial_step_m: Positive
+    observations: tuple[TerrainVisibilityObservation, ...]
+    transitions: tuple[TerrainTransition, ...] = ()
+    observer_geometry: tuple[dict, ...] = ()
+    provenance_ids: tuple[Text, ...]
+    assumptions: tuple[Text, ...]
+
+
 class ScenarioResult(Contract):
     schema_version: Literal["1.0"] = "1.0"
     scenario_id: Text
@@ -271,6 +343,7 @@ class ScenarioResult(Contract):
     observations: tuple[EphemerisObservation, ...] | None = None
     horizon: HorizonProfile | None = None
     visibility_windows: tuple[VisibilityWindow, ...] | None = None
+    terrain_visibility: TerrainVisibility | None = None
     power: PowerAnalysis | None = None
     communication: CommunicationAnalysis | None = None
     resilience: ResilienceAnalysis | None = None
@@ -288,7 +361,7 @@ class ScenarioResult(Contract):
             if not self.errors:
                 raise ValueError("Failed/unavailable results require a structured error")
             if any(v is not None for v in (self.observations, self.horizon, self.visibility_windows,
-                                           self.power, self.communication, self.resilience)):
+                                           self.power, self.communication, self.resilience, self.terrain_visibility)):
                 raise ValueError("Failed/unavailable results cannot contain scientific products")
         for observation in self.observations or ():
             if not self.request.start_utc <= observation.time_utc <= self.request.end_utc:

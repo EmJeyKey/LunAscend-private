@@ -1,0 +1,42 @@
+{
+  "start_utc": "2026-11-14T00:00:00Z",
+  "end_utc": "2026-11-15T00:00:00Z",
+  "schema_version": "1.0",
+  "site": {
+    "site_id": "lola-site01-example",
+    "name": "LOLA Site01 pixel-center example",
+    "latitude_deg": -89.46315760953222,
+    "longitude_deg": -137.50097847854008,
+    "surface_elevation_m": null,
+    "observer_height_m": 2.0,
+    "description": null,
+    "coordinate_reference": {
+      "body": "MOON",
+      "latitude_type": "planetocentric",
+      "longitude_convention": "east_positive",
+      "frame_id": "MOON_ME_DE440_ME421",
+      "frame_realization": "DE440/ME421",
+      "reference_surface": "MOON_SPHERE_1737400_M",
+      "reference_radius_m": 1737400.0
+    }
+  },
+  "provider_mode": "scientific",
+  "sample_step_s": 3600.0,
+  "settings": {
+    "terrain_enabled": true,
+    "power_enabled": false,
+    "communication_enabled": false,
+    "horizon_mode": "terrain",
+    "disk_policy": "center",
+    "correction_mode": "NONE",
+    "sun_clearance_deg": 0.0,
+    "earth_clearance_deg": 0.0,
+    "terrain_options": {
+      "dataset_id": "lola-site01-5m-v2020",
+      "azimuth_samples": 360,
+      "max_search_radius_m": 2500.0,
+      "radial_step_m": 5.0,
+      "coordinate_epoch_utc": "2026-11-14T00:00:00Z"
+    }
+  }
+}

@@ -14,10 +14,15 @@ export function buildRequest(mission: MissionSelection, options: AnalysisOptions
   const step = Number(options.sampleStepS)
   if (!options.sampleStepS.trim() || !Number.isFinite(step) || step < .001) throw new Error('Sample step must be at least 0.001 seconds.')
   if (Math.ceil(mission.durationHours * 3600 / step) + 1 > 10001) throw new Error('Request exceeds 10001 samples. Increase the sample step or shorten the duration.')
-  const elevation = options.surfaceElevationM.trim() === '' ? null : Number(options.surfaceElevationM)
+  const terrain = !!options.terrainEnabled
+  if (terrain && options.providerMode !== 'scientific') throw new Error('Terrain visibility requires Scientific SPICE; mock terrain is never substituted.')
+  const elevation = terrain || options.surfaceElevationM.trim() === '' ? null : Number(options.surfaceElevationM)
   const height = Number(options.observerHeightM)
   if (elevation !== null && !Number.isFinite(elevation) || !options.observerHeightM.trim() || !Number.isFinite(height) || height < 0) throw new Error('Enter a finite surface elevation and a non-negative observer height.')
-  if (options.providerMode === 'scientific' && (elevation === null || !options.frameConfirmed)) throw new Error('Scientific analysis requires an explicit sphere-relative elevation and confirmation of the DE440/ME421 coordinate frame.')
+  if (options.providerMode === 'scientific' && ((!terrain && elevation === null) || !options.frameConfirmed)) throw new Error('Scientific analysis requires an explicit sphere-relative elevation (or DEM-derived terrain height) and confirmation of the DE440/ME421 coordinate frame.')
+  const radius = Number(options.terrainRadiusM ?? '2500'), azimuths = Number(options.terrainAzimuthSamples ?? '360'), radial = Number(options.terrainRadialStepM ?? '5')
+  if (terrain && (!Number.isFinite(radius) || radius < 1 || radius > 50000 || !Number.isInteger(azimuths) || azimuths < 4 || azimuths > 720 || !Number.isFinite(radial) || radial < 1 || radial > 5 || radial > radius || azimuths * (Math.ceil(radius / radial) + 1) > 500000)) throw new Error('Terrain sampling exceeds bounds: radius 1–50000 m, 4–720 azimuths, radial step 1–5 m, at most 500000 ray samples.')
+  if (terrain && (Math.ceil(mission.durationHours * 3600 / step) + 1 > 1001 || height > 10000 || Math.abs(latitude) === 90)) throw new Error('Terrain mode supports at most 1001 time samples, observer heights up to 10000 m and nonpolar coordinates.')
   if (elevation !== null && 1737400 + elevation + height <= 0) throw new Error('The observer must have a positive radius above the lunar center.')
   return {
     schema_version: '1.0', provider_mode: options.providerMode,
@@ -28,7 +33,7 @@ export function buildRequest(mission: MissionSelection, options: AnalysisOptions
         frame_realization: options.providerMode === 'scientific' ? 'DE440/ME421' : 'synthetic-only',
         reference_surface: options.providerMode === 'scientific' ? 'MOON_SPHERE_1737400_M' : 'synthetic demonstration surface',
         reference_radius_m: options.providerMode === 'scientific' ? 1737400 : null } },
-    settings: { terrain_enabled: false, power_enabled: false, communication_enabled: false, horizon_mode: 'geometric_approximation', disk_policy: 'center', correction_mode: 'NONE', sun_clearance_deg: 0, earth_clearance_deg: 0 },
+    settings: { terrain_enabled: terrain, ...(terrain ? { terrain_options: { dataset_id: 'lola-site01-5m-v2020', coordinate_epoch_utc: new Date(start).toISOString(), max_search_radius_m: radius, radial_step_m: radial, azimuth_samples: azimuths } } : {}), power_enabled: false, communication_enabled: false, horizon_mode: terrain ? 'terrain' : 'geometric_approximation', disk_policy: 'center', correction_mode: 'NONE', sun_clearance_deg: 0, earth_clearance_deg: 0 },
   }
 }
 
