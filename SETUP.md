@@ -275,3 +275,15 @@ Step 1 checked documentation/source references and local Git hygiene. Step 2 add
 
 
 Step 7.5 terrain-aware analysis uses the same science/terrain extras, manifests and restoration commands as Step 7. POST backend/examples/terrain-visibility-request.json to the existing /api/v1/scenarios/analyze endpoint. Set terrain_enabled, horizon_mode=terrain and explicit terrain_options; surface_elevation_m must be null for DEM-derived height, and coordinate_epoch_utc must equal start_utc. The Analysis page offers a Site01 example and explicit opt-in. Reproduce saved evidence from backend with `python -m lunascend.visibility.validation`. See docs/STEP_7_5.md; no additional dependencies or services.
+
+
+## Step 8 optional engineering analysis
+
+No additional dependencies or services. Restore the existing locked environment and SPICE/LOLA data using the commands above. In the Analysis or scenario settings, enable scientific terrain, then explicitly enable power/battery and/or DTE with hardware assumptions. The existing `/api/v1/scenarios/analyze` endpoint accepts `backend/examples/engineering-request.json`; requested engineering requires `power_options` and/or `communication_options`. Geometric-only and ordinary mock modes remain unchanged; mock engineering is rejected.
+
+From `backend`, run the existing virtual environment's Python:
+
+- `python -m lunascend.power.validation` reproduces the real SPICE/LOLA engineering example.
+- `python -m lunascend.power.validation --saved-environment ../docs/validation/step-7.5-results.json` replays the saved environment without recalculating terrain/geometry.
+
+Outputs are saved under `docs/validation/step-8-*.json`. Replay requires matching site, frame, observer height, interval and terrain settings. All hardware/irradiance inputs are assumptions; results are conditional estimates. See `docs/STEP_8.md` for units, energy accounting, DTE classifications and limitations. No Step 9 work or public deployment is included.

@@ -1,0 +1,43 @@
+import { useMission } from '../state/MissionContext'
+import { PanelHeader } from './ui'
+import type { EnergyTotals, PowerAnalysis } from '../types/engineering'
+import { accessLabels, engineeringNumber as number, outcomeLabels } from '../lib/engineering'
+
+const totals: [keyof EnergyTotals,string][] = [
+  ['solar_generated_wh','Modeled solar generation / Wh'],['electrical_demand_wh','Electrical demand / Wh'],['direct_solar_to_load_wh','Solar energy delivered directly to load / Wh'],
+  ['battery_charged_wh','Internal battery energy charged / Wh'],['battery_discharged_wh','Internal battery energy withdrawn / Wh'],['charging_loss_wh','Charging losses / Wh'],['discharging_loss_wh','Discharging losses / Wh'],
+  ['curtailed_surplus_wh','Unused surplus / Wh'],['final_battery_energy_wh','Final stored energy / Wh'],['minimum_battery_energy_wh','Minimum stored energy / Wh'],['minimum_soc_pct','Minimum state of charge / %'],['unmet_load_wh','Unsupplied electrical demand / Wh'],
+]
+export function BatteryPlot({power,quantity}: {power: PowerAnalysis; quantity: 'battery_energy_wh' | 'soc_pct'}) {
+  const series = power.cases[0]?.samples || []
+  if (series.length < 2) return <p>No supported battery timeline.</p>
+  const first = Date.parse(series[0].time_utc),last = Date.parse(series.at(-1)!.time_utc),maximum = quantity === 'soc_pct' ? 100 : power.configuration.battery_capacity_wh
+  const x = (time: string) => 55 + (Date.parse(time)-first)/(last-first)*640
+  const y = (value: number) => 140-value/maximum*115
+  return <figure className="battery-figure"><figcaption>{quantity === 'soc_pct' ? 'Sampled battery charge / %' : 'Sampled battery energy / Wh'} · dashed conservative · solid optimistic</figcaption><svg viewBox="0 0 720 180" role="img" aria-label={`${quantity === 'soc_pct' ? 'State of charge percentage' : 'Battery energy in watt hours'} against UTC for conservative and optimistic assumptions. Gaps remain unknown.`}>
+    {[0,0.5,1].map(f=><g key={f}><line x1="55" x2="695" y1={y(maximum*f)} y2={y(maximum*f)}/><text x="48" y={y(maximum*f)+4} textAnchor="end">{number(maximum*f)}</text></g>)}
+    {power.cases.map(c=>{let drawing=false; const path=c.samples.map(s=>{const value=s[quantity];if(value===null){drawing=false;return ''}const result=`${drawing?'L':'M'}${x(s.time_utc)},${y(value)}`;drawing=true;return result}).join(' ');return <path key={c.assumption} d={path} className={`battery-path ${c.assumption}`}/>})}
+    <text x="55" y="163">{series[0].time_utc.replace('T',' ').replace('Z',' UTC')}</text><text x="695" y="178" textAnchor="end">{series.at(-1)!.time_utc.replace('T',' ').replace('Z',' UTC')}</text>
+  </svg></figure>
+}
+
+export function EngineeringPanel() {
+  const {analysis,observation} = useMission()
+  const result = analysis.result,power=result?.power,communication=result?.communication
+  if (!power && !communication) return <section className="panel engineering-results"><PanelHeader title="Conditional engineering analysis"/><p>Enable power/battery or direct-to-Earth analysis in the scientific terrain settings. Outputs require explicit hardware assumptions and supported environmental data.</p></section>
+  return <section className="panel engineering-results" aria-label="Conditional engineering analysis"><PanelHeader title="Power, battery & conditional DTE" detail="PRELIMINARY ENGINEERING MODEL"/>
+    <p className="terrain-limitation">These are tested assumptions, not guaranteed bounds, statistical confidence intervals or a mission-safety verdict. Partial body disks, far-field terrain and short outages may change actual conditions.</p>
+    {power && <><h3>{outcomeLabels[power.outcome]}</h3><p>Panel {power.configuration.panel_area_m2} m² · panel efficiency {power.configuration.panel_efficiency} · {power.configuration.orientation_mode.replaceAll('_',' ')} · nominal irradiance assumption {power.configuration.solar_irradiance_w_m2} W/m² · conversion {power.configuration.system_efficiency} · derating {power.configuration.derating_factor}.</p><p>Battery {power.configuration.battery_capacity_wh} Wh · initial charge {power.configuration.initial_soc_pct}% · minimum reserve {power.configuration.minimum_soc_pct}% · charge/discharge efficiencies {power.configuration.charging_efficiency}/{power.configuration.discharging_efficiency} · baseline {power.configuration.baseline_load_w} W + constant heater {power.configuration.heater_load_w} W.</p>
+      <p>Conservative denies conditional sunlight. Optimistic permits conditional center clearance only. Unknown environment breaks the battery trajectory and withholds full-period totals; known electrical demand still follows the configured load.</p>
+      <div className="terrain-table-scroll"><table className="terrain-table"><thead><tr><th>Modeled quantity</th><th>Conservative assumption</th><th>Optimistic assumption</th></tr></thead><tbody><tr><th>PV generation at selected UTC / W</th>{power.cases.map(c=><td key={c.assumption}>{number(c.samples.find(s=>Date.parse(s.time_utc)===Date.parse(observation?.time_utc || ''))?.solar_generation_w)}</td>)}</tr>{totals.map(([key,label])=><tr key={key}><th>{label}</th>{power.cases.map(c=><td key={c.assumption}>{number(c.totals[key])}</td>)}</tr>)}<tr><th>Usable environmental interval coverage / %</th>{power.cases.map(c=><td key={c.assumption}>{number(c.coverage_fraction*100)} · unknown {number(c.unknown_duration_s/3600)} h</td>)}</tr></tbody></table></div>
+      <BatteryPlot power={power} quantity="battery_energy_wh"/><BatteryPlot power={power} quantity="soc_pct"/><p>Lines connect stored UTC samples only. Production is held at the left environmental sample during supported intervals; saturation and interruptions can occur between samples. Hourly sampling does not give high-resolution battery accuracy.</p>
+      <details><summary>Potential depletion / unmet-load intervals</summary>{power.cases.map(c=><div key={c.assumption}><h4>{c.assumption}: {c.potential_depletion_intervals.length} known-prefix intervals containing unmet load</h4>{c.potential_depletion_intervals.map((d,i)=><p key={i}>{d.start_utc} – {d.end_utc}: {number(d.unmet_load_wh)} Wh unmet. This brackets an interval containing depletion, not an exact depletion timestamp.</p>)}</div>)}</details>
+    </>}
+    {communication && <div className="engineering-dte"><h3>Conditional direct-to-Earth access</h3><p>Required Earth-center terrain clearance: {number(communication.configuration.minimum_earth_clearance_deg)}°. This is an equipment margin, not a physical terrain boundary.</p>
+      {communication.access_samples.filter(s=>Date.parse(s.time_utc)===Date.parse(observation?.time_utc || '')).map(s=><p key={s.time_utc}><time>{s.time_utc}</time> · Earth clearance {number(s.earth_clearance_deg)}° · {accessLabels[s.classification]} · terrain: {s.terrain_classification.replaceAll('_',' ')}.</p>)}
+      <dl className="engineering-dte-summary"><div><dt>Total conditional access / h</dt><dd>{number(communication.earth_visibility_duration_s.value===null?null:communication.earth_visibility_duration_s.value/3600)}</dd></div><div><dt>Longest sample-supported interruption / h</dt><dd>{number(communication.longest_interruption_s.value===null?null:communication.longest_interruption_s.value/3600)}</dd></div><div><dt>Unknown time / h</dt><dd>{number(communication.unknown_duration_s/3600)}</dd></div></dl>
+      <p>Unknown intervals are excluded from both conditional access and supported interruptions. A below-margin interval is not labeled terrain obstruction. These estimates do not establish a working radio link; link-budget analysis is deferred.</p>
+      <div className="terrain-table-scroll"><table className="terrain-table"><thead><tr><th>Conditional access classification</th><th>UTC interval</th><th>Sample resolution / s</th></tr></thead><tbody>{communication.windows.map((w,i)=><tr key={i}><th>{accessLabels[w.classification]}</th><td>{w.start_utc} – {w.end_utc}{w.start_censored||w.end_censored?' · period-edge censored':''}</td><td>{w.resolution_s} · left-sample hold</td></tr>)}</tbody></table></div>
+    </div>}
+  </section>
+}

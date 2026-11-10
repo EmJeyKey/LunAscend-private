@@ -1,5 +1,6 @@
 import type { AnalysisOptions, EphemerisObservation, Metric, ScenarioRequest } from '../types/analysis'
 import type { MissionSelection } from '../types/preview'
+import { engineeringSettings } from './engineering'
 
 export const scientificFrame = 'MOON_ME_DE440_ME421'
 export const initialOptions: AnalysisOptions = { providerMode: 'scientific', surfaceElevationM: '', observerHeightM: '0', sampleStepS: '3600', frameConfirmed: false }
@@ -33,7 +34,7 @@ export function buildRequest(mission: MissionSelection, options: AnalysisOptions
         frame_realization: options.providerMode === 'scientific' ? 'DE440/ME421' : 'synthetic-only',
         reference_surface: options.providerMode === 'scientific' ? 'MOON_SPHERE_1737400_M' : 'synthetic demonstration surface',
         reference_radius_m: options.providerMode === 'scientific' ? 1737400 : null } },
-    settings: { terrain_enabled: terrain, ...(terrain ? { terrain_options: { dataset_id: 'lola-site01-5m-v2020', coordinate_epoch_utc: new Date(start).toISOString(), max_search_radius_m: radius, radial_step_m: radial, azimuth_samples: azimuths } } : {}), power_enabled: false, communication_enabled: false, horizon_mode: terrain ? 'terrain' : 'geometric_approximation', disk_policy: 'center', correction_mode: 'NONE', sun_clearance_deg: 0, earth_clearance_deg: 0 },
+    settings: { terrain_enabled: terrain, ...(terrain ? { terrain_options: { dataset_id: 'lola-site01-5m-v2020', coordinate_epoch_utc: new Date(start).toISOString(), max_search_radius_m: radius, radial_step_m: radial, azimuth_samples: azimuths } } : {}), ...engineeringSettings(options), horizon_mode: terrain ? 'terrain' : 'geometric_approximation', disk_policy: 'center', correction_mode: 'NONE', sun_clearance_deg: 0, earth_clearance_deg: 0 },
   }
 }
 

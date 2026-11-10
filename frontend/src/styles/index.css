@@ -917,3 +917,25 @@ body, .app-main { background: var(--bg); }
 .terrain-table tr[aria-current='time'] { background: #d6ad7010; color: #ffedb5; }
 .terrain-visibility details { font-size: 12px; line-height: 1.8; }
 @media (max-width: 600px) { .terrain-readouts { grid-template-columns: minmax(0, 1fr); } }
+
+/* Step 8: compact conditional engineering readouts; existing palette and type hierarchy. */
+.engineering-options select { padding: 8px; border: 1px solid #303d4a; margin-block: 8px; }
+.engineering-options .terrain-toggle { margin-block: 12px; }
+.engineering-results { margin-top: 24px; }
+.engineering-results p { color: var(--muted); font-size: 12px; line-height: 1.8; margin: 10px 0; }
+.engineering-results h3 { font-size: 15px; color: var(--gold); margin-block: 16px 10px; }
+.engineering-results details { font-size: 12px; line-height: 1.8; }
+.engineering-results .terrain-limitation { color: #d8bd87; }
+.battery-figure { margin: 18px 0; min-width: 0; overflow-x: auto; }
+.battery-figure figcaption { color: var(--muted); font-size: 11px; }
+.battery-figure svg { width: 100%; min-width: 560px; height: auto; display: block; }
+.battery-figure line { stroke: #29333f; stroke-width: 1; }
+.battery-figure text { fill: var(--muted); font: 14px var(--font-mono); }
+.battery-path { fill: none; stroke: var(--gold); stroke-width: 2; }
+.battery-path.conservative { stroke: #b69560; stroke-dasharray: 6 4; }
+.engineering-dte { border-top: 2px solid #7bbfd077; padding-top: 16px; margin-top: 22px; }
+.engineering-dte h3 { color: var(--cyan); }
+.engineering-dte-summary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; font-size: 12px; }
+.engineering-dte-summary dt { color: var(--muted); }
+.engineering-dte-summary dd { margin: 8px 0; font-family: var(--font-mono); color: var(--cyan); }
+@media (max-width: 600px) { .engineering-dte-summary { grid-template-columns: 1fr; } }

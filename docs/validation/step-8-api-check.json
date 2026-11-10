@@ -1,0 +1,64 @@
+{
+  "engineering": {
+    "status": 200,
+    "outcome": "pass_optimistic_only",
+    "cases": [
+      {
+        "assumption": "conservative",
+        "coverage_fraction": 1.0,
+        "totals": {
+          "solar_generated_wh": 0.0,
+          "electrical_demand_wh": 1200.0,
+          "direct_solar_to_load_wh": 0.0,
+          "battery_charged_wh": 0.0,
+          "battery_discharged_wh": 449.99999999999994,
+          "charging_loss_wh": 0.0,
+          "discharging_loss_wh": 22.500000000000025,
+          "curtailed_surplus_wh": 0.0,
+          "final_battery_energy_wh": 50.0,
+          "minimum_battery_energy_wh": 50.0,
+          "minimum_soc_pct": 10.0,
+          "unmet_load_wh": 772.5000000000001,
+          "energy_balance_residual_wh": 8.881784197001252e-14
+        }
+      },
+      {
+        "assumption": "optimistic",
+        "coverage_fraction": 1.0,
+        "totals": {
+          "solar_generated_wh": 14698.800000000007,
+          "electrical_demand_wh": 1200.0,
+          "direct_solar_to_load_wh": 1200.0,
+          "battery_charged_wh": 0.0,
+          "battery_discharged_wh": 0.0,
+          "charging_loss_wh": 0.0,
+          "discharging_loss_wh": 0.0,
+          "curtailed_surplus_wh": 13498.800000000005,
+          "final_battery_energy_wh": 500.0,
+          "minimum_battery_energy_wh": 500.0,
+          "minimum_soc_pct": 100.0,
+          "unmet_load_wh": 0.0,
+          "energy_balance_residual_wh": 1.8189894035458565e-12
+        }
+      }
+    ],
+    "conditional_dte_duration_s": 0.0,
+    "longest_supported_interruption_s": 86400.0
+  },
+  "missing_terrain": {
+    "status": 503,
+    "error": "MISSING_DATA",
+    "no_engineering_products": true
+  },
+  "geometric_only": {
+    "status": 200,
+    "first_sun_elevation_deg": 1.6500961689197666
+  },
+  "mock_engineering_rejected": {
+    "status": 422,
+    "error": "INVALID_REQUEST"
+  },
+  "explicit_mock": {
+    "status": 200
+  }
+}

@@ -4,6 +4,7 @@ from math import ceil
 from typing import Annotated, Literal
 
 from pydantic import Field, computed_field, field_validator, model_validator
+from .engineering import PowerConfiguration, CommunicationConfiguration, EnergyCase, AccessSample
 
 from .common import (
     AnalysisError, Azimuth, CalculationStatus, Contract, Elevation, Metric,
@@ -61,6 +62,8 @@ class AnalysisSettings(Contract):
     sun_clearance_deg: Annotated[NonNegative, Field(le=90)] = 0.0
     earth_clearance_deg: Annotated[NonNegative, Field(le=90)] = 0.0
     terrain_options: TerrainVisibilitySettings | None = None
+    power_options: PowerConfiguration | None = None
+    communication_options: CommunicationConfiguration | None = None
 
     @model_validator(mode="after")
     def terrain_policy(self) -> "AnalysisSettings":
@@ -210,11 +213,12 @@ class VisibilityWindow(AnalysisInterval, ScientificProduct):
         "visible", "obstructed", "borderline", "unknown",
         "sunlight_only", "earth_only", "both", "neither",
         "modeled_obstruction", "conditional_clearance", "indeterminate", "unavailable",
+        "below_clearance_requirement", "conditional_access",
     ]
     start_censored: bool = False
     end_censored: bool = False
     resolution_s: Positive | None = None
-    method: Literal["sampled_support", "piecewise_linear_clearance"] | None = None
+    method: Literal["sampled_support", "piecewise_linear_clearance", "left_sample_hold"] | None = None
 
     @computed_field
     @property
@@ -235,6 +239,9 @@ class VisibilityWindow(AnalysisInterval, ScientificProduct):
 
 
 class PowerAnalysis(ScientificProduct):
+    configuration: PowerConfiguration | None = None
+    cases: tuple[EnergyCase, ...] = ()
+    outcome: Literal["pass_both", "pass_optimistic_only", "fail_both", "indeterminate", "unavailable"] | None = None
     solar_generation_w: Metric[NonNegative] = Field(default_factory=Metric)
     consumption_w: Metric[NonNegative] = Field(default_factory=Metric)
     net_power_w: Metric[Number] = Field(default_factory=Metric)
@@ -252,6 +259,12 @@ class PowerAnalysis(ScientificProduct):
 
 
 class CommunicationAnalysis(ScientificProduct):
+    configuration: CommunicationConfiguration | None = None
+    access_samples: tuple[AccessSample, ...] = ()
+    covered_duration_s: NonNegative = 0.0
+    unknown_duration_s: NonNegative = 0.0
+    coverage_fraction: Annotated[Number, Field(ge=0, le=1)] = 0.0
+    max_sample_step_s: Positive | None = None
     earth_visibility_duration_s: Metric[NonNegative] = Field(default_factory=Metric)
     windows: tuple[VisibilityWindow, ...] | None = None
     longest_interruption_s: Metric[NonNegative] = Field(default_factory=Metric)

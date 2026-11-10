@@ -1,4 +1,5 @@
 import type { AnalysisError, DataProvenance, Metric, ProviderMode, ScenarioRequest, ScenarioResult } from '../types/analysis'
+import { engineeringProducts } from './engineering'
 
 export class AnalysisFailure extends Error {
   constructor(message: string, public readonly errors: AnalysisError[] = []) { super(message) }
@@ -99,9 +100,10 @@ export function parseResult(v: unknown, request: ScenarioRequest): ScenarioResul
       || !validation(source.validation_status) || (request.provider_mode === 'mock' ? source.validation_status !== 'mock' : source.validation_status === 'mock')) throw invalid()
     for (const key of ['source_version', 'reference_frame', 'validation_report_id', 'source_url', 'sha256', 'terrain_dataset']) if (source[key] !== null && typeof source[key] !== 'string') throw invalid()
   }
-  if (['power', 'communication', 'resilience'].some(key => v[key] !== null)) throw invalid()
+  if (v.resilience !== null) throw invalid()
   const sources = new Set(v.provenance.map(source => (source as DataProvenance).id))
   if (!terrainProducts(v, request, sources)) throw invalid()
+  if (!engineeringProducts(v, request, sources)) throw invalid()
   if (v.observations !== null && !Array.isArray(v.observations)) throw invalid()
   let previous = -Infinity
   for (const row of (v.observations || []) as unknown[]) {

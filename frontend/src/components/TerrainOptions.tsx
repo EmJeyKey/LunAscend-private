@@ -3,7 +3,7 @@ import type { AnalysisOptions } from '../types/analysis'
 export function TerrainOptions({ options, onChange }: { options: AnalysisOptions; onChange: (options: AnalysisOptions) => void }) {
   const enabled = !!options.terrainEnabled
   return <fieldset className="terrain-options"><legend>Terrain-aware center visibility</legend>
-    <label className="terrain-toggle"><input type="checkbox" checked={enabled} disabled={options.providerMode !== 'scientific'} onChange={event => onChange({ ...options, terrainEnabled: event.target.checked })}/>Use NASA LOLA Site01 terrain</label>
+    <label className="terrain-toggle"><input type="checkbox" checked={enabled} disabled={options.providerMode !== 'scientific'} onChange={event => onChange({ ...options, terrainEnabled: event.target.checked, powerEnabled: event.target.checked && options.powerEnabled, communicationEnabled: event.target.checked && options.communicationEnabled })}/>Use NASA LOLA Site01 terrain</label>
     {enabled && <><p>DE440 coordinates are anchored at the analysis start, then held fixed in DEM-native DE421. Surface height comes from the DEM; observer height is added once. This dataset covers only the Site01 region.</p>
       <div className="analysis-input-grid">
         <label>Search radius / m<input type="number" aria-label="Terrain search radius in meters" min="1" max="50000" step="any" required value={options.terrainRadiusM ?? '2500'} onChange={event => onChange({ ...options, terrainRadiusM: event.target.value })}/></label>

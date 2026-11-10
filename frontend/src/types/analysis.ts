@@ -1,4 +1,5 @@
 // Consumed fields mirror backend/contracts; unimplemented products stay null here.
+import type { PowerConfiguration, CommunicationConfiguration, EngineeringDraft, PowerAnalysis, CommunicationAnalysis } from './engineering'
 export type ProviderMode = 'mock' | 'scientific'
 export type ValidationStatus = 'mock' | 'unvalidated' | 'reference_compared' | 'validated'
 export interface Metric {
@@ -17,7 +18,7 @@ export interface ScenarioRequest {
   schema_version: '1.0'
   site: { site_id: string; name: string; latitude_deg: number; longitude_deg: number; surface_elevation_m: number | null; observer_height_m: number; coordinate_reference: CoordinateReference }
   provider_mode: ProviderMode; start_utc: string; end_utc: string; sample_step_s: number
-  settings: { terrain_enabled: boolean; terrain_options?: { dataset_id: string; coordinate_epoch_utc: string; max_search_radius_m: number; radial_step_m: number; azimuth_samples: number } | null; power_enabled: false; communication_enabled: false; horizon_mode: 'geometric_approximation' | 'terrain'; disk_policy: 'center'; correction_mode: 'NONE'; sun_clearance_deg: 0; earth_clearance_deg: 0 }
+  settings: { terrain_enabled: boolean; terrain_options?: { dataset_id: string; coordinate_epoch_utc: string; max_search_radius_m: number; radial_step_m: number; azimuth_samples: number } | null; power_enabled: boolean; communication_enabled: boolean; power_options?: PowerConfiguration | null; communication_options?: CommunicationConfiguration | null; horizon_mode: 'geometric_approximation' | 'terrain'; disk_policy: 'center'; correction_mode: 'NONE'; sun_clearance_deg: 0; earth_clearance_deg: 0 }
 }
 export interface EphemerisObservation {
   time_utc: string; reference_frame: string; correction_mode: 'NONE'
@@ -35,12 +36,13 @@ export interface AnalysisError { code: string; message: string; module: string |
 export interface ScenarioResult {
   schema_version: '1.0'; scenario_id: string; request: ScenarioRequest; provider_mode: ProviderMode; model_version: string
   status: 'complete' | 'partial' | 'failed' | 'unavailable'; observations: EphemerisObservation[] | null
-  horizon: TerrainHorizon | null; visibility_windows: TerrainWindow[] | null; terrain_visibility?: TerrainVisibility | null; power: null; communication: null; resilience: null
+  horizon: TerrainHorizon | null; visibility_windows: TerrainWindow[] | null; terrain_visibility?: TerrainVisibility | null; power: PowerAnalysis | null; communication: CommunicationAnalysis | null; resilience: null
   provenance: DataProvenance[]; errors: AnalysisError[]; warnings: string[]
 }
 export interface AnalysisOptions {
   providerMode: ProviderMode; surfaceElevationM: string; observerHeightM: string; sampleStepS: string; frameConfirmed: boolean
   terrainEnabled?: boolean; terrainRadiusM?: string; terrainAzimuthSamples?: string; terrainRadialStepM?: string
+  powerEnabled?: boolean; communicationEnabled?: boolean; engineering?: EngineeringDraft
 }
 export type TerrainClassification = 'modeled_obstruction' | 'conditional_clearance' | 'indeterminate' | 'unavailable'
 export interface TerrainBody { azimuth_deg: number | null; elevation_deg: number | null; horizon_elevation_deg: number | null; clearance_deg: number | null; classification: TerrainClassification; coverage: 'sampled_radius' | 'partial' | 'unknown'; reason: string }

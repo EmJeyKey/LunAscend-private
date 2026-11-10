@@ -16,6 +16,9 @@ class ScientificAnalysisProvider:
         if request.provider_mode != "scientific":
             raise ValueError("Provider selection mismatch")
         try:
+            if request.settings.power_enabled or request.settings.communication_enabled:
+                from lunascend.power.service import analyze_engineering
+                return await asyncio.to_thread(analyze_engineering, request, self.configuration)
             if request.settings.terrain_enabled:
                 from lunascend.visibility.engine import analyze_visibility
                 return await asyncio.to_thread(analyze_visibility, request, self.configuration)
