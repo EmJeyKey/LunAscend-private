@@ -4,9 +4,10 @@ import subprocess
 import sys
 from hashlib import sha256
 from math import ceil
+from typing import Callable
 from lunascend.contracts.models import (ScenarioRequest, ScenarioResult, DataProvenance,
     EphemerisObservation, TerrainVisibility, TerrainVisibilityObservation)
-from lunascend.contracts.terrain import TerrainRequest
+from lunascend.contracts.terrain import TerrainRequest, TerrainResult
 from lunascend.ephemeris.kernels import KernelConfiguration, GeometryError, PROJECT_ROOT, FRAME, RADIUS_M
 from lunascend.ephemeris.engine import validate_site
 from lunascend.terrain.engine import analyze_terrain
@@ -29,7 +30,8 @@ def worker(request: ScenarioRequest, config: KernelConfiguration, mode: str, sur
         raise GeometryError("CALCULATION_FAILED", "Isolated terrain geometry worker is unavailable or exceeded its bounded runtime.") from exc
 
 
-def analyze_visibility(request: ScenarioRequest, configuration: KernelConfiguration | None = None) -> ScenarioResult:
+def analyze_visibility(request: ScenarioRequest, configuration: KernelConfiguration | None = None, *,
+                       terrain_loader: Callable[[TerrainRequest], TerrainResult] | None = None) -> ScenarioResult:
     settings, options = request.settings, request.settings.terrain_options
     if (request.provider_mode != "scientific" or not options or settings.horizon_mode != "terrain"
         or settings.power_enabled or settings.communication_enabled or settings.sun_clearance_deg or settings.earth_clearance_deg):
@@ -48,7 +50,7 @@ def analyze_visibility(request: ScenarioRequest, configuration: KernelConfigurat
         latitude_deg=anchor["latitude_deg"], longitude_deg=anchor["longitude_deg"], reference_frame="MOON_ME_DE421",
         observer_height_m=request.site.observer_height_m, azimuth_samples=options.azimuth_samples,
         max_search_radius_m=options.max_search_radius_m, radial_step_m=options.radial_step_m)
-    terrain = analyze_terrain(terrain_request)  # One profile for the fixed native site and radial height.
+    terrain = (terrain_loader or analyze_terrain)(terrain_request)  # Bounded reuse may be supplied for an unchanged observer.
     resolved = worker(request, config, "observations", terrain.surface_elevation_m)
     rows = tuple(TerrainVisibilityObservation(time_utc=row["time_utc"],
         sun=classify(terrain.horizon, **row["sun"]), earth=classify(terrain.horizon, **row["earth"])) for row in resolved["native"])

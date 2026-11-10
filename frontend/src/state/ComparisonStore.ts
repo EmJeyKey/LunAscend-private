@@ -1,4 +1,4 @@
-import { emptyAnalysis, requestAnalysis, type AnalysisState } from '../api/analysis'
+import { emptyAnalysis, requestAnalysis, parseResult, type AnalysisState } from '../api/analysis'
 import { buildRequest } from '../lib/analysis'
 import type { AnalysisOptions, ScenarioRequest, ScenarioResult } from '../types/analysis'
 import type { MissionSelection } from '../types/preview'
@@ -53,6 +53,15 @@ export class ComparisonStore {
   duplicate(id: string) {
     const item = this.snapshot.scenarios.find(s => s.id === id)
     return item ? this.add(item.selection, item.options, `${item.name} copy`.slice(0, 100)) : null
+  }
+  addResult(selection: MissionSelection, options: AnalysisOptions, result: ScenarioResult) {
+    const verified = parseResult(result, buildRequest(selection, options))
+    const id = this.add(selection, structuredClone(options), selection.site.name+' · opportunity')
+    if (id) {
+      this.cache.set(JSON.stringify(buildRequest(selection, options)), verified)
+      this.status(id, { status:'success', result:verified, message:'' })
+    }
+    return id
   }
   remove(id: string) {
     this.detach(id)

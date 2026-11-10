@@ -939,3 +939,18 @@ body, .app-main { background: var(--bg); }
 .engineering-dte-summary dt { color: var(--muted); }
 .engineering-dte-summary dd { margin: 8px 0; font-family: var(--font-mono); color: var(--cyan); }
 @media (max-width: 600px) { .engineering-dte-summary { grid-template-columns: 1fr; } }
+
+/* Mission resilience: existing scientific typography and section separators. */
+.resilience-section { margin-top: 24px; min-width: 0; }
+.resilience-section > h2 { color: var(--gold); font-size: clamp(21px,2vw,28px); }
+.resilience-section p { font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
+.resilience-controls { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,210px),1fr)); gap: 16px; margin: 18px 0; align-items: end; }
+.resilience-section label { display: block; font-size: 12px; color: var(--muted); line-height: 1.8; }
+.resilience-section textarea { width: 100%; min-height: 80px; background: transparent; color: #e7ecf2; border: 1px solid var(--border); padding: 10px; font-family: var(--font-mono); }
+.resilience-section pre { max-height: 450px; overflow: auto; font: 11px/1.8 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.resilience-section .button { margin: 4px 8px 4px 0; }
+.resilience-section .two-columns { min-width: 0; }
+@media (max-width: 700px) { .resilience-section .two-columns { grid-template-columns: 1fr; } }
+.resilience-section label:has(> input[type="checkbox"]) { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+.resilience-section input[type="checkbox"] { width: auto; flex: 0 0 auto; margin: 0; }
+.resilience-section .terrain-table { min-width: 740px; }

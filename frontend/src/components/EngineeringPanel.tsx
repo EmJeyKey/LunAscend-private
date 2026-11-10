@@ -8,7 +8,7 @@ const totals: [keyof EnergyTotals,string][] = [
   ['battery_charged_wh','Internal battery energy charged / Wh'],['battery_discharged_wh','Internal battery energy withdrawn / Wh'],['charging_loss_wh','Charging losses / Wh'],['discharging_loss_wh','Discharging losses / Wh'],
   ['curtailed_surplus_wh','Unused surplus / Wh'],['final_battery_energy_wh','Final stored energy / Wh'],['minimum_battery_energy_wh','Minimum stored energy / Wh'],['minimum_soc_pct','Minimum state of charge / %'],['unmet_load_wh','Unsupplied electrical demand / Wh'],
 ]
-export function BatteryPlot({power,quantity}: {power: PowerAnalysis; quantity: 'battery_energy_wh' | 'soc_pct'}) {
+export function BatteryPlot({power,quantity,elapsed=false}: {power: PowerAnalysis; quantity: 'battery_energy_wh' | 'soc_pct'; elapsed?: boolean}) {
   const series = power.cases[0]?.samples || []
   if (series.length < 2) return <p>No supported battery timeline.</p>
   const first = Date.parse(series[0].time_utc),last = Date.parse(series.at(-1)!.time_utc),maximum = quantity === 'soc_pct' ? 100 : power.configuration.battery_capacity_wh
@@ -17,7 +17,7 @@ export function BatteryPlot({power,quantity}: {power: PowerAnalysis; quantity: '
   return <figure className="battery-figure"><figcaption>{quantity === 'soc_pct' ? 'Sampled battery charge / %' : 'Sampled battery energy / Wh'} · dashed conservative · solid optimistic</figcaption><svg viewBox="0 0 720 180" role="img" aria-label={`${quantity === 'soc_pct' ? 'State of charge percentage' : 'Battery energy in watt hours'} against UTC for conservative and optimistic assumptions. Gaps remain unknown.`}>
     {[0,0.5,1].map(f=><g key={f}><line x1="55" x2="695" y1={y(maximum*f)} y2={y(maximum*f)}/><text x="48" y={y(maximum*f)+4} textAnchor="end">{number(maximum*f)}</text></g>)}
     {power.cases.map(c=>{let drawing=false; const path=c.samples.map(s=>{const value=s[quantity];if(value===null){drawing=false;return ''}const result=`${drawing?'L':'M'}${x(s.time_utc)},${y(value)}`;drawing=true;return result}).join(' ');return <path key={c.assumption} d={path} className={`battery-path ${c.assumption}`}/>})}
-    <text x="55" y="163">{series[0].time_utc.replace('T',' ').replace('Z',' UTC')}</text><text x="695" y="178" textAnchor="end">{series.at(-1)!.time_utc.replace('T',' ').replace('Z',' UTC')}</text>
+    <text x="55" y="163">{elapsed ? '0 h elapsed · '+series[0].time_utc : series[0].time_utc.replace('T',' ').replace('Z',' UTC')}</text><text x="695" y="178" textAnchor="end">{elapsed ? `${(last-first)/3600000} h elapsed · ${series.at(-1)!.time_utc}` : series.at(-1)!.time_utc.replace('T',' ').replace('Z',' UTC')}</text>
   </svg></figure>
 }
 

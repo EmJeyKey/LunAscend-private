@@ -1,6 +1,12 @@
-# LunAscend architecture — Step 7.5 terrain-center visibility
+# LunAscend architecture — Step 9 mission resilience
 
 Status: Step 6 adds independent scientific scenario comparison to the existing Step 5 integration and Step 5.5 design. The validated Step 3 engine and Step 4 mock generator are preserved. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+
+## Step 9 mission resilience and bounded opportunity evaluation
+
+The versioned resilience/search endpoint composes existing scientific visibility and engineering functions. Explicit baseline hardware and duration are preserved across actual recalculated landing epochs. The isolated exact frame bridge keeps physical observers fixed in DEM-native DE421; a typed optional terrain-loader boundary permits same-observer profile reuse without changing visibility equations. Searches are sequential, limited to 12 candidates plus baseline, 3 sites, 30-day landing span/offset, 7-day missions and 169 samples. Per-search result/profile caches avoid stale resources across searches; cancellation drains in-flight work and stops between candidates.
+
+Python evaluates explicit requirements with pass/fail/indeterminate evidence and numeric deltas. Unknown data cannot pass; optimistic assumptions receive conditional labels; there is no score or mission-safety claim. React validates returned products and presents existing controls, elapsed battery charts, actual UTC and provenance. Optional shared-control draft reporting prevents stale site/date/duration selection. Validated alternatives enter the existing three-scenario ComparisonStore without overwriting others. See docs/STEP_9.md for constraints, actual demonstrations, executed checks and limitations.
 
 ## Step 7.5 optional terrain-center visibility
 

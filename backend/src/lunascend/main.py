@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 from lunascend import __version__
 from lunascend.api.routes import router
 from lunascend.api.terrain import router as terrain_router
+from lunascend.api.resilience import router as resilience_router
 from lunascend.contracts import AnalysisError, ErrorResponse
 
 
@@ -14,6 +15,7 @@ def create_app() -> FastAPI:
     app = FastAPI(title="LunAscend", version=__version__)
     app.include_router(router)
     app.include_router(terrain_router)
+    app.include_router(resilience_router)
 
     @app.exception_handler(RequestValidationError)
     async def invalid_request(request: Request, exc: RequestValidationError) -> JSONResponse:
