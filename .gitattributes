@@ -6,6 +6,7 @@ backend/src/lunascend/power/*.py text eol=lf
 backend/src/lunascend/communication/*.py text eol=lf
 backend/src/lunascend/resilience/*.py text eol=lf
 backend/src/lunascend/contracts/resilience.py text eol=lf
+backend/src/lunascend/contracts/visualization.py text eol=lf
 backend/src/lunascend/contracts/engineering.py text eol=lf
 backend/src/lunascend/contracts/models.py text eol=lf
 backend/src/lunascend/providers/scientific.py text eol=lf
@@ -14,3 +15,4 @@ docs/validation/* text eol=lf
 data/fixtures/horizons/*.response.json -text
 # Preserve upstream font license bytes, including original whitespace.
 frontend/public/fonts/*-OFL.txt -text whitespace=-blank-at-eol
+frontend/public/licenses/three-LICENSE.txt -text whitespace=-blank-at-eol

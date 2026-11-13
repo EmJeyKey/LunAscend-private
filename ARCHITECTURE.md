@@ -1,6 +1,12 @@
-# LunAscend architecture — Step 9 mission resilience
+# LunAscend architecture — Step 10 lunar visualization
 
 Status: Step 6 adds independent scientific scenario comparison to the existing Step 5 integration and Step 5.5 design. The validated Step 3 engine and Step 4 mock generator are preserved. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+
+## Step 10 georeferenced visualization
+
+The existing optional terrain adapter now serves bounded mesh and original-DEM inspection products through `/api/v1/terrain/mesh` and `/api/v1/terrain/inspect`. The manifest, reader and exact isolated DE440/DE421 bridge are reused. Retained original pixel centers become spherical body-fixed positions and a proper local east/up/minus-north rendering rotation; any missing original pixel invalidates the spanned decimated cell. Source height/datum, masks, finite bounds, resolution and bridge metadata remain explicit. These products do not replace scientific horizons or alter existing equations/contracts.
+
+React's isolated lazy Three.js renderer presents a context sphere, finite NASA terrain and linked native polar window. MissionContext remains authoritative for site/results/sample index; exact returned per-epoch native directions and observer reconciliation drive overlays. Camera/time changes reuse static terrain. Exaggeration is a copied render transform only. Bounded two-entry mesh caching, on-demand frames, resource disposal and a useful 2D fallback preserve existing workflows. See docs/STEP_10.md for transforms, limits, real evidence and executed checks. No Step 11 work is included.
 
 ## Step 9 mission resilience and bounded opportunity evaluation
 

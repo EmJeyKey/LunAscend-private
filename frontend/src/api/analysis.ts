@@ -47,6 +47,17 @@ function terrainProducts(v: Record<string, unknown>, request: ScenarioRequest, s
       if (b.classification === 'unavailable' && (b.clearance_deg !== null || b.horizon_elevation_deg !== null)) return false
     }
   }
+  if (t.observer_geometry !== undefined) {
+    if (!Array.isArray(t.observer_geometry) || t.observer_geometry.length !== rows.length) return false
+    for (let i=0;i<t.observer_geometry.length;i++) {
+      const g=t.observer_geometry[i]
+      if (!object(g) || !object(rows[i]) || !utc(g.time_utc) || Date.parse(String(g.time_utc))!==Date.parse(String(rows[i].time_utc)) || !finite(g.latitude_deg_de440) || Math.abs(g.latitude_deg_de440)>90
+        || !finite(g.longitude_deg_de440) || g.longitude_deg_de440< -180 || g.longitude_deg_de440>=180
+        || !finite(g.native_position_residual_m) || g.native_position_residual_m<0 || g.native_position_residual_m>1e-6
+        || !Array.isArray(g.de440_to_de421_matrix) || g.de440_to_de421_matrix.length!==3
+        || g.de440_to_de421_matrix.some((row:unknown)=>!Array.isArray(row)||row.length!==3||!row.every(finite))) return false
+    }
+  }
   for (const w of v.visibility_windows) {
     if (!object(w) || !['sun', 'earth', 'joint'].includes(String(w.target)) || !classification(w.classification)
       || !utc(w.start_utc) || !utc(w.end_utc) || Date.parse(String(w.start_utc)) < Date.parse(request.start_utc) || Date.parse(String(w.end_utc)) > Date.parse(request.end_utc)
