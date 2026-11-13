@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "reviewed_on": "2026-11-14",
+  "challenge_url": "https://www.spaceappschallenge.org/2026/challenges/lunar-landing-site-navigator/?tab=resources",
+  "challenge_list_basis": "Four resources specified in the team's Step 11 brief. The challenge summary was discoverable, but its live resources tab could not be retrieved during this review.",
+  "sources": [
+    {
+      "id": "quickmap", "name": "LROC QuickMap", "organization": "LROC Science Operations Center / Arizona State University; QuickMap platform",
+      "official_url": "https://quickmap.lroc.asu.edu/", "challenge_resource": true, "roles": ["reference"],
+      "purpose": "Explore LROC optical surface imagery and locate candidate image products.",
+      "use_in_lunascend": "External visual comparison resource. No QuickMap imagery, tiles or measurements are imported.",
+      "product_id": null, "version": null, "coordinate_system": "Product and layer dependent; no external image registration is asserted.",
+      "quantities": ["Optical surface context outside LunAscend"], "original_resolution": null,
+      "usage_conditions": "PDS-delivered LROC products and non-PDS website imagery have different terms. No imagery is redistributed here; review the specific product before reuse.",
+      "terms_url": "https://www.lroc.im-ldi.com/about/terms", "attribution": "LROC resource: NASA/GSFC/Arizona State University. No agency or provider endorsement.",
+      "offline": "Resource notes available locally; the external map requires internet.",
+      "limitations": "The supplied URL redirected to quickmap.lroc.im-ldi.com during review. Selected-site comparison is manual; no coordinate deep-link API or imagery alignment is claimed."
+    },
+    {
+      "id": "moon-trek", "name": "NASA Moon Trek", "organization": "NASA SSERVI / JPL Solar System Treks",
+      "official_url": "https://trek.nasa.gov/moon/", "challenge_resource": true, "roles": ["reference"],
+      "purpose": "Explore lunar maps, layer metadata and documented WMTS services.",
+      "use_in_lunascend": "External map and service-documentation links. No Moon Trek basemap or texture is installed.",
+      "product_id": null, "version": null, "coordinate_system": "Layer-specific equirectangular or polar tile matrix sets; no reprojection or registration is assumed.",
+      "quantities": ["External imagery and map context"], "original_resolution": null,
+      "usage_conditions": "Review each layer's metadata, attribution and usage conditions before integration. Portal access does not certify a layer's registration or confer blanket rights.",
+      "terms_url": "https://trek.nasa.gov/tiles/apidoc/trekAPI.html?body=moon", "attribution": "NASA SSERVI / JPL Solar System Treks; individual layers retain their originating credits.",
+      "offline": "Resource notes available locally; external portal and WMTS documentation require internet.",
+      "limitations": "WMTS documentation was reviewed. A complete product, capabilities, rights and frame-alignment chain was not verified; no external layer is requested by the application."
+    },
+    {
+      "id": "horizons", "name": "JPL Horizons", "organization": "NASA / JPL Solar System Dynamics Group",
+      "official_url": "https://ssd.jpl.nasa.gov/horizons/", "challenge_resource": true, "roles": ["validation"],
+      "purpose": "Reference ephemerides for finite cross-implementation checks of Sun/Earth angles.",
+      "use_in_lunascend": "Saved request/response records and executed Step 3 residuals. Live app calculations use local SPICE, not Horizons requests.",
+      "product_id": "step-3-horizons-v1", "version": "Saved acquisition 2026-10-31; Horizons headers identify DE441",
+      "coordinate_system": "Horizons MEAN_ME (high precision), east-positive longitude, 1737.4 km sphere; geometric ICRF vectors and apparent AIRLESS AZ/EL references.",
+      "quantities": ["Sun/Earth center azimuth and elevation", "Geometric NONE and diagnostic apparent CN+S comparisons"], "original_resolution": "Three specified UTC epochs; not imagery or a terrain raster.",
+      "usage_conditions": "Credit NASA/JPL SSD. Saved references are reused offline. Any future acquisition must follow the official API fair-use guidance; this milestone adds no live query service.",
+      "terms_url": "https://ssd-api.jpl.nasa.gov/doc/horizons.html", "attribution": "NASA/JPL Solar System Dynamics, Horizons System.",
+      "offline": "Saved references and displayed validation summary are bundled locally; live Horizons access is optional.",
+      "limitations": "Independent service/implementation comparison with shared JPL model heritage; not independent observational truth, global accuracy, terrain validation or mission certification."
+    },
+    {
+      "id": "csa", "name": "Canadian Space Agency Moon Exploration", "organization": "Canadian Space Agency / Government of Canada",
+      "official_url": "https://www.asc-csa.gc.ca/eng/astronomy/moon-exploration/", "challenge_resource": true, "roles": ["reference"],
+      "purpose": "Educational context on Canadian lunar exploration, Artemis, Gateway robotics and surface operations.",
+      "use_in_lunascend": "Background reading on Canadarm3, Gateway and lunar surface infrastructure. This motivates planning constraints; CSA supplies no numerical input to this application.",
+      "product_id": null, "version": null, "coordinate_system": "Not applicable: educational context, not geospatial data.",
+      "quantities": [], "original_resolution": null,
+      "usage_conditions": "Educational summaries credit CSA. Third-party material and official logos have separate restrictions; no CSA logo, image or other media is reproduced.",
+      "terms_url": "https://www.asc-csa.gc.ca/eng/terms.asp", "attribution": "Credit: Canadian Space Agency. No association with or endorsement by CSA is implied.",
+      "offline": "The short attributed context is local; linked CSA pages require internet.",
+      "limitations": "Educational reference only; no CSA ephemeris, elevation, hardware specification or endorsement claim."
+    },
+    {
+      "id": "spice", "name": "JPL NAIF SPICE", "organization": "NASA / JPL Navigation and Ancillary Information Facility",
+      "official_url": "https://naif.jpl.nasa.gov/naif/", "challenge_resource": false, "roles": ["calculation"],
+      "manifest": "data/manifests/spice-kernels.json", "bridge_manifest": "data/manifests/terrain-frame-kernels.json",
+      "purpose": "Local Sun/Earth ephemeris geometry and exact lunar frame rotations.",
+      "use_in_lunascend": "The scientific backend uses pinned kernels and SpiceyPy. The isolated terrain frame bridge reconciles DE440/ME421 geometry and DE421 terrain.",
+      "quantities": ["Sun/Earth center azimuth and elevation", "UTC/TAI/ET conversion", "Exact lunar frame rotations"],
+      "usage_conditions": "Follow NAIF's SPICE rules and preserve kernel-producer attribution. Restore toolkit and unmodified kernels from the documented official sources; binaries remain outside Git.",
+      "terms_url": "https://naif.jpl.nasa.gov/naif/rules.html", "attribution": "NASA/JPL NAIF SPICE and the teams supplying the pinned kernels.",
+      "offline": "Scientific calculations run locally after restoring the optional environment and pinned kernels.",
+      "limitations": "Geometric center directions, correction NONE and explicit heights. Reference-compared status applies only to matching saved cases/software/kernel identity."
+    },
+    {
+      "id": "lola", "name": "NASA LOLA / PGDA Site01", "organization": "NASA Goddard PGDA / LRO LOLA team",
+      "official_url": "https://pgda.gsfc.nasa.gov/products/78", "challenge_resource": false, "roles": ["calculation", "visualization"],
+      "manifest": "data/manifests/lola-site01.json",
+      "purpose": "Finite surface elevation, terrain horizons and a georeferenced local display mesh.",
+      "use_in_lunascend": "Original DEM heights feed terrain/visibility calculations and the decimated 3D/polar viewer. Optical imagery is a separate product and is not installed.",
+      "quantities": ["Sphere-relative elevation in meters", "Finite sampled terrain horizon", "Retained pixel-center mesh positions"],
+      "usage_conditions": "Acknowledge the LOLA/PGDA producers and the manifest's Barker et al. citation. Preserve product metadata and attribution; no new raw-data redistribution in this milestone.",
+      "terms_url": "https://pgda.gsfc.nasa.gov/products/78", "attribution": "NASA/GSFC/LRO LOLA; Barker et al. (2021), as recorded in the pinned manifest.",
+      "offline": "Local terrain works after the pinned DEM and frame kernels are restored; metadata stays available if data are absent.",
+      "limitations": "Only finite Site01 coverage. Nodata stays unknown, source spacing is not accuracy, uncertainty layers are not propagated, and display exaggeration/lighting do not alter science."
+    }
+  ]
+}

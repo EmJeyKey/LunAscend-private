@@ -991,3 +991,38 @@ body, .app-main { background: var(--bg); }
 @media (max-width:700px) { .viewer-stage { height:420px; }.viewer-settings { grid-template-columns:1fr 1fr; }.viewer-epoch { font-size:9px; }.viewer-epoch span { margin-left:0; } }
 @media (max-width:1349px) { .explorer-grid > .lunar-explorer { grid-column:1 / -1;grid-row:1; } }
 .viewer-data-state { position:absolute;top:50px;left:16px;right:16px;padding:14px;background:#0c1118e8;border-left:2px solid var(--gold);color:var(--muted);font-size:12px;line-height:1.8;overflow-wrap:anywhere;pointer-events:none; }
+
+/* Source disclosures use the existing scientific typography and section strips. */
+.official-resources,.horizons-evidence,[aria-label="Local scientific source registry"] { margin-top:24px;scroll-margin-top:24px; }
+.resource-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 30px; }
+.resource-entry { min-width:0;padding:22px 0;border-bottom:1px solid var(--border);font-size:12px;line-height:1.8; }
+.resource-entry p { margin:9px 0; }
+.resource-heading h3 { font:500 17px var(--font-sans);margin:0 0 10px; }
+.resource-roles { display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--gold);font:10px/1.5 var(--font-mono);text-transform:uppercase;letter-spacing:.05em; }
+.resource-provider,.resource-offline,.resource-reproduction { color:var(--muted);font-size:12px;line-height:1.8; }
+.resource-external { display:inline-flex;align-items:baseline;gap:5px;overflow-wrap:anywhere;word-break:break-word;max-width:100%;color:var(--gold); }
+.resource-entry details { margin-top:12px; }
+.resource-facts { margin:14px 0; }
+.resource-facts>div { display:grid;grid-template-columns:115px minmax(0,1fr);gap:12px;padding:8px 0; }
+.resource-facts dt { color:var(--muted);font-size:11px; }
+.resource-facts dd { margin:0;overflow-wrap:anywhere;font-size:12px; }
+.resource-product { display:grid;gap:4px;font-size:12px;overflow-wrap:anywhere; }
+.resource-product span { font:10px/1.7 var(--font-mono);color:var(--muted); }
+.horizons-evidence>p,.horizons-evidence details p { font-size:12px;line-height:1.8; }
+.horizons-evidence details { margin:18px 0; }
+.horizons-evidence pre { white-space:pre-wrap;overflow-wrap:anywhere;font:10px/1.7 var(--font-mono); }
+.resource-table { max-width:100%;overflow-x:auto;margin:16px 0; }
+.resource-table table { border-collapse:collapse;width:100%;min-width:630px;text-align:left;font:11px/1.7 var(--font-mono); }
+.resource-table caption { text-align:left;color:var(--muted);margin-bottom:10px;font:12px var(--font-sans); }
+.resource-table th,.resource-table td { padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top; }
+.resource-table td { white-space:nowrap; }
+.resource-table td:last-child { white-space:normal; }
+.resource-table th { color:var(--gold);font-weight:500; }
+.resource-table [scope="row"] { font-family:var(--font-sans); }
+.external-site-resources { margin:20px 0;padding:20px 0;border-top:2px solid var(--gold);font-size:12px;line-height:1.8;scroll-margin-top:24px; }
+.external-site-resources>summary { color:var(--gold); }
+.external-site-resources .mono { overflow-wrap:anywhere; }
+.resource-link-row { display:flex;gap:20px;flex-wrap:wrap;margin:12px 0; }
+.resource-link-row a { color:var(--gold); }
+.resource-link-row span { display:block;font-size:10px;color:var(--muted); }
+@media(max-width:850px) { .resource-grid { grid-template-columns:1fr; }.resource-facts>div { grid-template-columns:1fr;gap:4px; } }

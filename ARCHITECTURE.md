@@ -1,6 +1,10 @@
-# LunAscend architecture — Step 10 lunar visualization
+# LunAscend architecture — Step 11 source transparency
 
 Status: Step 6 adds independent scientific scenario comparison to the existing Step 5 integration and Step 5.5 design. The validated Step 3 engine and Step 4 mock generator are preserved. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
+
+## Step 11 official resources and provenance presentation
+
+The user's Step 11 scope is official-resource integration and source transparency, superseding the earlier planned sensitivity milestone. A central source registry references the existing kernel/DEM manifests. A standard-library build adapter resolves these and verifies saved Step 3 source, response and residual identities before creating a small offline frontend catalog. It does not calculate science or alter result-level DataProvenance records. Scientific Methodology presents actual roles, attribution, product metadata, all saved residuals and finite validation scope. Explorer links to external image portals without importing tiles or asserting their registration. No runtime external service, new API, dependency or change to numerical engines/contracts is introduced. See docs/OFFICIAL_RESOURCES.md. Stop after Step 11; sensitivity studies remain deferred.
 
 ## Step 10 georeferenced visualization
 

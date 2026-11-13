@@ -1,6 +1,7 @@
 import { Crosshair, Info, MapPin } from 'lucide-react'
 import { useEffect, useState, type FormEvent } from 'react'
 import { LunarExplorer } from '../components/LunarExplorer'
+import { ExternalSiteResources } from '../components/ExternalSiteResources'
 import { PageHeader, PanelHeader, StatusBadge, TextLink } from '../components/ui'
 import { previewSites } from '../data/preview'
 import { useMission } from '../state/MissionContext'
@@ -30,6 +31,7 @@ export function SiteExplorer() {
       <LunarExplorer/>
       <aside className="explorer-sidebar"><section className="panel"><header className="section-introduction"><h2>Selected landing site</h2><p>Inspect the input location and its analysis status before comparing configurations.</p></header><div className="selected-site-detail"><span className="eyebrow">SELECTED LOCATION</span><strong>{mission.site.name}</strong><p className="scientific-coordinates">{formatCoordinate(mission.site.latitude, true)}<br/>{formatCoordinate(mission.site.longitude, false)}</p><p>{mission.site.description}</p><p>Planetocentric latitude · east-positive longitude. The reference globe uses declared DE440/ME421 inputs; local DEM geometry is reconciled to native DE421.</p><p>Source: {options.providerMode === 'mock' ? 'MOCK / NOT LUNAR PREDICTIONS' : 'Scientific SPICE selected'}. {analysis.status === 'success' ? 'Observations available on Analysis.' : 'No current observations loaded.'}</p><p>Height and lunar reference must be confirmed for scientific analysis.</p><TextLink to="/analysis">Configure analysis</TextLink><button className="button secondary comparison-save" disabled={alternatives.length >= 2} onClick={() => { saveAlternative(); setMessage('Configuration saved for comparison; no new results calculated.') }}>{alternatives.length >= 2 ? 'Comparison slots full' : 'Add to comparison'}</button><p>Saves the current site, UTC interval, provider and reference settings. Run it in Comparison.</p><TextLink to="/compare">Review saved configurations ({alternatives.length}/2)</TextLink><p role="status">{message}</p></div></section></aside>
     </div>
+    <ExternalSiteResources latitude={mission.site.latitude} longitude={mission.site.longitude} epoch={mission.startUtc}/>
     <div className="info-banner"><Info size={19}/><div><strong>Context globe and finite georeferenced terrain.</strong><p>The globe is a reference sphere without global elevation. Local terrain and polar windows use original Site01 heights and the exact frame bridge; missing data stays unavailable.</p></div><StatusBadge>Finite DEM coverage</StatusBadge></div>
   </>
 }

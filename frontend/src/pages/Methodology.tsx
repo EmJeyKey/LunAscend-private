@@ -1,23 +1,32 @@
-import { ArrowUpRight, BookOpen, FlaskConical, Layers2, Radio, ShieldCheck, Sun, Telescope } from 'lucide-react'
+import { useEffect } from 'react'
+import { useLocation } from 'react-router'
+import { BookOpen, FlaskConical, Layers2, Radio, ShieldCheck, Sun, Telescope } from 'lucide-react'
 import { PageHeader, StatusBadge } from '../components/ui'
+import { OfficialResources, HorizonsEvidence, LocalScientificSources } from '../components/OfficialResources'
 
 const topics = [
   { icon: Telescope, number: '01', title: 'Sun/Earth ephemeris geometry', text: 'Ephemeris models describe the positions of the Sun and Earth relative to a lunar observer. The scientific provider uses matched DE440 SPICE kernels, planetocentric east-positive coordinates in MOON_ME_DE440_ME421, and a 1,737,400 m sphere. Heights are explicit. Public angles use geometric correction NONE, without refraction.' },
   { icon: Layers2, number: '02', title: 'Terrain obstruction', text: 'Nearby ridges and distant terrain can obstruct low-elevation directions. Optional NASA LOLA Site01 analysis uses a curvature-aware finite horizon, DEM surface height plus observer height, exact per-epoch DE421/DE440 rotations, and circular-linear azimuth interpolation. Center clearance equals body elevation minus the modeled horizon. Known obstruction, conditional clearance, indeterminate and unavailable states remain distinct. Interpolated horizons can miss narrow ridges. Operational intervals and crossings are approximate sampled estimates, not continuous guarantees or full-disk visibility.' },
   { icon: Sun, number: '03', title: 'Illumination and electrical generation', text: 'Electrical generation also depends on panel area, orientation and efficiency. Battery feasibility requires load and energy-balance assumptions. Optional fixed-horizontal or ideal-tracking PV and battery energy-balance cases use explicit nominal irradiance, loads, efficiencies, reserve and capacity assumptions. Conservative and optimistic illumination scenarios are not guaranteed bounds. Unknown intervals withhold full-period battery results.' },
   { icon: Radio, number: '04', title: 'Line of sight and radio-link performance', text: 'Geometric line of sight does not guarantee reliable communication. Antenna direction, ground-station visibility and a radio link budget add requirements beyond seeing the Earth disk. Optional DTE access compares center clearance with an equipment margin, keeps unknown intervals separate and does not calculate a link budget.' },
-  { icon: FlaskConical, number: '05', title: 'Preview and unavailable data', text: 'This milestone contains synthetic input locations and original illustrative artwork. Scientific SPICE observations and deterministic mock demonstration curves are selectable explicitly. Mock values are always labeled and never substituted for scientific failures. Missing scientific values are shown as unavailable.' },
-  { icon: ShieldCheck, number: '06', title: 'Scientific validation requirements', text: 'Results include source records, assumptions and metric-level validation states. Step 3 executed 36 passing Horizons comparisons over a finite synthetic site/epoch grid. Shared JPL model heritage limits independence; this is not a global physical accuracy claim. Unmatched cases remain unvalidated. Terrain reference checks have not been performed.' },
+  { icon: FlaskConical, number: '05', title: 'Preview and unavailable data', text: 'The selectable example locations are synthetic. The global globe is context only; the local viewer uses original NASA LOLA terrain only where supported. Scientific SPICE observations and deterministic mock demonstration curves are selectable explicitly. Mock values are always labeled and never substituted for scientific failures. Missing scientific values are shown as unavailable.' },
+  { icon: ShieldCheck, number: '06', title: 'Scientific validation requirements', text: 'Results include source records, assumptions and metric-level validation states. The saved Horizons evidence below reports the executed comparisons over a finite synthetic site/epoch grid. Shared JPL model heritage limits independence; this is not a global physical accuracy claim. Unmatched cases remain unvalidated. Terrain obstruction and browser lighting remain independently unvalidated.' },
 ]
 
 export function Methodology() {
+  const { hash } = useLocation()
+  useEffect(() => {
+    const id = hash.slice(1)
+    if (!['official-resources', 'horizons-validation'].includes(id)) return
+    const frame = requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }))
+    return () => cancelAnimationFrame(frame)
+  }, [hash])
   return <><PageHeader eyebrow="SCIENCE / TRANSPARENCY" title="Scientific Methodology" description="Data sources, modeling assumptions, validation status and limitations."/>
     <section className="methodology-intro panel"><div className="methodology-symbol"><BookOpen size={34} strokeWidth={1.2}/></div><div><StatusBadge tone="gold">Geometry and finite terrain center model</StatusBadge><h2>Analysis scope and limitations</h2><p>LunAscend is an educational lunar landing-site and mission-resilience navigator. It is being developed to compare the effects of site selection, timing and engineering constraints, with uncertainty and unavailable data kept visible.</p></div></section>
+    <OfficialResources/>
+    <HorizonsEvidence/>
+    <LocalScientificSources/>
     <div className="methodology-grid">{topics.map(({ icon: Icon, number, title, text }) => <article className="methodology-card" key={number}><div><Icon size={22} strokeWidth={1.5}/><span>{number}</span></div><h2>{title}</h2><p>{text}</p></article>)}</div>
-    <section className="sources-panel panel"><h2>Scientific geometry and terrain sources</h2><p>SPICE supplies calculated astronomical geometry. Horizons supplies saved comparison references. LOLA/PGDA Site01 terrain is supported locally with pinned metadata and hashes; finite terrain and visibility results remain independently unvalidated. The 0° reference is the ideal geometric horizon, not local terrain.</p><div>{[
-      ['JPL SPICE', 'https://naif.jpl.nasa.gov/naif/'], ['JPL Horizons', 'https://ssd.jpl.nasa.gov/horizons/'],
-      ['NASA / PDS LOLA', 'https://pds-geosciences.wustl.edu/missions/lro/lola.htm'], ['NASA Goddard PGDA', 'https://pgda.gsfc.nasa.gov/'],
-    ].map(([label, href]) => <a key={label} href={href} target="_blank" rel="noreferrer">{label}<ArrowUpRight size={14}/></a>)}</div></section>
-    <p className="page-footnote">Independent student project. No NASA endorsement is implied. Not flight-qualified mission software.</p>
+    <p className="page-footnote">Independent student project. No NASA, JPL, CSA or resource-provider endorsement is implied. Not flight-qualified mission software.</p>
   </>
 }
