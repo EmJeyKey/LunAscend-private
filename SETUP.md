@@ -2,6 +2,18 @@
 
 ## Current status
 
+Step 11.7 adds shared Simple/Advanced presentation with the same scientific results;
+no new dependencies or setup commands. On **Sunlight & Earth Visibility**, load the
+Site01 example, open **Location, terrain & power settings**, confirm the scientific
+reference, select any required engineering options and run analysis. Simple is the
+default; expand scientific details or choose Advanced for the original controls and
+measurements. Modes and selections persist during navigation, not reload. See
+docs/STEP_11_7_USER_EXPERIENCE.md for executed checks and the unverified narrow-screen
+acceptance. Current locally bundled fonts are Marcellus, Manrope and IBM Plex Mono.
+Step 11.6 already installed three Moon Trek photographic products; uncached detail
+needs internet, while restored SPICE/LOLA science stays local. See
+docs/STEP_11_6_ORIGINAL_NASA_MAPS.md. The milestone descriptions below are historical.
+
 Step 11 adds the local source registry and saved Horizons evidence to Scientific Methodology, plus external reference links in Explorer. No new dependency, key, online layer or API is required. QuickMap/Moon Trek/CSA are reference-only links; Horizons comparison data are saved locally; SPICE/LOLA remain the computational sources. From the repository root run `backend\.venv\Scripts\python.exe scripts/build_source_registry.py --check` to check the committed catalog, or omit `--check` to regenerate it after an approved metadata update. The adapter reads the existing manifests and verifies saved evidence identities; do not edit science reference values to refresh a presentation. See docs/OFFICIAL_RESOURCES.md for source roles, terms, actual tests, offline limits and recovery tag `step-11-official-resources`.
 
 Step 10 adds a lazy Three.js 0.187.0 viewer (and matching 0.187.0 types), restored with the existing `npm.cmd ci` workflow. No new Python extra, service or global texture is required. Local terrain uses the same restored science/terrain environment, Site01 DEM and exact frame kernels as before. In Explorer, choose Load Site01 reference, confirm its coordinate epoch, and load Local terrain / South polar map. Open Analysis and run the existing scientific terrain request to enable the shared Sun/Earth timeline. The globe is context only; missing DEM/WebGL remains explicit, with a polar map/analysis fallback. From backend, `python -m lunascend.terrain.visualization_validation` reproduces the bounded real mesh and height comparison. See docs/STEP_10.md for limits, measured checks and local recovery tag `step-10-3d-lunar-terrain`. Stop before Step 11.

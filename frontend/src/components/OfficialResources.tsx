@@ -19,7 +19,7 @@ function SourceEntry({ source }: { source: Source }) {
 
 export function OfficialResources() {
   return <section className="panel official-resources" aria-labelledby="official-resources-title" id="official-resources">
-    <header className="section-introduction"><h2 id="official-resources-title">Official challenge resources</h2><p>Four resources identified in the challenge brief, with their actual role in LunAscend. Links open external websites; no imagery layer or live ephemeris service is loaded.</p></header>
+    <header className="section-introduction"><h2 id="official-resources-title">Official challenge resources</h2><p>Four resources identified in the challenge brief, with their actual role in LunAscend. Source links open external websites. The Moon explorer uses the verified Moon Trek photographic products; astronomical calculations use local SPICE, not a live Horizons service.</p></header>
     <a className="text-link" href={sourceCatalog.challenge_url} target="_blank" rel="noopener noreferrer">Challenge resource listing ↗</a>
     <div className="resource-grid">{challengeResources.map(source => <SourceEntry key={source.id} source={source}/>)}</div>
     <p className="resource-offline">If an external website is unavailable, continue with the local globe, restored LOLA terrain and saved validation evidence. Site/time selection and numerical analysis do not depend on these links.</p>

@@ -5,11 +5,14 @@ import { EmptyState, MetricCard, PageHeader, PanelHeader } from '../components/u
 import { AnalysisProvenance } from '../components/AnalysisProvenance'
 import { TerrainVisibilityPanel } from '../components/TerrainVisibilityPanel'
 import { EngineeringPanel } from '../components/EngineeringPanel'
+import { OperationalConditions } from '../components/OperationalConditions'
+import { ScientificDetails } from '../components/PresentationControls'
 
 export function Analysis() {
-  return <><PageHeader eyebrow="GEOMETRY / VISIBILITY" title="Sun & Earth Analysis" description="Sun/Earth elevation, terrain horizon and visibility windows."/><MissionControls/><ScientificChartPanel interactive/>
+  return <><PageHeader eyebrow="SUNLIGHT / EARTH / POWER" title="Sunlight & Earth Visibility" description="See how the modeled terrain affects the Sun and Earth, then inspect power and battery estimates when requested."/><div id="mission-configuration"><MissionControls/></div><OperationalConditions/>
+    <ScientificDetails><ScientificChartPanel interactive/>
     <div className="two-columns section-gap"><MetricCard kind="solar"/><MetricCard kind="earth"/></div>
     <TerrainVisibilityPanel/><EngineeringPanel/><AnalysisProvenance/>
     <section className="panel"><PanelHeader icon={SunMoon} title="Local sky view"/><EmptyState icon={SunMoon} title="Inspect directions in the Lunar Site Explorer." description="The explorer displays returned Sun/Earth center directions at the shared UTC sample. Use the numerical terrain classifications here; body-disk illumination and validated browser shadows remain unavailable."/></section>
-  </>
+    </ScientificDetails></>
 }

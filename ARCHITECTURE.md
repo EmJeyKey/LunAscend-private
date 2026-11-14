@@ -1,4 +1,14 @@
-# LunAscend architecture — Step 11.6 optical context imagery
+# LunAscend architecture — Step 11.7 scientific presentation
+
+## Step 11.7 shared human-friendly presentation
+
+One session-level React presentation context switches Simple/Advanced detail without
+changing mission inputs, scientific results or selected UTC. Central mappings consume
+returned terrain/DTE classifications and exact timestamps; plots consume backend W/Wh
+values, preserving nulls and uncertainty. Source disclosures read the existing local
+registry/imagery catalog. Original scientific/engineering components remain expandable.
+No backend calculation, contract, imagery adapter or dependency changed. See
+docs/STEP_11_7_USER_EXPERIENCE.md for behavior, checks and unverified responsive limits.
 
 ## Step 11.6 source-backed cartographic imagery
 

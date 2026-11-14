@@ -67,7 +67,7 @@ describe('display-only lunar coordinates and authoritative science overlays',()=
   })
   it('renders shared selected coordinates, explicit scale, UTC and no fabricated lighting claims',()=>{
     const html=renderToStaticMarkup(<MemoryRouter><LunarExplorer/></MemoryRouter>)
-    for(const text of ['Global Moon','South polar map','Local terrain','Site01','2026-11-14T00:00:00Z','No global','Sun / Earth','2D compatibility','WebGL']) {
+    for(const text of ['Whole Moon','Photographic maps','Landing area (3D)','Site01','2026-11-14T00:00:00Z','No global','Sun / Earth','2D compatibility','WebGL']) {
       if(text==='No global'||text==='WebGL')continue
       expect(html).toContain(text)
     }

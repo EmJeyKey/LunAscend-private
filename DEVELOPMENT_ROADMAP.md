@@ -21,6 +21,7 @@ Every step requires user review before the next. Step 1 creates a specification,
 | 11 — Official Resources and Scientific Provenance — IMPLEMENTED | Explicit roles for QuickMap, Moon Trek, Horizons and CSA; retained SPICE/LOLA manifests, saved comparison evidence and offline catalog | 34 existing SPICE / 6 registry checks, 121 frontend tests, TypeScript/build and desktop/narrow browser checks; see docs/OFFICIAL_RESOURCES.md |
 | 11.5 — Ground-level Surface View and Scientific Horizon — IMPLEMENTED | Original-DEM observer, true-scale surface camera, native horizon profile, returned body cues and retained georeferenced views; optical imagery remains uninstalled | 245 backend / 129 frontend tests, TypeScript/build, fresh zero-residual Site01 horizon reproduction and actual surface/time/fallback/browser checks; see docs/STEP_11_5_LUNAR_REALISM.md |
 | 11.6 — Authentic NASA Photographic Maps — IMPLEMENTED WITH REGISTRATION LIMIT | Genuine WAC/NAC multi-resolution 2D maps and context globe, bounded cache and qualified shared coordinate anchor; original local LOLA terrain and Surface View retained | 266 full backend regression passes plus final targeted imagery/source checks, 145 frontend tests, TypeScript/build, real tile/API/browser evidence. Local photographic DEM draping remains incomplete pending verified registration; see docs/STEP_11_6_ORIGINAL_NASA_MAPS.md |
+| 11.7 — Human-Friendly UX and Data Transparency — IMPLEMENTED; RESPONSIVE QA INCOMPLETE | Shared Simple/Advanced presentation, returned-sample conditions, backend W/Wh plots, clear comparisons/delays, source explanations and glossary | 165 frontend passes before final wording correction; final focused UX/TypeScript/build checks, fresh exact Site01 regression and six-route desktop browser review. Narrow-screen override ineffective; see docs/STEP_11_7_USER_EXPERIENCE.md |
 | 12 — End-to-End Validation, Deployment, and Competition-PC Migration | Consolidated validation, production build, encrypted restore drill, fresh Windows rehearsal; hosting recommendation | Recorded clean-PC and disconnected mock tests, science regressions, provenance/rights review and actual submission-rule check; deployment only with separate explicit authorization |
 
 ## Delivery priorities
@@ -29,4 +30,11 @@ Preserve essential site/date selection, validated geometry, terrain visibility a
 
 ## Current handoff
 
-Step 11.6 adds genuine NASA / LROC photographic maps and a progressive context globe while preserving all numerical engines and prior Surface View functionality. Delivered source levels and frame uncertainty remain explicit. Photographic draping onto the local LOLA DEM is incomplete because the exact image-to-DEM tie is unverified; the supported fallback is DEM shading plus separate polar photography. See docs/STEP_11_6_ORIGINAL_NASA_MAPS.md for executed evidence, remaining limits and recovery. Stop after Step 11.6; do not automatically begin another milestone.
+Step 11.7 simplifies all six routes around the same scientific results, retaining the
+original technical displays, imagery and local terrain. Its source explanations read
+the existing registry; no calculation or source identity changed. Desktop workflows
+and fresh Site01 products were checked; narrow-screen visual acceptance remains
+incomplete because the browser override did not apply. Step 11.6 was separately
+checkpointed at ccbcfba; local photographic DEM draping remains withheld pending a
+verified tie. See docs/STEP_11_7_USER_EXPERIENCE.md. Stop after Step 11.7; no later
+milestone, push or deployment is authorized automatically.

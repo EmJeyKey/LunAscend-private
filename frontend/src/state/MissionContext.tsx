@@ -18,6 +18,7 @@ interface MissionContextValue {
   runAnalysis: (selection: MissionSelection) => void
   invalidate: () => void
   sampleIndex: number
+  resultsCleared: boolean
   selectSample: (index: number) => void
   observation: ReturnType<typeof observationAt>
   comparison: ComparisonState
@@ -32,14 +33,16 @@ export function MissionProvider({ children }: PropsWithChildren) {
   const [analysis, setAnalysis] = useState(emptyAnalysis)
   const [options, setOptions] = useState(initialOptions)
   const [sampleIndex, setSampleIndex] = useState(0)
+  const [resultsCleared,setResultsCleared]=useState(false)
   const [runner] = useState(() => new AnalysisRunner(setAnalysis))
-  const invalidate = () => { runner.clear(); setSampleIndex(0) }
+  const invalidate = () => { setResultsCleared(value=>value||analysis.result!==null||analysis.status==='loading'); runner.clear(); setSampleIndex(0) }
   const updateMission = (value: MissionSelection) => { invalidate(); setMission(value) }
   const updateOptions = (value: AnalysisOptions) => { invalidate(); setOptions(value) }
   const series = analysis.result?.observations || []
   const selectSample = (index: number) => setSampleIndex(Math.max(0, Math.min(series.length - 1, Math.trunc(index))))
   const runAnalysis = (selection: MissionSelection) => {
     invalidate()
+    setResultsCleared(false)
     try { const request = buildRequest(selection, options); setMission(selection); void runner.run(request) }
     catch (error) { setAnalysis({ status: 'error', result: null, message: error instanceof Error ? error.message : 'Invalid analysis inputs.' }) }
   }
@@ -56,9 +59,9 @@ export function MissionProvider({ children }: PropsWithChildren) {
   const inspectScenario = (id: string) => {
     const scenario = comparisonStore.getSnapshot().scenarios.find(s => s.id === id)
     if (!scenario) return
-    invalidate(); setMission(structuredClone(scenario.selection)); setOptions({ ...scenario.options }); setAnalysis(scenario.analysis)
+    invalidate(); setResultsCleared(false); setMission(structuredClone(scenario.selection)); setOptions({ ...scenario.options }); setAnalysis(scenario.analysis)
   }
-  return <MissionContext.Provider value={{ mission, updateMission, alternatives, saveAlternative, removeAlternative, analysis, options, updateOptions, runAnalysis, invalidate, sampleIndex, selectSample, observation: observationAt(series, sampleIndex), comparison, comparisonStore, inspectScenario }}>{children}</MissionContext.Provider>
+  return <MissionContext.Provider value={{ mission, updateMission, alternatives, saveAlternative, removeAlternative, analysis, options, updateOptions, runAnalysis, invalidate, sampleIndex, resultsCleared, selectSample, observation: observationAt(series, sampleIndex), comparison, comparisonStore, inspectScenario }}>{children}</MissionContext.Provider>
 }
 
 export function useMission() {

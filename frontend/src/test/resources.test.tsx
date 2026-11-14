@@ -46,7 +46,7 @@ describe('honest offline scientific source disclosures', () => {
     const terrain = sourceCatalog.sources.find(source => source.id === 'lola')!
     expect(html).toContain(terrain.product!.sha256)
     expect(html).toContain('5 m source pixel spacing; not effective resolution or accuracy')
-    expect(html).toContain('No NASA, JPL, CSA or resource-provider endorsement')
+    expect(html).toContain('No NASA, JPL, ASU, CSA or resource-provider endorsement')
     expect(fetcher).not.toHaveBeenCalled()
     expect(html).not.toMatch(/<iframe|<img|<script/)
   })
