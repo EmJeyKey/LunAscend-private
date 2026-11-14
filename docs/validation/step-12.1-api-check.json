@@ -1,0 +1,2084 @@
+{
+  "executed_utc": "2026-11-14T22:32:40.343035+00:00",
+  "meaning": "Executed integration checks; not independent external terrain validation.",
+  "sites": [
+    {
+      "id": "apollo-11",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": 0.67416,
+      "native_longitude": 23.47314,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -13.163567457132782,
+        "sun_azimuth_deg": 91.4417178899818,
+        "earth_elevation_deg": 64.9444784137693,
+        "earth_azimuth_deg": 279.0173915335733
+      }
+    },
+    {
+      "id": "apollo-12",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -3.0128,
+      "native_longitude": -23.4219,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -59.70906912746461,
+        "sun_azimuth_deg": 98.28250580283337,
+        "earth_elevation_deg": 66.51746923995312,
+        "earth_azimuth_deg": 71.61298453941603
+      }
+    },
+    {
+      "id": "apollo-14",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -3.64589,
+      "native_longitude": -17.47194,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -53.73880169803434,
+        "sun_azimuth_deg": 97.63750083776607,
+        "earth_elevation_deg": 71.80595655087252,
+        "earth_azimuth_deg": 63.75803156084759
+      }
+    },
+    {
+      "id": "apollo-15",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": 26.13239,
+      "native_longitude": 3.6333,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -30.041654143528365,
+        "sun_azimuth_deg": 75.59665242354981,
+        "earth_elevation_deg": 67.6851745053229,
+        "earth_azimuth_deg": 192.9075293782516
+      }
+    },
+    {
+      "id": "apollo-16",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -8.9734,
+      "native_longitude": 15.5011,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -20.584269422409292,
+        "sun_azimuth_deg": 95.08837112545531,
+        "earth_elevation_deg": 68.5313632942751,
+        "earth_azimuth_deg": 308.06939971538475
+      }
+    },
+    {
+      "id": "apollo-17",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": 20.1911,
+      "native_longitude": 30.7723,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -6.028915264953902,
+        "sun_azimuth_deg": 89.4431664462776,
+        "earth_elevation_deg": 54.95276572794375,
+        "earth_azimuth_deg": 247.41384307525857
+      }
+    },
+    {
+      "id": "pgda-site01",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -89.4631678858271,
+      "native_longitude": -137.47712070180728,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 1.5013720768865821,
+        "sun_azimuth_deg": 264.0849647450791,
+        "earth_elevation_deg": -5.03607054305974,
+        "earth_azimuth_deg": 136.2190834362596,
+        "surface_elevation_m": 1944.9676513672355,
+        "terrain_source": "pgda-site01-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 371.30626725837595,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 371.30626725837595,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.0,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 401.1937327416241,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site04",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -89.76688138986053,
+      "native_longitude": -171.8469724577054,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 1.6677370319228588,
+        "sun_azimuth_deg": 298.4623807578101,
+        "earth_elevation_deg": -4.878271875767237,
+        "earth_azimuth_deg": 170.6148669344274,
+        "surface_elevation_m": 771.4742431640669,
+        "terrain_source": "pgda-site04-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 422.23812118460376,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 422.23812118460376,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.0,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000018,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 350.2618788153963,
+            "energy_balance_residual_wh": 9.592326932761353e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site06",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -85.43808501823099,
+      "native_longitude": 37.365218778045026,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 1.6107067317156345,
+        "sun_azimuth_deg": 89.38424210734257,
+        "earth_elevation_deg": -1.0802797188705757,
+        "earth_azimuth_deg": 321.5377646173393,
+        "surface_elevation_m": 5947.43408203129,
+        "terrain_source": "pgda-site06-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 531.7160248679158,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 531.7160248679158,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.0,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.50000000000003,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 240.7839751320841,
+            "energy_balance_residual_wh": -2.842170943040401e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site07",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -88.81112239122716,
+      "native_longitude": 123.6889655781097,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 2.7439377194993178,
+        "sun_azimuth_deg": 2.9364907516458665,
+        "earth_elevation_deg": -5.328036702209782,
+        "earth_azimuth_deg": 235.16486022230998,
+        "surface_elevation_m": 1644.928344726745,
+        "terrain_source": "pgda-site07-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 703.0939741116904,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 703.0939741116904,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.00000000000006,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000018,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 69.40602588830964,
+            "energy_balance_residual_wh": -1.7763568394002505e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site11",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -88.68331078451162,
+      "native_longitude": -67.93012364280393,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 0.28215736872406716,
+        "sun_azimuth_deg": 194.54778141907127,
+        "earth_elevation_deg": -4.126976463685496,
+        "earth_azimuth_deg": 66.61524453490223,
+        "surface_elevation_m": 1793.7939453124518,
+        "terrain_source": "pgda-site11-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 66.06784883970376,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 66.06784883970376,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.0,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000014,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 706.4321511602963,
+            "energy_balance_residual_wh": -1.4210854715202004e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site20",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -85.42655058377696,
+      "native_longitude": 31.74134015020646,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 1.1629045202953097,
+        "sun_azimuth_deg": 94.99015091728447,
+        "earth_elevation_deg": -0.8100012366935909,
+        "earth_azimuth_deg": 327.13945343141586,
+        "surface_elevation_m": 6398.582031249888,
+        "terrain_source": "pgda-site20-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 417.5582467886049,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 417.5582467886049,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.9999999999999,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000018,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 354.9417532113952,
+            "energy_balance_residual_wh": 2.0961010704922955e-13
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site23",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -85.99470200052038,
+      "native_longitude": -0.23695779969684339,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -0.8471935352256605,
+        "sun_azimuth_deg": 126.88004858824627,
+        "earth_elevation_deg": -0.6450100159676992,
+        "earth_azimuth_deg": 359.01278399898274,
+        "surface_elevation_m": 4783.953613281247,
+        "terrain_source": "pgda-site23-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site42",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -85.82951323932666,
+      "native_longitude": -116.32049966681812,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -0.34234133676057843,
+        "sun_azimuth_deg": 242.90407507293864,
+        "earth_elevation_deg": -6.405684764120123,
+        "earth_azimuth_deg": 114.74334706086657,
+        "surface_elevation_m": 2706.1257324217854,
+        "terrain_source": "pgda-site42-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-dm1",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -84.2287874362549,
+      "native_longitude": 69.4429018922792,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 4.675275384569363,
+        "sun_azimuth_deg": 57.444982926748594,
+        "earth_elevation_deg": -2.721514950763167,
+        "earth_azimuth_deg": 289.65731106636537,
+        "surface_elevation_m": 399.4766540526909,
+        "terrain_source": "pgda-dm1-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 1318.5097852205486,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 1199.9198355793942,
+            "battery_charged_wh": 0.0843836006375227,
+            "battery_discharged_wh": 0.08438360063754664,
+            "charging_loss_wh": 0.004441242138816984,
+            "discharging_loss_wh": 0.004219180031877337,
+            "curtailed_surplus_wh": 118.50112479837804,
+            "final_battery_energy_wh": 500.0,
+            "minimum_battery_energy_wh": 499.9156163993625,
+            "minimum_soc_pct": 99.9831232798725,
+            "unmet_load_wh": 0.0,
+            "energy_balance_residual_wh": -1.7053025658242404e-13
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-dm2",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -83.95404480749538,
+      "native_longitude": 58.82098269574121,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 3.829742756530093,
+        "sun_azimuth_deg": 68.06608823602163,
+        "earth_elevation_deg": -1.6163410425056246,
+        "earth_azimuth_deg": 300.216023072768,
+        "surface_elevation_m": 1009.4411621093883,
+        "terrain_source": "pgda-dm2-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 1123.1391765292922,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 1115.414800545119,
+            "battery_charged_wh": 7.338157184964532,
+            "battery_discharged_wh": 89.03705205776946,
+            "charging_loss_wh": 0.38621879920866004,
+            "discharging_loss_wh": 4.451852602888475,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 418.30110512719506,
+            "minimum_battery_energy_wh": 410.9629479422305,
+            "minimum_soc_pct": 82.19258958844611,
+            "unmet_load_wh": 0.0,
+            "energy_balance_residual_wh": -2.042810365310288e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-sl3",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -89.03235211907264,
+      "native_longitude": -101.99349716901699,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 0.9168047317755323,
+        "sun_azimuth_deg": 228.60047568581734,
+        "earth_elevation_deg": -4.828491669237236,
+        "earth_azimuth_deg": 100.69115470104293,
+        "surface_elevation_m": 1180.1674804684865,
+        "terrain_source": "pgda-sl3-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 217.43161150984469,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 217.43161150984469,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000004,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 555.0683884901554,
+            "energy_balance_residual_wh": 1.1013412404281553e-13
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-haworth",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -86.76383412501248,
+      "native_longitude": -22.777804353636903,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -1.2291708127390732,
+        "sun_azimuth_deg": 149.40571118816007,
+        "earth_elevation_deg": -1.638513878659208,
+        "earth_azimuth_deg": 21.490584570983156,
+        "surface_elevation_m": 1628.8161621093784,
+        "terrain_source": "pgda-haworth-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-shoemaker",
+      "epoch": "2026-11-14T00:00:00Z",
+      "native_latitude": -87.18355016253203,
+      "native_longitude": 62.83275747447328,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 2.798605706293097,
+        "sun_azimuth_deg": 63.88670091747402,
+        "earth_elevation_deg": -3.412789052218779,
+        "earth_azimuth_deg": 296.10774670427844,
+        "surface_elevation_m": 548.1873168944581,
+        "terrain_source": "pgda-shoemaker-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 781.1971082083371,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 781.1971082083371,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 440.84514925438225,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.042257462719128,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 59.154850745617864,
+            "minimum_battery_energy_wh": 59.154850745617864,
+            "minimum_soc_pct": 11.830970149123573,
+            "unmet_load_wh": 1.7763568394002505e-15,
+            "energy_balance_residual_wh": 1.2079226507921703e-13
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "apollo-11",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": 0.67416,
+      "native_longitude": 23.47314,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -0.9824096414719106,
+        "sun_azimuth_deg": 91.54582993631405,
+        "earth_elevation_deg": 63.683672044275646,
+        "earth_azimuth_deg": 276.1275268015504
+      }
+    },
+    {
+      "id": "apollo-12",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -3.0128,
+      "native_longitude": -23.4219,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -47.62703167357203,
+        "sun_azimuth_deg": 95.62781061138296,
+        "earth_elevation_deg": 68.17780593014054,
+        "earth_azimuth_deg": 73.25640507446826
+      }
+    },
+    {
+      "id": "apollo-14",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -3.64589,
+      "native_longitude": -17.47194,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -41.65387817333685,
+        "sun_azimuth_deg": 95.34304359153353,
+        "earth_elevation_deg": 73.53949458141766,
+        "earth_azimuth_deg": 65.07143666528212
+      }
+    },
+    {
+      "id": "apollo-15",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": 26.13239,
+      "native_longitude": 3.6333,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -19.31260294809455,
+        "sun_azimuth_deg": 81.96090959014485,
+        "earth_elevation_deg": 66.30093674132486,
+        "earth_azimuth_deg": 195.76020833962573
+      }
+    },
+    {
+      "id": "apollo-16",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -8.9734,
+      "native_longitude": 15.5011,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -8.577355555616714,
+        "sun_azimuth_deg": 92.9598307486722,
+        "earth_elevation_deg": 68.0652434657224,
+        "earth_azimuth_deg": 303.430625770207
+      }
+    },
+    {
+      "id": "apollo-17",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": 20.1911,
+      "native_longitude": 30.7723,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 5.401675201438335,
+        "sun_azimuth_deg": 93.66132254267002,
+        "earth_elevation_deg": 53.19545234223482,
+        "earth_azimuth_deg": 246.9716546479521
+      }
+    },
+    {
+      "id": "pgda-site01",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -89.4631678858271,
+      "native_longitude": -137.47712070180728,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 1.3896532832459783,
+        "sun_azimuth_deg": 251.90001282198875,
+        "earth_elevation_deg": -3.9315890823311923,
+        "earth_azimuth_deg": 134.83303602794325,
+        "surface_elevation_m": 1944.9676513672591,
+        "terrain_source": "pgda-site01-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 343.36117566527855,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 343.36117566527855,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.00000000000006,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000014,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 429.13882433472133,
+            "energy_balance_residual_wh": -1.2789769243681803e-13
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site04",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -89.76688138986053,
+      "native_longitude": -171.8469724577054,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 1.6217228020711152,
+        "sun_azimuth_deg": 286.2759570059165,
+        "earth_elevation_deg": -3.7819008198236777,
+        "earth_azimuth_deg": 169.222714335681,
+        "surface_elevation_m": 771.4742431641537,
+        "terrain_source": "pgda-site04-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 409.91532839534887,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 409.91532839534887,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.0,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000007,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 362.58467160465113,
+            "energy_balance_residual_wh": -7.105427357601002e-15
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site06",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -85.43808501823099,
+      "native_longitude": 37.365218778045026,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 2.5712923914454513,
+        "sun_azimuth_deg": 77.23228715586697,
+        "earth_elevation_deg": -0.05596630479721837,
+        "earth_azimuth_deg": 320.0947463745907,
+        "surface_elevation_m": 5947.434082031346,
+        "terrain_source": "pgda-site06-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 773.071866807813,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 773.071866807813,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.39803493914394,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.46990174695722,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.60196506085605,
+            "minimum_battery_energy_wh": 50.60196506085605,
+            "minimum_soc_pct": 10.120393012171212,
+            "unmet_load_wh": 1.7763568394002505e-15,
+            "energy_balance_residual_wh": -3.055333763768431e-13
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site07",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -88.81112239122716,
+      "native_longitude": 123.6889655781097,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 2.729769446899176,
+        "sun_azimuth_deg": 350.7409341213431,
+        "earth_elevation_deg": -4.256355119644019,
+        "earth_azimuth_deg": 233.75253855429423,
+        "surface_elevation_m": 1644.9283447266703,
+        "terrain_source": "pgda-site07-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 692.8124635065467,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 692.8124635065467,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.00000000000006,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000014,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 79.68753649345328,
+            "energy_balance_residual_wh": -1.4210854715202004e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site11",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -88.68331078451162,
+      "native_longitude": -67.93012364280393,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 0.2408020291139501,
+        "sun_azimuth_deg": 182.36610079074754,
+        "earth_elevation_deg": -3.0025659124581097,
+        "earth_azimuth_deg": 65.24675302684217,
+        "surface_elevation_m": 1793.7939453124516,
+        "terrain_source": "pgda-site11-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 62.61288540097959,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 62.61288540097959,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.00000000000006,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.50000000000003,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 709.8871145990204,
+            "energy_balance_residual_wh": -2.842170943040401e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 57600.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 28800.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site20",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -85.42655058377696,
+      "native_longitude": 31.74134015020646,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 2.1323479895747552,
+        "sun_azimuth_deg": 82.84197869247069,
+        "earth_elevation_deg": 0.22321843236758288,
+        "earth_azimuth_deg": 325.702808984627,
+        "surface_elevation_m": 6398.582031249933,
+        "terrain_source": "pgda-site20-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 329.47960723033606,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 329.47960723033606,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.0,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.50000000000003,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 443.02039276966394,
+            "energy_balance_residual_wh": -2.842170943040401e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site23",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -85.99470200052038,
+      "native_longitude": -0.23695779969684339,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -0.11767544272092623,
+        "sun_azimuth_deg": 114.7197784479522,
+        "earth_elevation_deg": 0.44785483064574716,
+        "earth_azimuth_deg": 357.62097700887716,
+        "surface_elevation_m": 4783.95361328125,
+        "terrain_source": "pgda-site23-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 70.32984349510365,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 70.32984349510365,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.9999999999999,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000018,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 702.1701565048965,
+            "energy_balance_residual_wh": 9.592326932761353e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 3600.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 82800.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-site42",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -85.82951323932666,
+      "native_longitude": -116.32049966681812,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -1.0829757759581737,
+        "sun_azimuth_deg": 230.74397546527766,
+        "earth_elevation_deg": -5.22043029915215,
+        "earth_azimuth_deg": 113.42360507308578,
+        "surface_elevation_m": 2706.1257324218227,
+        "terrain_source": "pgda-site42-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-dm1",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -84.2287874362549,
+      "native_longitude": 69.4429018922792,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 5.630232417602838,
+        "sun_azimuth_deg": 45.25123796985887,
+        "earth_elevation_deg": -1.7634157187687793,
+        "earth_azimuth_deg": 288.16867807117376,
+        "surface_elevation_m": 399.47665405268947,
+        "terrain_source": "pgda-dm1-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 1540.6123578780441,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 1200.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 0.0,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 0.0,
+            "curtailed_surplus_wh": 340.6123578780444,
+            "final_battery_energy_wh": 500.0,
+            "minimum_battery_energy_wh": 500.0,
+            "minimum_soc_pct": 100.0,
+            "unmet_load_wh": 0.0,
+            "energy_balance_residual_wh": -2.8421709430404007e-13
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-dm2",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -83.95404480749538,
+      "native_longitude": 58.82098269574121,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 4.96049806395563,
+        "sun_azimuth_deg": 55.900948146069055,
+        "earth_elevation_deg": -0.6530281482184229,
+        "earth_azimuth_deg": 298.73143649219236,
+        "surface_elevation_m": 1009.4411621093742,
+        "terrain_source": "pgda-dm2-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 1394.340244466994,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 1200.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 0.0,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 0.0,
+            "curtailed_surplus_wh": 194.34024446699397,
+            "final_battery_energy_wh": 500.0,
+            "minimum_battery_energy_wh": 500.0,
+            "minimum_soc_pct": 100.0,
+            "unmet_load_wh": 0.0,
+            "energy_balance_residual_wh": -5.684341886080802e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-sl3",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -89.03235211907264,
+      "native_longitude": -101.99349716901699,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 0.7777550280004806,
+        "sun_azimuth_deg": 216.41832137967833,
+        "earth_elevation_deg": -3.710105171535073,
+        "earth_azimuth_deg": 99.31669390808145,
+        "surface_elevation_m": 1180.1674804685251,
+        "terrain_source": "pgda-sl3-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 185.8449109096425,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 185.8449109096425,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.9999999999999,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.50000000000002,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 586.6550890903576,
+            "energy_balance_residual_wh": 9.237055564881302e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-haworth",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -86.76383412501248,
+      "native_longitude": -22.777804353636903,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": -0.8192334867487088,
+        "sun_azimuth_deg": 137.22901284899356,
+        "earth_elevation_deg": -0.5151658957318445,
+        "earth_azimuth_deg": 20.123200264475237,
+        "surface_elevation_m": 1628.8161621093818,
+        "terrain_source": "pgda-haworth-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 0.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 86400.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    },
+    {
+      "id": "pgda-shoemaker",
+      "epoch": "2026-11-15T00:00:00Z",
+      "native_latitude": -87.18355016253203,
+      "native_longitude": 62.83275747447328,
+      "result": {
+        "samples": 25,
+        "sun_elevation_deg": 3.304048610434773,
+        "sun_azimuth_deg": 51.69818149301961,
+        "earth_elevation_deg": -2.380185892225523,
+        "earth_azimuth_deg": 294.6692635977002,
+        "surface_elevation_m": 548.1873168944946,
+        "terrain_source": "pgda-shoemaker-5m-window-v1",
+        "global_horizon_complete": false,
+        "power": {
+          "conservative": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "optimistic": {
+            "solar_generated_wh": 901.3060184380602,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 901.3060184380602,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 314.41471743362115,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 15.720735871681068,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 185.5852825663788,
+            "minimum_battery_energy_wh": 185.5852825663788,
+            "minimum_soc_pct": 37.117056513275756,
+            "unmet_load_wh": 0.0,
+            "energy_balance_residual_wh": 3.019806626980426e-13
+          }
+        },
+        "communication": {
+          "earth_visibility_duration_s": {
+            "value": 43200.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "longest_interruption_s": {
+            "value": 43200.0,
+            "status": "partial",
+            "reason": "Conditional sample-supported duration only; unresolved intervals are excluded, not access or confirmed interruption.",
+            "provenance_ids": [
+              "dte-model"
+            ],
+            "validation": "unvalidated",
+            "validation_report_id": null
+          },
+          "unknown_duration_s": 0.0,
+          "link_availability": "not_modeled"
+        }
+      }
+    }
+  ],
+  "historical": [
+    {
+      "id": "apollo-16",
+      "epoch": "1972-04-21T02:23:35Z",
+      "actual_modern_lm_coordinates": {
+        "samples": 25,
+        "sun_elevation_deg": 14.755166071715255,
+        "sun_azimuth_deg": 86.0048280665594,
+        "earth_elevation_deg": 77.12750989151485,
+        "earth_azimuth_deg": 319.6803041957647
+      },
+      "alsj_reference": {
+        "sun_elevation_deg": 14.76,
+        "sun_azimuth_deg": 86.01,
+        "earth_elevation_deg": 77.16,
+        "earth_azimuth_deg": 319.7
+      },
+      "residual_deg": {
+        "sun_elevation_deg": -0.004833928284744715,
+        "sun_azimuth_deg": -0.00517193344060729,
+        "earth_elevation_deg": -0.032490108485148994,
+        "earth_azimuth_deg": -0.019695804235311698
+      },
+      "qualification": "ALSJ coordinates differ and their dynamical realization is unspecified; diagnostic residuals, no validation pass label."
+    },
+    {
+      "id": "apollo-17",
+      "epoch": "1972-12-11T19:54:58Z",
+      "actual_modern_lm_coordinates": {
+        "samples": 25,
+        "sun_elevation_deg": 13.344830895966844,
+        "sun_azimuth_deg": 95.85112359986063,
+        "earth_elevation_deg": 45.2812252842222,
+        "earth_azimuth_deg": 240.87651889449532
+      },
+      "alsj_reference": {
+        "sun_elevation_deg": 13.33,
+        "sun_azimuth_deg": 95.83,
+        "earth_elevation_deg": 45.52,
+        "earth_azimuth_deg": 240.88
+      },
+      "residual_deg": {
+        "sun_elevation_deg": 0.014830895966843727,
+        "sun_azimuth_deg": 0.021123599860629838,
+        "earth_elevation_deg": -0.23877471577780085,
+        "earth_azimuth_deg": -0.003481105504675952
+      },
+      "qualification": "ALSJ coordinates differ and their dynamical realization is unspecified; diagnostic residuals, no validation pass label."
+    }
+  ]
+}

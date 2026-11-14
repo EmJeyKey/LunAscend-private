@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "pgda-site06-5m-window-v1",
+  "name": "Nobile Rim 1 bounded NASA DEM window",
+  "product_version": "Site06_final_adj_5mpp_surf.tif; Fri, 12 Feb 2021 13:33:34 GMT",
+  "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site06/Site06_final_adj_5mpp_surf.tif",
+  "documentation_url": "https://pgda.gsfc.nasa.gov/products/78",
+  "path": "data/fixtures/polar-sites/Site06-window.tif",
+  "bytes": 20235,
+  "sha256": "c1a2089f4cf23f4665c80bd166b09c0a521783d9323b5a32145217e4d5d353df",
+  "reference_frame": "MOON_ME_DE421",
+  "units": "m",
+  "reference_radius_m": 1737400,
+  "vertical_reference": "Height in meters above 1737400 m sphere",
+  "projection": "PROJCS[\"unknown\",GEOGCS[\"unknown\",DATUM[\"unknown\",SPHEROID[\"unknown\",1737400,0]],PRIMEM[\"Reference meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH]]",
+  "width": 65,
+  "height": 65,
+  "transform": [
+    5.0,
+    0.0,
+    83835.0,
+    0.0,
+    -5.0,
+    110165.0
+  ],
+  "scale": 1.0,
+  "offset": 0.0,
+  "nodata": "NaN",
+  "pixel_resolution_m": 5.0,
+  "source_shape": [
+    4000,
+    4000
+  ],
+  "source_window": [
+    1967,
+    1967,
+    65,
+    65
+  ],
+  "source_bytes": 64025603,
+  "bytes_transferred": 1310720,
+  "uncertainty": "5 m grid spacing is not independent accuracy. Separate source-pixel slope/RMS/LDEC samples are available; uncertainty is not propagated into horizon or engineering models.",
+  "readme_sha256": "e985a2337c9de1cd665b0ddad8b7f1fac88d65c96d1e47d1b975a91c8e53e7bd",
+  "source_kind": "official",
+  "citation": "NASA PGDA product 78; Barker et al. (2021), Planetary and Space Science 203, 105119. No NASA endorsement."
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "pgda-site01-5m-window-v1",
+  "name": "Connecting Ridge bounded NASA DEM window",
+  "product_version": "Site01_final_adj_5mpp_surf.tif; Fri, 05 Jun 2020 18:39:35 GMT",
+  "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_final_adj_5mpp_surf.tif",
+  "documentation_url": "https://pgda.gsfc.nasa.gov/products/78",
+  "path": "data/fixtures/polar-sites/Site01-window.tif",
+  "bytes": 20232,
+  "sha256": "cd630b2c16ef2e8fd60fe12e2833f55de1334bfbfc2f7b1b775f953ae169d9c5",
+  "reference_frame": "MOON_ME_DE421",
+  "units": "m",
+  "reference_radius_m": 1737400,
+  "vertical_reference": "Height in meters above 1737400 m sphere",
+  "projection": "PROJCS[\"unnamed\",GEOGCS[\"unnamed ellipse\",DATUM[\"unknown\",SPHEROID[\"unnamed\",1737400,0]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH]]",
+  "width": 65,
+  "height": 65,
+  "transform": [
+    5.0,
+    0.0,
+    -11165.0,
+    0.0,
+    -5.0,
+    -11835.0
+  ],
+  "scale": 1.0,
+  "offset": 0.0,
+  "nodata": "NaN",
+  "pixel_resolution_m": 5.0,
+  "source_shape": [
+    3200,
+    3200
+  ],
+  "source_window": [
+    1567,
+    1567,
+    65,
+    65
+  ],
+  "source_bytes": 40980810,
+  "bytes_transferred": 1048576,
+  "uncertainty": "5 m grid spacing is not independent accuracy. Separate source-pixel slope/RMS/LDEC samples are available; uncertainty is not propagated into horizon or engineering models.",
+  "readme_sha256": "e985a2337c9de1cd665b0ddad8b7f1fac88d65c96d1e47d1b975a91c8e53e7bd",
+  "source_kind": "official",
+  "citation": "NASA PGDA product 78; Barker et al. (2021), Planetary and Space Science 203, 105119. No NASA endorsement."
+}

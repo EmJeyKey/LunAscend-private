@@ -1,0 +1,85 @@
+{
+  "source": "https://apollojournals.org/alsj/alsj-EarthSun_AltAz.html",
+  "source_revision": "2025-05-07",
+  "meaning": "Published computed geometry, not direct observational validation. Reference coordinates differ from the modern LM catalog; dynamical frame unspecified.",
+  "sites": [
+    {
+      "id": "apollo-11",
+      "event": "Landing",
+      "utc": "1969-07-20T20:17:39Z",
+      "alsj_latitude_deg": 0.6875,
+      "alsj_longitude_deg": 23.4333,
+      "sun_elevation_deg": 10.65,
+      "sun_azimuth_deg": 88.81,
+      "earth_elevation_deg": null,
+      "earth_azimuth_deg": 272.16,
+      "status": "not executed: existing UTC contract excludes pre-1972 dates",
+      "qualification": "Apollo 11 Earth altitude source prints 59:43; ambiguous value retained as unavailable."
+    },
+    {
+      "id": "apollo-12",
+      "event": "Landing",
+      "utc": "1969-11-19T06:54:36Z",
+      "alsj_latitude_deg": -3.1975,
+      "alsj_longitude_deg": -23.3856,
+      "sun_elevation_deg": 5.19,
+      "sun_azimuth_deg": 91.16,
+      "earth_elevation_deg": 61.56,
+      "earth_azimuth_deg": 86.95,
+      "status": "not executed: existing UTC contract excludes pre-1972 dates",
+      "qualification": "No exact-frame validation pass is asserted."
+    },
+    {
+      "id": "apollo-14",
+      "event": "Landing",
+      "utc": "1971-02-05T09:18:13Z",
+      "alsj_latitude_deg": -3.6733,
+      "alsj_longitude_deg": -17.4653,
+      "sun_elevation_deg": 10.36,
+      "sun_azimuth_deg": 89.54,
+      "earth_elevation_deg": 66.1,
+      "earth_azimuth_deg": 96.7,
+      "status": "not executed: existing UTC contract excludes pre-1972 dates",
+      "qualification": "No exact-frame validation pass is asserted."
+    },
+    {
+      "id": "apollo-15",
+      "event": "Landing",
+      "utc": "1971-07-30T22:16:29Z",
+      "alsj_latitude_deg": 26.1008,
+      "alsj_longitude_deg": 3.6528,
+      "sun_elevation_deg": 12.05,
+      "sun_azimuth_deg": 95.73,
+      "earth_elevation_deg": 69.28,
+      "earth_azimuth_deg": 203.0,
+      "status": "not executed: existing UTC contract excludes pre-1972 dates",
+      "qualification": "No exact-frame validation pass is asserted."
+    },
+    {
+      "id": "apollo-16",
+      "event": "Landing",
+      "utc": "1972-04-21T02:23:35Z",
+      "alsj_latitude_deg": -8.9914,
+      "alsj_longitude_deg": 15.5144,
+      "sun_elevation_deg": 14.76,
+      "sun_azimuth_deg": 86.01,
+      "earth_elevation_deg": 77.16,
+      "earth_azimuth_deg": 319.7,
+      "status": "diagnostic comparison executed",
+      "qualification": "No exact-frame validation pass is asserted."
+    },
+    {
+      "id": "apollo-17",
+      "event": "Landing",
+      "utc": "1972-12-11T19:54:58Z",
+      "alsj_latitude_deg": 20.1653,
+      "alsj_longitude_deg": 30.7658,
+      "sun_elevation_deg": 13.33,
+      "sun_azimuth_deg": 95.83,
+      "earth_elevation_deg": 45.52,
+      "earth_azimuth_deg": 240.88,
+      "status": "diagnostic comparison executed",
+      "qualification": "No exact-frame validation pass is asserted."
+    }
+  ]
+}

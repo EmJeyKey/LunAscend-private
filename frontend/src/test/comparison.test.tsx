@@ -10,6 +10,7 @@ import { ComparisonMetrics } from '../components/ComparisonMetrics'
 import { ComparisonCharts } from '../components/ComparisonCharts'
 import { ResultProvenance } from '../components/AnalysisProvenance'
 import type { ScenarioRequest, ScenarioResult } from '../types/analysis'
+import {apolloCatalog} from '../lib/apollo'
 
 const selection = { site: { id: 'reference', name: 'Test observer', latitude: -89, longitude: 42, description: 'Synthetic test observer' }, startUtc: '2026-11-14T00:00:00Z', durationHours: 24 }
 const options = { ...initialOptions, surfaceElevationM: '0', sampleStepS: '43200', frameConfirmed: true }
@@ -54,6 +55,35 @@ describe('bounded scenarios and Explorer snapshots', () => {
 })
 
 describe('independent analysis and request reuse', () => {
+  it('reconciles edited catalog dates, then shares the identical calculation transport',async()=>{
+    const nativeSelection={...selection,site:{...selection.site,id:'apollo-11'},startUtc:'2026-11-15T00:00:00Z'}
+    const nativeOptions={...options,coordinateEpochUtc:selection.startUtc}
+    vi.stubGlobal('fetch',vi.fn().mockResolvedValue({ok:true,json:async()=>({context_frame:'MOON_ME_DE440_ME421',coordinate_epoch_utc:nativeSelection.startUtc,sites:apolloCatalog.sites.map(s=>({...s,context_latitude:s.latitude+.001,context_longitude:s.longitude+.002}))})}))
+    try{
+      const transport=vi.fn(async(r:ScenarioRequest)=>reply(r))
+      const store=new ComparisonStore([{selection:nativeSelection,options:nativeOptions,name:'A'},{selection:nativeSelection,options:nativeOptions,name:'B'}],transport)
+      await store.runAll()
+      expect(transport).toHaveBeenCalledTimes(1)
+      expect(transport.mock.calls[0][0].site.latitude_deg).toBeCloseTo(.67516,8)
+      expect(store.getSnapshot().scenarios.every(s=>s.options.coordinateEpochUtc===nativeSelection.startUtc&&s.analysis.status==='success')).toBe(true)
+    }finally{vi.unstubAllGlobals()}
+  })
+  it('ignores a late catalog conversion after a scenario is edited',async()=>{
+    let finish!:(value:unknown)=>void
+    const pending=new Promise(resolve=>{finish=resolve})
+    vi.stubGlobal('fetch',vi.fn().mockReturnValue(pending))
+    try{
+      const draft={...selection,site:{...selection.site,id:'apollo-11'},startUtc:'2026-11-15T00:00:00Z'}
+      const transport=vi.fn(async(r:ScenarioRequest)=>reply(r))
+      const store=new ComparisonStore([{selection:draft,options:{...options,coordinateEpochUtc:selection.startUtc},name:'A'}],transport)
+      const job=store.run('scenario-1');store.edit('scenario-1',{selection:{...draft,durationHours:12}})
+      finish({ok:true,json:async()=>({context_frame:'MOON_ME_DE440_ME421',coordinate_epoch_utc:draft.startUtc,sites:apolloCatalog.sites.map(s=>({...s,context_latitude:s.latitude,context_longitude:s.longitude}))})})
+      await job
+      expect(transport).not.toHaveBeenCalled()
+      expect(store.getSnapshot().scenarios[0].selection.durationHours).toBe(12)
+      expect(store.getSnapshot().scenarios[0].analysis.result).toBeNull()
+    }finally{vi.unstubAllGlobals()}
+  })
   it('constructs exact requests with independent coordinates, duration, observer height and provider', async () => {
     const transport = vi.fn(async (r: ScenarioRequest) => reply(r))
     const store = new ComparisonStore([setup()], transport)

@@ -1149,6 +1149,10 @@ body, .app-main { background: var(--bg); }
 .viewer-reference>summary { font-family:var(--font-sans);font-size:12px;min-height:40px;padding:7px 0;cursor:pointer;color:var(--gold); }
 .viewer-reference>span,.viewer-reference>label { display:block;margin:6px 0; }
 .mode-simple .dashboard-workbench { grid-template-columns:minmax(240px,.7fr) minmax(0,1.7fr); }
+.dashboard-workbench > .lunar-explorer { grid-column:1 / -1;grid-row:1;width:100%; }
+.dashboard-workbench > #mission-configuration { grid-column:1 / -1;grid-row:2; }
+.dashboard-workbench > .metrics-stack { grid-column:1 / -1;grid-row:3;grid-template-columns:repeat(2,minmax(0,1fr)); }
+.mode-simple .dashboard-workbench { grid-template-columns:minmax(0,1fr); }
 .mode-simple .lunar-explorer>p:not(.mono) { font-size:12px;line-height:1.8; }
 .mode-simple .viewer-toolbar button,.mode-simple .viewer-camera button { min-height:40px;font-size:12px; }
 @media(max-width:1100px) { .mode-simple .dashboard-workbench { grid-template-columns:minmax(0,1fr); } }

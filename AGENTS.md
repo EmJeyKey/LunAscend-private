@@ -16,6 +16,8 @@ LunAscend — Lunar Mission Resilience Navigator is a lunar landing-site decisio
 - Step 12 adds exact-frame Apollo pins, local-coordinate hover/picking, small hash-pinned NASA polar model windows and explicit hard-constraint screening. Reuse the existing frame bridge and bounded resilience search; keep long-term averages separate from mission dates. No Apollo terrain, unverified slope/hazards, invented Artemis polygons, global optimization or flight-safety claims. See docs/STEP_12.md. Stop after Step 12; deployment remains separately authorized.
 - Update documentation when contracts, assumptions, dependencies or commands change.
 
+- Step 12.1 extends native Apollo/polar site catalogs, bounded per-region DEM adapters, category markers and exact-epoch selection. Preserve original Site01 and all equations. Apollo DEM registration and pre-1972 UTC remain unsupported; use explicit unavailable states. See docs/STEP_12_1_APOLLO_AND_RIDGE_SCIENTIFIC_DATA.md. Stop after Step 12.1.
+
 ## Architecture and coding
 
 - Python owns ephemeris, terrain, visibility, power, communication and resilience calculations. React only presents provider results and manages interaction.

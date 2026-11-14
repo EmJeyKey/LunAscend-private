@@ -1,5 +1,15 @@
 # LunAscend architecture — Step 12 bounded exploration
 
+Step 12.1 extends manifest-backed site/dataset selection, not scientific equations.
+The unified registry references six native Apollo points, thirteen source-pixel
+polar study markers, the distinct original Site01 observer and dated Artemis
+references. Each new polar point selects its own hash-pinned 325 m DEM window.
+Existing exact frame conversion, finite horizons and engineering services are reused.
+Catalog date edits reconcile the same native point before requests; version/abort
+guards preserve stale-result protection in MissionContext and ComparisonStore.
+Apollo terrain remains unavailable pending exact registration; see
+docs/STEP_12_1_APOLLO_AND_RIDGE_SCIENTIFIC_DATA.md.
+
 Step 12 adds isolated display/data adapters for exact-frame Apollo positions and
 small hash-pinned NASA long-term polar windows. The environment/screening APIs do
 not feed averages into ephemeris, terrain visibility, power or DTE calculations.

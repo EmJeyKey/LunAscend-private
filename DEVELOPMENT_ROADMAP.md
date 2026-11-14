@@ -24,6 +24,10 @@ Every step requires user review before the next. Step 1 creates a specification,
 | 11.7 — Human-Friendly UX and Data Transparency — IMPLEMENTED; RESPONSIVE QA INCOMPLETE | Shared Simple/Advanced presentation, returned-sample conditions, backend W/Wh plots, clear comparisons/delays, source explanations and glossary | 165 frontend passes before final wording correction; final focused UX/TypeScript/build checks, fresh exact Site01 regression and six-route desktop browser review. Narrow-screen override ineffective; see docs/STEP_11_7_USER_EXPERIENCE.md |
 | 12 — Apollo Exploration, NASA Screening and Bounded Opportunity Finder — IMPLEMENTED WITH COVERAGE LIMITS | Exact-frame Apollo pins, live surface coordinates, native NASA polar windows and explicit constraint screening; existing bounded mission search | 281 backend / 182 frontend tests, TypeScript/build, current Site01/Apollo API checks and real browser/narrow-screen interaction; see docs/STEP_12.md. No global coverage, slope/hazard certification or new deployment authorization |
 
+## Step 12.1 � implemented with explicit data limits
+
+Six Apollo and thirteen verified polar study markers share selection and numerical analysis. Small per-region native DEM windows and source-pixel quality samples are pinned. Date edits reconcile fixed native catalog points; original Site01 and prior engines remain intact. Apollo terrain ingestion and pre-1972 historical calculations remain unsupported. See docs/STEP_12_1_APOLLO_AND_RIDGE_SCIENTIFIC_DATA.md for per-site status, executed checks and recovery point. No later milestone is authorized.
+
 ## Delivery priorities
 
 Preserve essential site/date selection, validated geometry, terrain visibility and rapid comparisons before advanced engineering or 3D polish. The numbered sequence is the requested plan; schedule pressure may justify a team-approved scope revision, never silent skipping of validation. Do not treat future link budgets or multi-objective ranking as required first implementations. Keep hosting undecided until needs, cost and privacy are known.

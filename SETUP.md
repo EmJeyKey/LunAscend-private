@@ -2,6 +2,17 @@
 
 ## Current status
 
+Step 12.1 bundles thirteen small native polar DEM windows (263,037 bytes total)
+under `data/fixtures/polar-sites`, plus hash/projection manifests and saved
+source-pixel quality values. No dependency changes. Original Site01 and kernels
+still use their existing restoration procedures. Missing optional windows can be
+restored from the root with `backend/.venv/Scripts/python.exe scripts/prepare_site_registry.py`;
+the script verifies existing cached windows first and enforces bounded HTTP reads.
+Quality samples: `backend/.venv/Scripts/python.exe scripts/prepare_polar_quality.py`.
+Apollo metadata only: `backend/.venv/Scripts/python.exe scripts/inspect_apollo_terrain.py`.
+Apollo DEM ingestion is not enabled without exact frame/vertical registration.
+See docs/STEP_12_1_APOLLO_AND_RIDGE_SCIENTIFIC_DATA.md for coverage and actual checks.
+
 Step 12 adds small bundled NASA polar screening windows (about 33 KB of raster
 and label files), served locally with the existing terrain extra. They work
 offline; uncached photographic tiles still need the image service. To reproduce

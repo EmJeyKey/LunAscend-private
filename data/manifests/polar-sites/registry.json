@@ -1,0 +1,279 @@
+{
+  "version": "pgda-valid-pixel-v1",
+  "source": "https://pgda.gsfc.nasa.gov/products/78",
+  "sites": [
+    {
+      "id": "pgda-site01",
+      "name": "Connecting Ridge",
+      "catalog_id": "Site01",
+      "category": "polar-study",
+      "geographic_type": "ridge",
+      "source": "https://pgda.gsfc.nasa.gov/products/78",
+      "reference_frame": "MOON_ME_DE421",
+      "point_kind": "Dataset-area marker \u2014 not a landing-site coordinate.",
+      "latitude": -89.4631678858271,
+      "longitude": -137.47712070180728,
+      "dataset_id": "pgda-site01-5m-window-v1",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_final_adj_5mpp_surf.tif",
+      "elevation_m": 1944.9676513671875,
+      "manifest": "data/manifests/polar-sites/Site01.json",
+      "missing_reason": null,
+      "representative_pixel": [
+        1599,
+        1599
+      ]
+    },
+    {
+      "id": "pgda-site04",
+      "name": "Shackleton Rim",
+      "catalog_id": "Site04",
+      "category": "polar-study",
+      "geographic_type": "rim",
+      "source": "https://pgda.gsfc.nasa.gov/products/78",
+      "reference_frame": "MOON_ME_DE421",
+      "point_kind": "Dataset-area marker \u2014 not a landing-site coordinate.",
+      "latitude": -89.76688138986053,
+      "longitude": -171.8469724577054,
+      "dataset_id": "pgda-site04-5m-window-v1",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site04/Site04_final_adj_5mpp_surf.tif",
+      "elevation_m": 771.4742431640625,
+      "manifest": "data/manifests/polar-sites/Site04.json",
+      "missing_reason": null,
+      "representative_pixel": [
+        1599,
+        1599
+      ]
+    },
+    {
+      "id": "pgda-site06",
+      "name": "Nobile Rim 1",
+      "catalog_id": "Site06",
+      "category": "polar-study",
+      "geographic_type": "rim",
+      "source": "https://pgda.gsfc.nasa.gov/products/78",
+      "reference_frame": "MOON_ME_DE421",
+      "point_kind": "Dataset-area marker \u2014 not a landing-site coordinate.",
+      "latitude": -85.43808501823099,
+      "longitude": 37.365218778045026,
+      "dataset_id": "pgda-site06-5m-window-v1",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site06/Site06_final_adj_5mpp_surf.tif",
+      "elevation_m": 5947.43408203125,
+      "manifest": "data/manifests/polar-sites/Site06.json",
+      "missing_reason": null,
+      "representative_pixel": [
+        1999,
+        1999
+      ]
+    },
+    {
+      "id": "pgda-site07",
+      "name": "Peak Near Shackleton",
+      "catalog_id": "Site07",
+      "category": "polar-study",
+      "geographic_type": "study region",
+      "source": "https://pgda.gsfc.nasa.gov/products/78",
+      "reference_frame": "MOON_ME_DE421",
+      "point_kind": "Dataset-area marker \u2014 not a landing-site coordinate.",
+      "latitude": -88.81112239122716,
+      "longitude": 123.6889655781097,
+      "dataset_id": "pgda-site07-5m-window-v1",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site07/Site07_final_adj_5mpp_surf.tif",
+      "elevation_m": 1644.9283447265625,
+      "manifest": "data/manifests/polar-sites/Site07.json",
+      "missing_reason": null,
+      "representative_pixel": [
+        1599,
+        1599
+      ]
+    },
+    {
+      "id": "pgda-site11",
+      "name": "de Gerlache Rim",
+      "catalog_id": "Site11",
+      "category": "polar-study",
+      "geographic_type": "rim",
+      "source": "https://pgda.gsfc.nasa.gov/products/78",
+      "reference_frame": "MOON_ME_DE421",
+      "point_kind": "Dataset-area marker \u2014 not a landing-site coordinate.",
+      "latitude": -88.68331078451162,
+      "longitude": -67.93012364280393,
+      "dataset_id": "pgda-site11-5m-window-v1",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site11/Site11_final_adj_5mpp_surf.tif",
+      "elevation_m": 1793.7939453125,
+      "manifest": "data/manifests/polar-sites/Site11.json",
+      "missing_reason": null,
+      "representative_pixel": [
+        1599,
+        1599
+      ]
+    },
+    {
+      "id": "pgda-site20",
+      "name": "Leibnitz Beta Plateau",
+      "catalog_id": "Site20",
+      "category": "polar-study",
+      "geographic_type": "plateau",
+      "source": "https://pgda.gsfc.nasa.gov/products/78",
+      "reference_frame": "MOON_ME_DE421",
+      "point_kind": "Dataset-area marker \u2014 not a landing-site coordinate.",
+      "latitude": -85.42655058377696,
+      "longitude": 31.74134015020646,
+      "dataset_id": "pgda-site20-5m-window-v1",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site20/Site20_final_adj_5mpp_surf.tif",
+      "elevation_m": 6398.58203125,
+      "manifest": "data/manifests/polar-sites/Site20.json",
+      "missing_reason": null,
+      "representative_pixel": [
+        1599,
+        1599
+      ]
+    },
+    {
+      "id": "pgda-site23",
+      "name": "Malapert Massif",
+      "catalog_id": "Site23",
+      "category": "polar-study",
+      "geographic_type": "massif",
+      "source": "https://pgda.gsfc.nasa.gov/products/78",
+      "reference_frame": "MOON_ME_DE421",
+      "point_kind": "Dataset-area marker \u2014 not a landing-site coordinate.",
+      "latitude": -85.99470200052038,
+      "longitude": -0.23695779969684339,
+      "dataset_id": "pgda-site23-5m-window-v1",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site23/Site23_final_adj_5mpp_surf.tif",
+      "elevation_m": 4783.95361328125,
+      "manifest": "data/manifests/polar-sites/Site23.json",
+      "missing_reason": null,
+      "representative_pixel": [
+        2099,
+        2099
+      ]
+    },
+    {
+      "id": "pgda-site42",
+      "name": "de Gerlache\u2013Kocher Massif",
+      "catalog_id": "Site42",
+      "category": "polar-study",
+      "geographic_type": "massif",
+      "source": "https://pgda.gsfc.nasa.gov/products/78",
+      "reference_frame": "MOON_ME_DE421",
+      "point_kind": "Dataset-area marker \u2014 not a landing-site coordinate.",
+      "latitude": -85.82951323932666,
+      "longitude": -116.32049966681812,
+      "dataset_id": "pgda-site42-5m-window-v1",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site42/Site42_final_adj_5mpp_surf.tif",
+      "elevation_m": 2706.125732421875,
+      "manifest": "data/manifests/polar-sites/Site42.json",
+      "missing_reason": null,
+      "representative_pixel": [
+        1999,
+        1999
+      ]
+    },
+    {
+      "id": "pgda-dm1",
+      "name": "Amundsen Rim",
+      "catalog_id": "DM1",
+      "category": "polar-study",
+      "geographic_type": "rim",
+      "source": "https://pgda.gsfc.nasa.gov/products/78",
+      "reference_frame": "MOON_ME_DE421",
+      "point_kind": "Dataset-area marker \u2014 not a landing-site coordinate.",
+      "latitude": -84.2287874362549,
+      "longitude": 69.4429018922792,
+      "dataset_id": "pgda-dm1-5m-window-v1",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/DM1/DM1_final_adj_5mpp_surf.tif",
+      "elevation_m": 399.4766540527344,
+      "manifest": "data/manifests/polar-sites/DM1.json",
+      "missing_reason": null,
+      "representative_pixel": [
+        1999,
+        1999
+      ]
+    },
+    {
+      "id": "pgda-dm2",
+      "name": "Nobile Rim 2",
+      "catalog_id": "DM2",
+      "category": "polar-study",
+      "geographic_type": "rim",
+      "source": "https://pgda.gsfc.nasa.gov/products/78",
+      "reference_frame": "MOON_ME_DE421",
+      "point_kind": "Dataset-area marker \u2014 not a landing-site coordinate.",
+      "latitude": -83.95404480749538,
+      "longitude": 58.82098269574121,
+      "dataset_id": "pgda-dm2-5m-window-v1",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/DM2/DM2_final_adj_5mpp_surf.tif",
+      "elevation_m": 1009.441162109375,
+      "manifest": "data/manifests/polar-sites/DM2.json",
+      "missing_reason": null,
+      "representative_pixel": [
+        1999,
+        1999
+      ]
+    },
+    {
+      "id": "pgda-sl3",
+      "name": "Connecting Ridge Extension",
+      "catalog_id": "SL3",
+      "category": "polar-study",
+      "geographic_type": "ridge",
+      "source": "https://pgda.gsfc.nasa.gov/products/78",
+      "reference_frame": "MOON_ME_DE421",
+      "point_kind": "Dataset-area marker \u2014 not a landing-site coordinate.",
+      "latitude": -89.03235211907264,
+      "longitude": -101.99349716901699,
+      "dataset_id": "pgda-sl3-5m-window-v1",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/SL3/SL3_final_adj_5mpp_surf.tif",
+      "elevation_m": 1180.16748046875,
+      "manifest": "data/manifests/polar-sites/SL3.json",
+      "missing_reason": null,
+      "representative_pixel": [
+        1999,
+        1999
+      ]
+    },
+    {
+      "id": "pgda-haworth",
+      "name": "Haworth",
+      "catalog_id": "Haworth",
+      "category": "polar-study",
+      "geographic_type": "crater area",
+      "source": "https://pgda.gsfc.nasa.gov/products/78",
+      "reference_frame": "MOON_ME_DE421",
+      "point_kind": "Dataset-area marker \u2014 not a landing-site coordinate.",
+      "latitude": -86.76383412501248,
+      "longitude": -22.777804353636903,
+      "dataset_id": "pgda-haworth-5m-window-v1",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Haworth/Haworth_final_adj_5mpp_surf.tif",
+      "elevation_m": 1628.816162109375,
+      "manifest": "data/manifests/polar-sites/Haworth.json",
+      "missing_reason": null,
+      "representative_pixel": [
+        2979,
+        2979
+      ]
+    },
+    {
+      "id": "pgda-shoemaker",
+      "name": "Shoemaker",
+      "catalog_id": "Shoemaker",
+      "category": "polar-study",
+      "geographic_type": "crater area",
+      "source": "https://pgda.gsfc.nasa.gov/products/78",
+      "reference_frame": "MOON_ME_DE421",
+      "point_kind": "Dataset-area marker \u2014 not a landing-site coordinate.",
+      "latitude": -87.18355016253203,
+      "longitude": 62.83275747447328,
+      "dataset_id": "pgda-shoemaker-5m-window-v1",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Shoemaker/Shoemaker_final_adj_5mpp_surf.tif",
+      "elevation_m": 548.1873168945312,
+      "manifest": "data/manifests/polar-sites/Shoemaker.json",
+      "missing_reason": null,
+      "representative_pixel": [
+        1999,
+        1999
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1744 @@
+{
+  "source": "Actual rendered DOM following individual globe pin clicks and Analyze this site actions. Browser defaults: 2026-11-14 06:00 UTC, 48 hours; zero-metre observer height; Apollo hypothetical zero surface height. Polar heights come from selected DEM.",
+  "sites": [
+    {
+      "name": "Apollo 11",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "91.46171039533364",
+          "text": "91.462°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "278.30702580169617",
+          "text": "278.307°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "-10.117710907700522",
+          "text": "-10.118°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "64.6341556950821",
+          "text": "64.634°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "0.6741629799626303",
+          "text": "0.6741630 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "23.473142962856002",
+          "text": "23.4731430 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "request.site.surface_elevation_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "request.site.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        }
+      ]
+    },
+    {
+      "name": "Apollo 12",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "97.45050231797384",
+          "text": "97.451°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "71.96541103142026",
+          "text": "71.965°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "-56.69482329977423",
+          "text": "-56.695°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "66.927883587505",
+          "text": "66.928°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-3.0127915413257518",
+          "text": "-3.0127915 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "-23.42189734250971",
+          "text": "-23.4218973 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "request.site.surface_elevation_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "request.site.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        }
+      ]
+    },
+    {
+      "name": "Apollo 14",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "96.94553784908283",
+          "text": "96.946°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "64.01839613632336",
+          "text": "64.018°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "-50.7224915621257",
+          "text": "-50.722°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "72.23190540677905",
+          "text": "72.232°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-3.6458819844605412",
+          "text": "-3.6458820 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "-17.47193743958536",
+          "text": "-17.4719374 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "request.site.surface_elevation_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "request.site.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        }
+      ]
+    },
+    {
+      "name": "Apollo 15",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "77.2902975401415",
+          "text": "77.290°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "193.6565884975583",
+          "text": "193.657°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "-27.382344254329062",
+          "text": "-27.382°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "67.35979622080862",
+          "text": "67.360°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "26.132395788550674",
+          "text": "26.1323958 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "3.6333064225549094",
+          "text": "3.6333064 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "request.site.surface_elevation_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "request.site.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        }
+      ]
+    },
+    {
+      "name": "Apollo 16",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "94.52575276957252",
+          "text": "94.526°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "306.92877374510834",
+          "text": "306.929°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "-17.585105051829355",
+          "text": "-17.585°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "68.41849359488808",
+          "text": "68.418°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-8.973395828850196",
+          "text": "-8.9733958 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "15.501101548991414",
+          "text": "15.5011015 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "request.site.surface_elevation_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "request.site.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        }
+      ]
+    },
+    {
+      "name": "Apollo 17",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "90.49524011297369",
+          "text": "90.495°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "247.32219191192104",
+          "text": "247.322°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "-3.169170201295404",
+          "text": "-3.169°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "54.522740118920794",
+          "text": "54.523°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "20.191101838217154",
+          "text": "20.1911018 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "30.772306207298698",
+          "text": "30.7723062 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "",
+          "text": "Terrain analysis was not requested. Run with supported LOLA terrain to calculate horizon and clearance."
+        },
+        {
+          "field": "request.site.surface_elevation_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "request.site.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        }
+      ]
+    },
+    {
+      "name": "Connecting Ridge",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "261.03815404065864",
+          "text": "261.038°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "135.87353939014903",
+          "text": "135.874°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "1.4731030498405295",
+          "text": "1.473°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "-4.77592146066886",
+          "text": "-4.776°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "-2.5080281488329788",
+          "text": "-2.508°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "4.532573524538736",
+          "text": "4.533°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "3.9811311986735074",
+          "text": "3.981°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "-9.308494985207597",
+          "text": "-9.308°"
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-89.46316783143246",
+          "text": "-89.4631678 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "-137.47612663320007",
+          "text": "-137.4761266 ° E"
+        },
+        {
+          "field": "terrain_visibility.native_latitude_deg",
+          "raw": "-89.4631678858271",
+          "text": "-89.4631679 ° N"
+        },
+        {
+          "field": "terrain_visibility.native_longitude_deg",
+          "raw": "-137.47712070180722",
+          "text": "-137.4771207 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "1944.9676513672564",
+          "text": "1944.968 m"
+        },
+        {
+          "field": "terrain_visibility.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "communication.access_samples.2026-11-14T06:00:00Z.earth_clearance_deg",
+          "raw": "-9.308494985207597",
+          "text": "-9.308°"
+        },
+        {
+          "field": "communication.configuration.minimum_earth_clearance_deg",
+          "raw": "1",
+          "text": "1.000°"
+        },
+        {
+          "field": "communication.earth_visibility_duration_s.value",
+          "raw": "0",
+          "text": "0.000 s"
+        },
+        {
+          "field": "communication.longest_interruption_s.value",
+          "raw": "172800",
+          "text": "172800.000 s"
+        },
+        {
+          "field": "communication.unknown_duration_s",
+          "raw": "0",
+          "text": "0.000 s"
+        }
+      ]
+    },
+    {
+      "name": "Shackleton Rim",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "295.41522737599195",
+          "text": "295.415°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "170.2679032789687",
+          "text": "170.268°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "1.656722648763271",
+          "text": "1.657°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "-4.620136038471837",
+          "text": "-4.620°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "-27.739073932767912",
+          "text": "-27.739°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "8.658900058339045",
+          "text": "8.659°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "29.395796581531187",
+          "text": "29.396°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "-13.279036096810888",
+          "text": "-13.279°"
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-89.76688658794112",
+          "text": "-89.7668866 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "-171.8450779054359",
+          "text": "-171.8450779 ° E"
+        },
+        {
+          "field": "terrain_visibility.native_latitude_deg",
+          "raw": "-89.76688138986054",
+          "text": "-89.7668814 ° N"
+        },
+        {
+          "field": "terrain_visibility.native_longitude_deg",
+          "raw": "-171.84697245770576",
+          "text": "-171.8469725 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "771.4742431640775",
+          "text": "771.474 m"
+        },
+        {
+          "field": "terrain_visibility.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "communication.access_samples.2026-11-14T06:00:00Z.earth_clearance_deg",
+          "raw": "-13.279036096810888",
+          "text": "-13.279°"
+        },
+        {
+          "field": "communication.configuration.minimum_earth_clearance_deg",
+          "raw": "1",
+          "text": "1.000°"
+        },
+        {
+          "field": "communication.earth_visibility_duration_s.value",
+          "raw": "0",
+          "text": "0.000 s"
+        },
+        {
+          "field": "communication.longest_interruption_s.value",
+          "raw": "172800",
+          "text": "172800.000 s"
+        },
+        {
+          "field": "communication.unknown_duration_s",
+          "raw": "0",
+          "text": "0.000 s"
+        }
+      ]
+    },
+    {
+      "name": "Nobile Rim 1",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "86.34656666162502",
+          "text": "86.347°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "321.1792087429696",
+          "text": "321.179°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "1.852897909790628",
+          "text": "1.853°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "-0.839862210288628",
+          "text": "-0.840°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "-10.71420922005147",
+          "text": "-10.714°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "-1.5571162754280483",
+          "text": "-1.557°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "12.5671071298421",
+          "text": "12.567°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "0.7172540651394321",
+          "text": "0.717°"
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-85.43808423741041",
+          "text": "-85.4380842 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "37.36510564822083",
+          "text": "37.3651056 ° E"
+        },
+        {
+          "field": "terrain_visibility.native_latitude_deg",
+          "raw": "-85.438085018231",
+          "text": "-85.4380850 ° N"
+        },
+        {
+          "field": "terrain_visibility.native_longitude_deg",
+          "raw": "37.36521877804501",
+          "text": "37.3652188 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "5947.434082031409",
+          "text": "5947.434 m"
+        },
+        {
+          "field": "terrain_visibility.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "communication.access_samples.2026-11-14T06:00:00Z.earth_clearance_deg",
+          "raw": "0.7172540651394321",
+          "text": "0.717°"
+        },
+        {
+          "field": "communication.configuration.minimum_earth_clearance_deg",
+          "raw": "1",
+          "text": "1.000°"
+        },
+        {
+          "field": "communication.earth_visibility_duration_s.value",
+          "raw": "136800",
+          "text": "136800.000 s"
+        },
+        {
+          "field": "communication.longest_interruption_s.value",
+          "raw": "36000",
+          "text": "36000.000 s"
+        },
+        {
+          "field": "communication.unknown_duration_s",
+          "raw": "0",
+          "text": "0.000 s"
+        }
+      ]
+    },
+    {
+      "name": "Peak Near Shackleton",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "359.88706739619784",
+          "text": "359.887°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "234.81309714479016",
+          "text": "234.813°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "2.7455314553686745",
+          "text": "2.746°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "-5.0760770653547125",
+          "text": "-5.076°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "5.6166055432785225",
+          "text": "5.617°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "0.27931617310470314",
+          "text": "0.279°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "-2.8710740879098458",
+          "text": "-2.871°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "-5.355393238459417",
+          "text": "-5.355°"
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-88.81113157679306",
+          "text": "-88.8111316 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "123.688902296386",
+          "text": "123.6889023 ° E"
+        },
+        {
+          "field": "terrain_visibility.native_latitude_deg",
+          "raw": "-88.81112239122716",
+          "text": "-88.8111224 ° N"
+        },
+        {
+          "field": "terrain_visibility.native_longitude_deg",
+          "raw": "123.68896557810952",
+          "text": "123.6889656 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "1644.9283447267107",
+          "text": "1644.928 m"
+        },
+        {
+          "field": "terrain_visibility.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "communication.access_samples.2026-11-14T06:00:00Z.earth_clearance_deg",
+          "raw": "-5.355393238459417",
+          "text": "-5.355°"
+        },
+        {
+          "field": "communication.configuration.minimum_earth_clearance_deg",
+          "raw": "1",
+          "text": "1.000°"
+        },
+        {
+          "field": "communication.earth_visibility_duration_s.value",
+          "raw": "0",
+          "text": "0.000 s"
+        },
+        {
+          "field": "communication.longest_interruption_s.value",
+          "raw": "172800",
+          "text": "172800.000 s"
+        },
+        {
+          "field": "communication.unknown_duration_s",
+          "raw": "0",
+          "text": "0.000 s"
+        }
+      ]
+    },
+    {
+      "name": "de Gerlache Rim",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "191.5018581377704",
+          "text": "191.502°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "66.273936150049",
+          "text": "66.274°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "0.26641551462172114",
+          "text": "0.266°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "-3.8618096930994383",
+          "text": "-3.862°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "-0.9175806698571115",
+          "text": "-0.918°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "0.7657671657701729",
+          "text": "0.766°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "1.1839961844788367",
+          "text": "1.184°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "-4.627576858869611",
+          "text": "-4.628°"
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-88.6833020636178",
+          "text": "-88.6833021 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "-67.92998180060115",
+          "text": "-67.9299818 ° E"
+        },
+        {
+          "field": "terrain_visibility.native_latitude_deg",
+          "raw": "-88.68331078451162",
+          "text": "-88.6833108 ° N"
+        },
+        {
+          "field": "terrain_visibility.native_longitude_deg",
+          "raw": "-67.93012364280376",
+          "text": "-67.9301236 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "1793.7939453124516",
+          "text": "1793.794 m"
+        },
+        {
+          "field": "terrain_visibility.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "communication.access_samples.2026-11-14T06:00:00Z.earth_clearance_deg",
+          "raw": "-4.627576858869611",
+          "text": "-4.628°"
+        },
+        {
+          "field": "communication.configuration.minimum_earth_clearance_deg",
+          "raw": "1",
+          "text": "1.000°"
+        },
+        {
+          "field": "communication.earth_visibility_duration_s.value",
+          "raw": "0",
+          "text": "0.000 s"
+        },
+        {
+          "field": "communication.longest_interruption_s.value",
+          "raw": "172800",
+          "text": "172800.000 s"
+        },
+        {
+          "field": "communication.unknown_duration_s",
+          "raw": "0",
+          "text": "0.000 s"
+        }
+      ]
+    },
+    {
+      "name": "Leibnitz Beta Plateau",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "91.953127154211",
+          "text": "91.953°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "326.782416659911",
+          "text": "326.782°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "1.4054294608669853",
+          "text": "1.405°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "-0.5673547819268876",
+          "text": "-0.567°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "3.4074499979451702",
+          "text": "3.407°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "7.4611349355322085",
+          "text": "7.461°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "-2.002020537078185",
+          "text": "-2.002°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "-8.028489717459093",
+          "text": "-8.028°"
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-85.42654889977845",
+          "text": "-85.4265489 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "31.74122882762893",
+          "text": "31.7412288 ° E"
+        },
+        {
+          "field": "terrain_visibility.native_latitude_deg",
+          "raw": "-85.42655058377696",
+          "text": "-85.4265506 ° N"
+        },
+        {
+          "field": "terrain_visibility.native_longitude_deg",
+          "raw": "31.741340150206483",
+          "text": "31.7413402 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "6398.5820312499445",
+          "text": "6398.582 m"
+        },
+        {
+          "field": "terrain_visibility.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "communication.access_samples.2026-11-14T06:00:00Z.earth_clearance_deg",
+          "raw": "-8.028489717459093",
+          "text": "-8.028°"
+        },
+        {
+          "field": "communication.configuration.minimum_earth_clearance_deg",
+          "raw": "1",
+          "text": "1.000°"
+        },
+        {
+          "field": "communication.earth_visibility_duration_s.value",
+          "raw": "0",
+          "text": "0.000 s"
+        },
+        {
+          "field": "communication.longest_interruption_s.value",
+          "raw": "172800",
+          "text": "172800.000 s"
+        },
+        {
+          "field": "communication.unknown_duration_s",
+          "raw": "0",
+          "text": "0.000 s"
+        }
+      ]
+    },
+    {
+      "name": "Malapert Massif",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "123.83880168574362",
+          "text": "123.839°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "358.6663085515341",
+          "text": "358.666°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "-0.6736042199779612",
+          "text": "-0.674°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "-0.3875185381161207",
+          "text": "-0.388°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "-2.128598732148114",
+          "text": "-2.129°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "1.5531388218616835",
+          "text": "1.553°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "1.4549945121701522",
+          "text": "1.455°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "-1.940657359977804",
+          "text": "-1.941°"
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-85.99469573493033",
+          "text": "-85.9946957 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "-0.23705285169222634",
+          "text": "-0.2370529 ° E"
+        },
+        {
+          "field": "terrain_visibility.native_latitude_deg",
+          "raw": "-85.99470200052038",
+          "text": "-85.9947020 ° N"
+        },
+        {
+          "field": "terrain_visibility.native_longitude_deg",
+          "raw": "-0.2369577996968071",
+          "text": "-0.2369578 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "4783.953613281241",
+          "text": "4783.954 m"
+        },
+        {
+          "field": "terrain_visibility.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "communication.access_samples.2026-11-14T06:00:00Z.earth_clearance_deg",
+          "raw": "-1.940657359977804",
+          "text": "-1.941°"
+        },
+        {
+          "field": "communication.configuration.minimum_earth_clearance_deg",
+          "raw": "1",
+          "text": "1.000°"
+        },
+        {
+          "field": "communication.earth_visibility_duration_s.value",
+          "raw": "0",
+          "text": "0.000 s"
+        },
+        {
+          "field": "communication.longest_interruption_s.value",
+          "raw": "172800",
+          "text": "172800.000 s"
+        },
+        {
+          "field": "communication.unknown_duration_s",
+          "raw": "0",
+          "text": "0.000 s"
+        }
+      ]
+    },
+    {
+      "name": "de Gerlache–Kocher Massif",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "239.86427305915416",
+          "text": "239.864°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "114.41329954450272",
+          "text": "114.413°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "-0.5368100669284345",
+          "text": "-0.537°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "-6.125437560382411",
+          "text": "-6.125°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "-1.9345178557885951",
+          "text": "-1.935°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "-4.783392343010544",
+          "text": "-4.783°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "1.3977077888601612",
+          "text": "1.398°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "-1.342045217371865",
+          "text": "-1.342°"
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-85.82950983667043",
+          "text": "-85.8295098 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "-116.32037829291912",
+          "text": "-116.3203783 ° E"
+        },
+        {
+          "field": "terrain_visibility.native_latitude_deg",
+          "raw": "-85.82951323932666",
+          "text": "-85.8295132 ° N"
+        },
+        {
+          "field": "terrain_visibility.native_longitude_deg",
+          "raw": "-116.32049966681811",
+          "text": "-116.3204997 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "2706.1257324218227",
+          "text": "2706.126 m"
+        },
+        {
+          "field": "terrain_visibility.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "communication.access_samples.2026-11-14T06:00:00Z.earth_clearance_deg",
+          "raw": "-1.342045217371865",
+          "text": "-1.342°"
+        },
+        {
+          "field": "communication.configuration.minimum_earth_clearance_deg",
+          "raw": "1",
+          "text": "1.000°"
+        },
+        {
+          "field": "communication.earth_visibility_duration_s.value",
+          "raw": "0",
+          "text": "0.000 s"
+        },
+        {
+          "field": "communication.longest_interruption_s.value",
+          "raw": "172800",
+          "text": "172800.000 s"
+        },
+        {
+          "field": "communication.unknown_duration_s",
+          "raw": "0",
+          "text": "0.000 s"
+        }
+      ]
+    },
+    {
+      "name": "Amundsen Rim",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "54.39894660288282",
+          "text": "54.399°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "289.287926975774",
+          "text": "289.288°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "4.929066298835218",
+          "text": "4.929°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "-2.497638260735938",
+          "text": "-2.498°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "3.66654795780586",
+          "text": "3.667°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "3.148583812586499",
+          "text": "3.149°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "1.2625183410293639",
+          "text": "1.263°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "-5.646222073322434",
+          "text": "-5.646°"
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-84.2287916895122",
+          "text": "-84.2287917 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "69.4428230604305",
+          "text": "69.4428231 ° E"
+        },
+        {
+          "field": "terrain_visibility.native_latitude_deg",
+          "raw": "-84.2287874362549",
+          "text": "-84.2287874 ° N"
+        },
+        {
+          "field": "terrain_visibility.native_longitude_deg",
+          "raw": "69.44290189227918",
+          "text": "69.4429019 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "399.4766540527079",
+          "text": "399.477 m"
+        },
+        {
+          "field": "terrain_visibility.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "communication.access_samples.2026-11-14T06:00:00Z.earth_clearance_deg",
+          "raw": "-5.646222073322434",
+          "text": "-5.646°"
+        },
+        {
+          "field": "communication.configuration.minimum_earth_clearance_deg",
+          "raw": "1",
+          "text": "1.000°"
+        },
+        {
+          "field": "communication.earth_visibility_duration_s.value",
+          "raw": "0",
+          "text": "0.000 s"
+        },
+        {
+          "field": "communication.longest_interruption_s.value",
+          "raw": "172800",
+          "text": "172800.000 s"
+        },
+        {
+          "field": "communication.unknown_duration_s",
+          "raw": "0",
+          "text": "0.000 s"
+        }
+      ]
+    },
+    {
+      "name": "Nobile Rim 2",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "65.02709830859152",
+          "text": "65.027°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "299.84768324408753",
+          "text": "299.848°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "4.124164688886862",
+          "text": "4.124°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "-1.3911023667921223",
+          "text": "-1.391°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "3.4812394745494917",
+          "text": "3.481°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "-3.729460973899451",
+          "text": "-3.729°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "0.6429252143373709",
+          "text": "0.643°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "2.3383586071073315",
+          "text": "2.338°"
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-83.9540474659883",
+          "text": "-83.9540475 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "58.820901535642065",
+          "text": "58.8209015 ° E"
+        },
+        {
+          "field": "terrain_visibility.native_latitude_deg",
+          "raw": "-83.95404480749538",
+          "text": "-83.9540448 ° N"
+        },
+        {
+          "field": "terrain_visibility.native_longitude_deg",
+          "raw": "58.82098269574121",
+          "text": "58.8209827 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "1009.441162109379",
+          "text": "1009.441 m"
+        },
+        {
+          "field": "terrain_visibility.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "communication.access_samples.2026-11-14T06:00:00Z.earth_clearance_deg",
+          "raw": "2.3383586071073315",
+          "text": "2.338°"
+        },
+        {
+          "field": "communication.configuration.minimum_earth_clearance_deg",
+          "raw": "1",
+          "text": "1.000°"
+        },
+        {
+          "field": "communication.earth_visibility_duration_s.value",
+          "raw": "172800",
+          "text": "172800.000 s"
+        },
+        {
+          "field": "communication.longest_interruption_s.value",
+          "raw": "0",
+          "text": "0.000 s"
+        },
+        {
+          "field": "communication.unknown_duration_s",
+          "raw": "0",
+          "text": "0.000 s"
+        }
+      ]
+    },
+    {
+      "name": "Connecting Ridge Extension",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "225.55440904339983",
+          "text": "225.554°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "100.34836365151509",
+          "text": "100.348°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "0.8791637555634482",
+          "text": "0.879°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "-4.564864231694184",
+          "text": "-4.565°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "-8.684979518415858",
+          "text": "-8.685°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "8.70407893788675",
+          "text": "8.704°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "9.564143273979305",
+          "text": "9.564°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "-13.268943169580933",
+          "text": "-13.269°"
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-89.0323466837593",
+          "text": "-89.0323467 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "-101.9930484319975",
+          "text": "-101.9930484 ° E"
+        },
+        {
+          "field": "terrain_visibility.native_latitude_deg",
+          "raw": "-89.03235211907266",
+          "text": "-89.0323521 ° N"
+        },
+        {
+          "field": "terrain_visibility.native_longitude_deg",
+          "raw": "-101.99349716901685",
+          "text": "-101.9934972 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "1180.1674804685226",
+          "text": "1180.167 m"
+        },
+        {
+          "field": "terrain_visibility.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "communication.access_samples.2026-11-14T06:00:00Z.earth_clearance_deg",
+          "raw": "-13.268943169580933",
+          "text": "-13.269°"
+        },
+        {
+          "field": "communication.configuration.minimum_earth_clearance_deg",
+          "raw": "1",
+          "text": "1.000°"
+        },
+        {
+          "field": "communication.earth_visibility_duration_s.value",
+          "raw": "0",
+          "text": "0.000 s"
+        },
+        {
+          "field": "communication.longest_interruption_s.value",
+          "raw": "172800",
+          "text": "172800.000 s"
+        },
+        {
+          "field": "communication.unknown_duration_s",
+          "raw": "0",
+          "text": "0.000 s"
+        }
+      ]
+    },
+    {
+      "name": "Haworth",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "146.36050671541295",
+          "text": "146.361°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "21.149780551804103",
+          "text": "21.150°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "-1.1376954568293205",
+          "text": "-1.138°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "-1.3734821211783925",
+          "text": "-1.373°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "-3.9011106221865886",
+          "text": "-3.901°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "1.916269545739705",
+          "text": "1.916°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "2.7634151653572694",
+          "text": "2.763°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "-3.2897516669180984",
+          "text": "-3.290°"
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-86.76382570998425",
+          "text": "-86.7638257 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "-22.77787100260136",
+          "text": "-22.7778710 ° E"
+        },
+        {
+          "field": "terrain_visibility.native_latitude_deg",
+          "raw": "-86.76383412501248",
+          "text": "-86.7638341 ° N"
+        },
+        {
+          "field": "terrain_visibility.native_longitude_deg",
+          "raw": "-22.777804353636846",
+          "text": "-22.7778044 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "1628.816162109375",
+          "text": "1628.816 m"
+        },
+        {
+          "field": "terrain_visibility.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "communication.access_samples.2026-11-14T06:00:00Z.earth_clearance_deg",
+          "raw": "-3.2897516669180984",
+          "text": "-3.290°"
+        },
+        {
+          "field": "communication.configuration.minimum_earth_clearance_deg",
+          "raw": "1",
+          "text": "1.000°"
+        },
+        {
+          "field": "communication.earth_visibility_duration_s.value",
+          "raw": "0",
+          "text": "0.000 s"
+        },
+        {
+          "field": "communication.longest_interruption_s.value",
+          "raw": "172800",
+          "text": "172800.000 s"
+        },
+        {
+          "field": "communication.unknown_duration_s",
+          "raw": "0",
+          "text": "0.000 s"
+        }
+      ]
+    },
+    {
+      "name": "Shoemaker",
+      "actualCanvasPinClick": true,
+      "values": [
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_azimuth_deg.value",
+          "raw": "60.839851446309964",
+          "text": "60.840°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_azimuth_deg.value",
+          "raw": "295.75004063283575",
+          "text": "295.750°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.sun_elevation_deg.value",
+          "raw": "2.931265631724034",
+          "text": "2.931°"
+        },
+        {
+          "field": "observations.2026-11-14T06:00:00Z.earth_elevation_deg.value",
+          "raw": "-3.170446318981219",
+          "text": "-3.170°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.horizon_elevation_deg",
+          "raw": "-2.049779268083461",
+          "text": "-2.050°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.horizon_elevation_deg",
+          "raw": "-1.7133270833050018",
+          "text": "-1.713°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.sun.clearance_deg",
+          "raw": "4.981044899807495",
+          "text": "4.981°"
+        },
+        {
+          "field": "terrain_visibility.observations.2026-11-14T06:00:00Z.earth.clearance_deg",
+          "raw": "-1.4571192356762162",
+          "text": "-1.457°"
+        },
+        {
+          "field": "request.site.latitude_deg",
+          "raw": "-87.18355343708663",
+          "text": "-87.1835534 ° N"
+        },
+        {
+          "field": "request.site.longitude_deg",
+          "raw": "62.83258366994545",
+          "text": "62.8325837 ° E"
+        },
+        {
+          "field": "terrain_visibility.native_latitude_deg",
+          "raw": "-87.18355016253203",
+          "text": "-87.1835502 ° N"
+        },
+        {
+          "field": "terrain_visibility.native_longitude_deg",
+          "raw": "62.832757474473276",
+          "text": "62.8327575 ° E"
+        },
+        {
+          "field": "terrain_visibility.surface_elevation_m",
+          "raw": "548.1873168944552",
+          "text": "548.187 m"
+        },
+        {
+          "field": "terrain_visibility.observer_height_m",
+          "raw": "0",
+          "text": "0.000 m"
+        },
+        {
+          "field": "communication.access_samples.2026-11-14T06:00:00Z.earth_clearance_deg",
+          "raw": "-1.4571192356762162",
+          "text": "-1.457°"
+        },
+        {
+          "field": "communication.configuration.minimum_earth_clearance_deg",
+          "raw": "1",
+          "text": "1.000°"
+        },
+        {
+          "field": "communication.earth_visibility_duration_s.value",
+          "raw": "0",
+          "text": "0.000 s"
+        },
+        {
+          "field": "communication.longest_interruption_s.value",
+          "raw": "172800",
+          "text": "172800.000 s"
+        },
+        {
+          "field": "communication.unknown_duration_s",
+          "raw": "0",
+          "text": "0.000 s"
+        }
+      ]
+    }
+  ]
+}

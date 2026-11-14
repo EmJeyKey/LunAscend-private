@@ -1,10 +1,11 @@
-import { createContext, useContext, useEffect, useState, useSyncExternalStore, type PropsWithChildren } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, useSyncExternalStore, type PropsWithChildren } from 'react'
 import { initialStartUtc, previewSites } from '../data/preview'
 import type { MissionSelection, PreviewScenario } from '../types/preview'
 import type { AnalysisOptions } from '../types/analysis'
 import { AnalysisRunner, emptyAnalysis } from '../api/analysis'
 import { buildRequest, initialOptions, observationAt } from '../lib/analysis'
 import { ComparisonStore, type ComparisonState } from './ComparisonStore'
+import {needsCatalogEpoch,resolveCatalogEpoch} from '../lib/apollo'
 
 interface MissionContextValue {
   mission: MissionSelection
@@ -35,7 +36,8 @@ export function MissionProvider({ children }: PropsWithChildren) {
   const [sampleIndex, setSampleIndex] = useState(0)
   const [resultsCleared,setResultsCleared]=useState(false)
   const [runner] = useState(() => new AnalysisRunner(setAnalysis))
-  const invalidate = () => { setResultsCleared(value=>value||analysis.result!==null||analysis.status==='loading'); runner.clear(); setSampleIndex(0) }
+  const catalogJob=useRef<AbortController|null>(null)
+  const invalidate = () => { catalogJob.current?.abort();setResultsCleared(value=>value||analysis.result!==null||analysis.status==='loading'); runner.clear(); setSampleIndex(0) }
   const updateMission = (value: MissionSelection) => { invalidate(); setMission(value) }
   const updateOptions = (value: AnalysisOptions) => { invalidate(); setOptions(value) }
   const series = analysis.result?.observations || []
@@ -43,10 +45,17 @@ export function MissionProvider({ children }: PropsWithChildren) {
   const runAnalysis = (selection: MissionSelection, requestedOptions=options) => {
     invalidate()
     setResultsCleared(false)
-    try { const request = buildRequest(selection, requestedOptions); setOptions(requestedOptions); setMission(selection); void runner.run(request) }
-    catch (error) { setAnalysis({ status: 'error', result: null, message: error instanceof Error ? error.message : 'Invalid analysis inputs.' }) }
+    const apply=(resolved:MissionSelection,settings:AnalysisOptions)=>{
+      try { const request = buildRequest(resolved, settings); setOptions(settings); setMission(resolved); void runner.run(request) }
+      catch (error) { setAnalysis({ status: 'error', result: null, message: error instanceof Error ? error.message : 'Invalid analysis inputs.' }) }
+    }
+    if(needsCatalogEpoch(selection,requestedOptions)){
+      const controller=new AbortController();catalogJob.current=controller
+      setAnalysis({status:'loading',result:null,message:'Converting the fixed native catalog point at the selected UTC…'})
+      void resolveCatalogEpoch(selection,requestedOptions,controller.signal).then(value=>{if(!controller.signal.aborted)apply(value.selection,value.options)},error=>{if(!controller.signal.aborted)setAnalysis({status:'error',result:null,message:error instanceof Error?error.message:'Exact catalog frame conversion unavailable.'})})
+    }else apply(selection,requestedOptions)
   }
-  useEffect(() => () => runner.clear(), [runner])
+  useEffect(() => () => {catalogJob.current?.abort();runner.clear()}, [runner])
   const [comparisonStore] = useState(() => new ComparisonStore([
     { selection: mission, options: initialOptions, name: 'Baseline' },
     { selection: { ...mission, site: previewSites[1] }, options: initialOptions, name: 'Alternative' },

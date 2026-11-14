@@ -2,6 +2,7 @@ import { AnalysisFailure, emptyAnalysis, requestAnalysis, parseResult, type Anal
 import { buildRequest } from '../lib/analysis'
 import type { AnalysisOptions, ScenarioRequest, ScenarioResult } from '../types/analysis'
 import type { MissionSelection } from '../types/preview'
+import {needsCatalogEpoch,resolveCatalogEpoch} from '../lib/apollo'
 
 export interface ComparisonScenario {
   id: string
@@ -25,6 +26,7 @@ export class ComparisonStore {
   private versions = new Map<string, number>()
   private jobs = new Map<string, Job>()
   private cache = new Map<string, ScenarioResult>()
+  private resolving = new Map<string,{controller:AbortController;promise:Promise<void>}>()
   constructor(initial: { selection: MissionSelection; options: AnalysisOptions; name: string }[], private transport: Transport = requestAnalysis) {
     const scenarios = initial.slice(0, 3).map((item, i) => ({ ...structuredClone(item), id: `scenario-${i + 1}`, analysis: emptyAnalysis }))
     this.snapshot = { scenarios, baselineId: scenarios[0]?.id || '' }
@@ -38,6 +40,7 @@ export class ComparisonStore {
     this.listeners.forEach(listener => listener())
   }
   private detach(id: string) {
+    this.resolving.get(id)?.controller.abort();this.resolving.delete(id)
     this.versions.set(id, (this.versions.get(id) || 0) + 1)
     for (const [key, job] of this.jobs) {
       job.consumers.delete(id)
@@ -79,9 +82,23 @@ export class ComparisonStore {
     }))
   }
   private status(id: string, analysis: AnalysisState) { this.publish(this.snapshot.scenarios.map(s => s.id === id ? { ...s, analysis } : s)) }
-  async run(id: string) {
+  async run(id: string):Promise<void> {
     const item = this.snapshot.scenarios.find(s => s.id === id)
     if (!item) return
+    if(needsCatalogEpoch(item.selection,item.options)){
+      const pending=this.resolving.get(id);if(pending)return pending.promise
+      const controller=new AbortController(),version=this.versions.get(id)||0
+      this.status(id,{status:'loading',result:null,message:'Converting native catalog point at selected UTC…'})
+      const promise=(async()=>{
+        try{
+          const value=await resolveCatalogEpoch(item.selection,item.options,controller.signal)
+          if(controller.signal.aborted||(this.versions.get(id)||0)!==version||!this.snapshot.scenarios.some(s=>s.id===id))return
+          this.resolving.delete(id);this.edit(id,value);await this.run(id)
+        }catch(error){if(!controller.signal.aborted)this.status(id,{status:'error',result:null,message:error instanceof Error?error.message:'Catalog coordinate conversion unavailable.'})}
+        finally{if(this.resolving.get(id)?.controller===controller)this.resolving.delete(id)}
+      })()
+      this.resolving.set(id,{controller,promise});return promise
+    }
     let request: ScenarioRequest
     try { request = buildRequest(item.selection, item.options) }
     catch (error) { this.status(id, { status: 'error', result: null, message: error instanceof Error ? error.message : 'Invalid scenario inputs.' }); return }
@@ -107,6 +124,8 @@ export class ComparisonStore {
   }
   runAll = () => Promise.all(this.snapshot.scenarios.map(s => this.run(s.id)))
   dispose() {
+    for(const job of this.resolving.values())job.controller.abort()
+    this.resolving.clear()
     for (const job of this.jobs.values()) job.controller.abort()
     this.jobs.clear()
     this.publish(this.snapshot.scenarios.map(s => s.analysis.status === 'loading' ? { ...s, analysis: emptyAnalysis } : s))

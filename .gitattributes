@@ -21,3 +21,7 @@ data/fixtures/imagery/*.xml -text whitespace=-blank-at-eol
 data/fixtures/imagery/*.html -text whitespace=-blank-at-eol
 data/fixtures/polar-screening/*.LBL -text whitespace=-blank-at-eol,-blank-at-eof
 data/fixtures/polar-screening/*.tif -text
+data/fixtures/polar-sites/*.tif -text
+data/manifests/polar-sites/README.source.txt -text whitespace=-blank-at-eol,-blank-at-eof
+data/manifests/apollo-terrain/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
+data/manifests/apollo-terrain/*.LBL -text whitespace=-blank-at-eol,-blank-at-eof

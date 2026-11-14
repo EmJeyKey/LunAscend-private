@@ -1,0 +1,203 @@
+{
+  "site": "Nobile Rim 1",
+  "epoch": "2026-11-15T00:00:00Z",
+  "durationHours": 24,
+  "action": "Changed date on the analysis form and clicked Run Full Analysis. Native site converted before request.",
+  "values": [
+    {
+      "field": "observations.2026-11-15T00:00:00Z.sun_azimuth_deg.value",
+      "raw": "77.23228715586697",
+      "text": "77.232°"
+    },
+    {
+      "field": "observations.2026-11-15T00:00:00Z.earth_azimuth_deg.value",
+      "raw": "320.0947463745907",
+      "text": "320.095°"
+    },
+    {
+      "field": "observations.2026-11-15T00:00:00Z.sun_elevation_deg.value",
+      "raw": "2.5712923922199113",
+      "text": "2.571°"
+    },
+    {
+      "field": "observations.2026-11-15T00:00:00Z.earth_elevation_deg.value",
+      "raw": "-0.05596602167845771",
+      "text": "-0.056°"
+    },
+    {
+      "field": "terrain_visibility.observations.2026-11-15T00:00:00Z.sun.horizon_elevation_deg",
+      "raw": "-12.197691492508543",
+      "text": "-12.198°"
+    },
+    {
+      "field": "terrain_visibility.observations.2026-11-15T00:00:00Z.earth.horizon_elevation_deg",
+      "raw": "-1.3175538610113047",
+      "text": "-1.318°"
+    },
+    {
+      "field": "terrain_visibility.observations.2026-11-15T00:00:00Z.sun.clearance_deg",
+      "raw": "14.768983884728454",
+      "text": "14.769°"
+    },
+    {
+      "field": "terrain_visibility.observations.2026-11-15T00:00:00Z.earth.clearance_deg",
+      "raw": "1.2615878393328464",
+      "text": "1.262°"
+    },
+    {
+      "field": "request.site.latitude_deg",
+      "raw": "-85.43808393900073",
+      "text": "-85.4380839 ° N"
+    },
+    {
+      "field": "request.site.longitude_deg",
+      "raw": "37.36510986026951",
+      "text": "37.3651099 ° E"
+    },
+    {
+      "field": "terrain_visibility.native_latitude_deg",
+      "raw": "-85.43808501823099",
+      "text": "-85.4380850 ° N"
+    },
+    {
+      "field": "terrain_visibility.native_longitude_deg",
+      "raw": "37.365218778044984",
+      "text": "37.3652188 ° E"
+    },
+    {
+      "field": "terrain_visibility.surface_elevation_m",
+      "raw": "5947.434082031346",
+      "text": "5947.434 m"
+    },
+    {
+      "field": "terrain_visibility.observer_height_m",
+      "raw": "0",
+      "text": "0.000 m"
+    },
+    {
+      "field": "communication.access_samples.2026-11-15T00:00:00Z.earth_clearance_deg",
+      "raw": "1.2615878393328464",
+      "text": "1.262°"
+    },
+    {
+      "field": "communication.configuration.minimum_earth_clearance_deg",
+      "raw": "1",
+      "text": "1.000°"
+    },
+    {
+      "field": "communication.earth_visibility_duration_s.value",
+      "raw": "86400",
+      "text": "86400.000 s"
+    },
+    {
+      "field": "communication.longest_interruption_s.value",
+      "raw": "0",
+      "text": "0.000 s"
+    },
+    {
+      "field": "communication.unknown_duration_s",
+      "raw": "0",
+      "text": "0.000 s"
+    },
+    {
+      "field": "power.cases.conservative.samples.2026-11-15T00:00:00Z.solar_generation_w",
+      "raw": "0",
+      "text": "0.00 W"
+    },
+    {
+      "field": "power.cases.optimistic.samples.2026-11-15T00:00:00Z.solar_generation_w",
+      "raw": "27.476011157650092",
+      "text": "27.48 W"
+    },
+    {
+      "field": "power.cases.conservative.samples.2026-11-15T00:00:00Z.load_w",
+      "raw": "50",
+      "text": "50.00 W"
+    },
+    {
+      "field": "power.cases.optimistic.samples.2026-11-15T00:00:00Z.load_w",
+      "raw": "50",
+      "text": "50.00 W"
+    },
+    {
+      "field": "power.cases.conservative.samples.2026-11-15T00:00:00Z.battery_energy_wh",
+      "raw": "500",
+      "text": "500.00 Wh"
+    },
+    {
+      "field": "power.cases.optimistic.samples.2026-11-15T00:00:00Z.battery_energy_wh",
+      "raw": "500",
+      "text": "500.00 Wh"
+    },
+    {
+      "field": "power.cases.conservative.samples.2026-11-15T00:00:00Z.soc_pct",
+      "raw": "100",
+      "text": "100.00 %"
+    },
+    {
+      "field": "power.cases.optimistic.samples.2026-11-15T00:00:00Z.soc_pct",
+      "raw": "100",
+      "text": "100.00 %"
+    },
+    {
+      "field": "power.cases.conservative.totals.solar_generated_wh",
+      "raw": "0",
+      "text": "0.00 Wh"
+    },
+    {
+      "field": "power.cases.optimistic.totals.solar_generated_wh",
+      "raw": "773.0718670061176",
+      "text": "773.07 Wh"
+    },
+    {
+      "field": "power.cases.conservative.totals.electrical_demand_wh",
+      "raw": "1200",
+      "text": "1200.00 Wh"
+    },
+    {
+      "field": "power.cases.optimistic.totals.electrical_demand_wh",
+      "raw": "1200",
+      "text": "1200.00 Wh"
+    },
+    {
+      "field": "power.cases.conservative.totals.minimum_battery_energy_wh",
+      "raw": "50",
+      "text": "50.00 Wh"
+    },
+    {
+      "field": "power.cases.optimistic.totals.minimum_battery_energy_wh",
+      "raw": "50.60196526959759",
+      "text": "50.60 Wh"
+    },
+    {
+      "field": "power.cases.conservative.totals.minimum_soc_pct",
+      "raw": "10",
+      "text": "10.00 %"
+    },
+    {
+      "field": "power.cases.optimistic.totals.minimum_soc_pct",
+      "raw": "10.120393053919518",
+      "text": "10.12 %"
+    },
+    {
+      "field": "power.cases.conservative.totals.final_battery_energy_wh",
+      "raw": "50",
+      "text": "50.00 Wh"
+    },
+    {
+      "field": "power.cases.optimistic.totals.final_battery_energy_wh",
+      "raw": "50.60196526959759",
+      "text": "50.60 Wh"
+    },
+    {
+      "field": "power.cases.conservative.totals.unmet_load_wh",
+      "raw": "772.5000000000001",
+      "text": "772.50 Wh"
+    },
+    {
+      "field": "power.cases.optimistic.totals.unmet_load_wh",
+      "raw": "0",
+      "text": "0.00 Wh"
+    }
+  ]
+}

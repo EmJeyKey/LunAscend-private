@@ -48,7 +48,14 @@ class DatasetConfiguration:
         try:
             manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
             if dataset_id != manifest["dataset_id"]:
-                raise TerrainError("MISSING_DATA", "Unknown terrain dataset. No synthetic terrain is substituted.")
+                registry = json.loads((ROOT / 'data/manifests/polar-sites/registry.json').read_text(encoding='utf-8'))
+                record = next((s for s in registry['sites'] if s['dataset_id'] == dataset_id), None)
+                if record is None:
+                    raise TerrainError("MISSING_DATA", "Unknown terrain dataset. No synthetic terrain is substituted.")
+                manifest = json.loads((ROOT / record['manifest']).read_text(encoding='utf-8'))
+                if manifest['dataset_id'] != dataset_id:
+                    raise TerrainError('MISSING_DATA', 'Terrain registry identity mismatch.')
+                return cls(ROOT / manifest['path'], manifest)
             root = Path(os.environ.get("LUNASCEND_TERRAIN_DIR", str(ROOT / "data/raw/lola-site01")))
             if not root.is_absolute():
                 root = ROOT / root

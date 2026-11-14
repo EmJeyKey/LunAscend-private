@@ -12,7 +12,7 @@ const utc = (value: string) => value.replace('T', ' ').replace(/\.\d+(?=Z)/, '')
 export function TerrainVisibilityPanel() {
   const { analysis, sampleIndex, selectSample } = useMission()
   const result = analysis.result, terrain = result?.terrain_visibility
-  if (!terrain) return <section className="panel terrain-visibility"><PanelHeader title="Terrain-aware visibility"/><p>Enable NASA LOLA terrain in the scientific analysis settings. Results require a supported Site01 location and the local DEM/frame kernels. Geometric-only and mock analyses remain available.</p><p>No terrain visibility or operational windows are inferred from the geometric elevation curves.</p></section>
+  if (!terrain) return <section className="panel terrain-visibility"><PanelHeader title="Terrain-aware visibility"/><p>Enable NASA LOLA terrain in the scientific analysis settings. Results require a location covered by the selected dataset and the local DEM/frame kernels. Geometric-only and mock analyses remain available.</p><p>No terrain visibility or operational windows are inferred from the geometric elevation curves.</p></section>
   const row = terrain.observations[Math.min(sampleIndex, terrain.observations.length - 1)]
   return <section className="panel terrain-visibility" aria-label="Terrain-aware center visibility"><PanelHeader title="Terrain-aware visibility" detail="CENTER MODEL · UNVALIDATED"/>
     <p>{terrain.dataset_id} · radius <span className="font-mono">{terrain.max_search_radius_m} m</span> · azimuth step <span className="font-mono">{terrain.azimuth_step_deg}°</span> · radial step <span className="font-mono">{terrain.radial_step_m} m</span></p>

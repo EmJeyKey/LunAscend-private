@@ -181,14 +181,15 @@ export class LunarRenderer implements LunarView {
   setApollo(pins:ApolloPin[],visible:boolean,selected:string){
     disposeGroup(this.apollo);this.apollo.visible=visible
     for(const pin of pins){
-      const dot=new THREE.Mesh(new THREE.SphereGeometry(pin.id===selected?.022:.015,16,12),new THREE.MeshBasicMaterial({color:pin.id===selected?0xffffff:0xf2d38b,depthTest:true}))
+      const radius=pin.category==='polar-study'?(pin.id===selected?.006:.003):(pin.id===selected?.022:.015)
+      const dot=new THREE.Mesh(new THREE.SphereGeometry(radius,16,12),new THREE.MeshBasicMaterial({color:pin.id===selected?0xffffff:pin.category==='polar-study'?0x7bbfd0:0xf2d38b,depthTest:true}))
       dot.position.set(...geographicToScene(pin.context_latitude,pin.context_longitude,1.008));dot.userData.apolloId=pin.id
       this.apollo.add(dot)
     }
     this.requestDraw()
   }
   focusCoordinate(latitude:number,longitude:number){
-    this.controls.target.set(0,0,0);this.cameraObject.position.set(...geographicToScene(latitude,longitude,2.4));this.controls.update();this.requestDraw()
+    this.controls.target.set(0,0,0);this.cameraObject.position.set(...geographicToScene(latitude,longitude,latitude< -80?1.3:2.4));this.controls.update();this.requestDraw()
   }
   setMesh(mesh:TerrainMesh|null){
     if(mesh===this.mesh)return

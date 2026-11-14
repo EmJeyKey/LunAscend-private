@@ -1,0 +1,51 @@
+{
+  "version": "scientific-site-registry-v1",
+  "coordinate_sources": {
+    "apollo": "data/manifests/apollo-sites.json",
+    "polar_study": "data/manifests/polar-sites/registry.json"
+  },
+  "existing_observer_points": [
+    {
+      "id": "site01-reference-observer",
+      "name": "Site01 scientific observer example",
+      "parent_region": "pgda-site01",
+      "category": "analysis-observer",
+      "latitude": -89.463158,
+      "longitude": -137.5,
+      "reference_frame": "MOON_ME_DE421",
+      "dataset_id": "lola-site01-5m-v2020",
+      "qualification": "Documented native pixel-center observer; distinct from the Connecting Ridge dataset-area marker. Not a surveyed touchdown site."
+    }
+  ],
+  "custom_points": {
+    "category": "user-selected",
+    "capabilities": "Geometric analysis requires confirmed frame, epoch and explicit height; terrain requires actual selected-dataset coverage."
+  },
+  "artemis_references": [
+    {
+      "source_date": "2024-10-28",
+      "source": "https://www.nasa.gov/news-release/nasa-provides-update-on-artemis-iii-moon-landing-regions/",
+      "names": [
+        "Peak near Cabeus B",
+        "Haworth",
+        "Malapert Massif",
+        "Mons Mouton Plateau",
+        "Mons Mouton",
+        "Nobile Rim 1",
+        "Nobile Rim 2",
+        "de Gerlache Rim 2",
+        "Slater Plain"
+      ],
+      "category": "artemis-candidate-region",
+      "geometry": null,
+      "qualification": "No priority ranking. Verified region boundaries not installed; names are not treated as identical to similarly named PGDA DEM study areas."
+    },
+    {
+      "source_date": "2022-08-19",
+      "source": "https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/",
+      "category": "historical-artemis-assessment",
+      "geometry": null,
+      "qualification": "Earlier 2022 assessment retained as a dated reference; no invented touchdown coordinates or polygons."
+    }
+  ]
+}

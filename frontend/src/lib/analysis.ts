@@ -10,6 +10,7 @@ export function buildRequest(mission: MissionSelection, options: AnalysisOptions
   if (!name.trim() || name.length > 500 || !id.trim() || id.length > 500) throw new Error('Enter a site name and identifier (1–500 characters).')
   if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90 || !Number.isFinite(longitude) || longitude < -180 || longitude >= 180) throw new Error('Latitude must be −90 to +90; east-positive longitude must be −180 to less than +180 degrees.')
   const start = Date.parse(mission.startUtc)
+  if(options.providerMode==='scientific'&&options.coordinateEpochUtc&&/^(apollo-|pgda-)/.test(id)&&Date.parse(options.coordinateEpochUtc)!==start)throw new Error('The mission date changed. Reselect this catalog marker or use Analyze this site to convert its native coordinates at the new UTC.')
   if (!/Z$/.test(mission.startUtc) || !Number.isFinite(start)) throw new Error('Enter a valid UTC date and time.')
   if (!Number.isFinite(mission.durationHours) || mission.durationHours <= 0 || mission.durationHours > 366 * 24) throw new Error('Analysis duration must be positive and no more than 366 days.')
   const step = Number(options.sampleStepS)
@@ -34,7 +35,7 @@ export function buildRequest(mission: MissionSelection, options: AnalysisOptions
         frame_realization: options.providerMode === 'scientific' ? 'DE440/ME421' : 'synthetic-only',
         reference_surface: options.providerMode === 'scientific' ? 'MOON_SPHERE_1737400_M' : 'synthetic demonstration surface',
         reference_radius_m: options.providerMode === 'scientific' ? 1737400 : null } },
-    settings: { terrain_enabled: terrain, ...(terrain ? { terrain_options: { dataset_id: 'lola-site01-5m-v2020', coordinate_epoch_utc: new Date(start).toISOString(), max_search_radius_m: radius, radial_step_m: radial, azimuth_samples: azimuths } } : {}), ...engineeringSettings(options), horizon_mode: terrain ? 'terrain' : 'geometric_approximation', disk_policy: 'center', correction_mode: 'NONE', sun_clearance_deg: 0, earth_clearance_deg: 0 },
+    settings: { terrain_enabled: terrain, ...(terrain ? { terrain_options: { dataset_id: options.terrainDatasetId || 'lola-site01-5m-v2020', coordinate_epoch_utc: new Date(start).toISOString(), max_search_radius_m: radius, radial_step_m: radial, azimuth_samples: azimuths } } : {}), ...engineeringSettings(options), horizon_mode: terrain ? 'terrain' : 'geometric_approximation', disk_policy: 'center', correction_mode: 'NONE', sun_clearance_deg: 0, earth_clearance_deg: 0 },
   }
 }
 

@@ -14,7 +14,7 @@ import {LunarImageMap,type ImageAnchor} from './LunarImageMap'
 import {requestImageAnchor} from '../api/imagery'
 import type {GlobeImageStatus} from '../visualization/GlobeImagery'
 import type {LunarView,Pick} from '../visualization/LunarRenderer'
-import {loadApollo,type ApolloPin} from '../lib/apollo'
+import {loadApollo,loadPolarSites,type ApolloPin} from '../lib/apollo'
 import {ApolloSitePanel} from './ApolloSitePanel'
 
 const number=(v:number|null|undefined,places=3)=>v==null?'Unavailable':v.toFixed(places)
@@ -43,6 +43,8 @@ const MemoPolarWindow=memo(PolarWindow)
 export function LunarExplorer({compact=false}:{compact?:boolean}) {
   const {mission,options,updateMission,updateOptions,analysis,sampleIndex,selectSample,comparisonStore}=useMission()
   const [showApollo,setShowApollo]=useState(false),[apolloPins,setApolloPins]=useState<ApolloPin[]>([]),[apolloError,setApolloError]=useState(''),[apolloSelected,setApolloSelected]=useState('')
+  const [showPolar,setShowPolar]=useState(false),[polarPins,setPolarPins]=useState<ApolloPin[]>([]),[polarError,setPolarError]=useState('')
+  const visiblePins=useMemo(()=>[...(showApollo?apolloPins:[]),...(showPolar?polarPins:[])],[showApollo,showPolar,apolloPins,polarPins])
   const [pendingCoordinate,setPendingCoordinate]=useState<{latitude:number;longitude:number}|null>(null)
   const hoverReadout=useRef<HTMLDivElement>(null)
   const {advanced}=usePresentation()
@@ -63,9 +65,9 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
   const inspectionJob=useRef<AbortController|null>(null)
   const consumedRefresh=useRef(0)
   const site=mission.site
-  const request=useMemo<MeshRequest>(()=>({dataset_id:'lola-site01-5m-v2020',site_id:site.id,latitude_deg:site.latitude,longitude_deg:site.longitude,
+  const request=useMemo<MeshRequest>(()=>({dataset_id:options.terrainDatasetId||'lola-site01-5m-v2020',site_id:site.id,latitude_deg:site.latitude,longitude_deg:site.longitude,
     reference_frame:'MOON_ME_DE440_ME421',coordinate_epoch_utc:mission.startUtc,observer_height_m:Number(options.observerHeightM),half_extent_m:extent,max_grid_side:detail}),
-    [site.id,site.latitude,site.longitude,mission.startUtc,options.observerHeightM,extent,detail])
+    [site.id,site.latitude,site.longitude,mission.startUtc,options.observerHeightM,options.terrainDatasetId,extent,detail])
   const requestKey=JSON.stringify(request)
   const mesh=options.providerMode==='scientific'&&options.frameConfirmed&&meshState?.key===requestKey?meshState.value:null
   const inspect=useCallback((index:number)=>{
@@ -79,12 +81,18 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
   },[])
   pickRef.current=pick=>{
     if(pick.kind==='apollo'){
-      setApolloSelected(pick.id);const pin=apolloPins.find(p=>p.id===pick.id)
-      if(pin)api?.focusCoordinate?.(pin.context_latitude,pin.context_longitude)
+      const pin=visiblePins.find(p=>p.id===pick.id)
+      if(pin)selectCatalogPin(pin)
       return
     }
     if(pick.kind==='terrain')inspect(pick.index)
     else setPendingCoordinate({latitude:pick.latitude,longitude:pick.longitude})
+  }
+  const selectCatalogPin=(pin:ApolloPin)=>{
+    setApolloSelected(pin.id)
+    api?.focusCoordinate?.(pin.context_latitude,pin.context_longitude)
+    updateMission({...mission,startUtc:currentTime,site:{id:pin.id,name:pin.name,latitude:pin.context_latitude,longitude:pin.context_longitude,description:pin.point_kind||'NASA Lunar Module location · exact DE421 to DE440 conversion.'}})
+    updateOptions({...options,providerMode:'scientific',frameConfirmed:false,coordinateEpochUtc:currentTime,terrainDatasetId:pin.dataset_id||undefined,terrainEnabled:!!pin.dataset_id,surfaceElevationM:'',powerEnabled:false,communicationEnabled:false,terrainRadiusM:pin.dataset_id?'100':options.terrainRadiusM})
   }
   const adoptGlobeCoordinate=()=>{
     const pick=pendingCoordinate
@@ -162,18 +170,25 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
   useEffect(()=>{api?.setDirections(overlays)},[api,overlays])
   const loadExample=()=>{
     updateMission({site:{id:'custom',name:'LOLA Site01 example',latitude:-89.46315760953222,longitude:-137.50097847854008,description:'DE440/ME421 coordinate at 2026-11-14 00:00 UTC, corresponding to the documented native DE421 Site01 pixel center; not a surveyed landing site.'},startUtc:'2026-11-14T00:00:00Z',durationHours:24})
-    updateOptions({...options,providerMode:'scientific',terrainEnabled:true,observerHeightM:'2',sampleStepS:'3600',frameConfirmed:false})
+    updateOptions({...options,providerMode:'scientific',terrainDatasetId:undefined,terrainEnabled:true,observerHeightM:'2',sampleStepS:'3600',frameConfirmed:false})
     setMode('terrain')
   }
   const currentTime=observation?.time_utc||mission.startUtc
   useEffect(()=>{
-    setApolloPins([]);setApolloError('');setApolloSelected('')
+    setApolloPins([]);setApolloError('')
     if(!showApollo)return
     const controller=new AbortController()
     void loadApollo(currentTime,controller.signal).then(pins=>{if(!controller.signal.aborted)setApolloPins(pins)},error=>{if(!controller.signal.aborted)setApolloError(error instanceof Error?error.message:'Apollo pins unavailable.')})
     return ()=>controller.abort()
   },[showApollo,currentTime])
-  useEffect(()=>{api?.setApollo?.(apolloPins,showApollo,apolloSelected)},[api,apolloPins,showApollo,apolloSelected])
+  useEffect(()=>{
+    setPolarPins([]);setPolarError('')
+    if(!showPolar)return
+    const controller=new AbortController()
+    void loadPolarSites(currentTime,controller.signal).then(pins=>{if(!controller.signal.aborted)setPolarPins(pins)},error=>{if(!controller.signal.aborted)setPolarError(error instanceof Error?error.message:'Polar sites unavailable.')})
+    return ()=>controller.abort()
+  },[showPolar,currentTime])
+  useEffect(()=>{api?.setApollo?.(visiblePins,true,apolloSelected)},[api,visiblePins,apolloSelected])
   useEffect(()=>setPendingCoordinate(null),[site.latitude,site.longitude,currentTime,mode])
   const anchorKey=JSON.stringify([site.latitude,site.longitude,mission.startUtc,options.frameConfirmed,options.providerMode])
   useEffect(()=>{
@@ -192,8 +207,8 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
   return <section className={`panel lunar-explorer ${compact?'compact':''}`} aria-label="Scientific lunar explorer">
     <header className="section-introduction"><h2>Lunar exploration instrument</h2><p>{mode==='images'?'LROC photographic maps · lunar geographic / south-polar projection. Registration to the local DEM remains unverified.':mode==='globe'?'LROC photographs · no global elevation model. Image shadows are historical.':'NASA LOLA Site01 · actual elevations, finite data coverage. Rendering is independently unvalidated.'}</p></header>
     <div className="viewer-toolbar" aria-label="Lunar view"><button aria-pressed={mode==='globe'} onClick={()=>setMode('globe')}>Whole Moon</button><button aria-pressed={mode==='images'} onClick={()=>setMode('images')}>Photographic maps</button><button aria-pressed={mode==='polar'} onClick={()=>setMode('polar')}>Elevation map (2D)</button><button aria-pressed={mode==='terrain'} onClick={()=>setMode('terrain')}>Landing area (3D)</button><button aria-pressed={mode==='surface'} onClick={()=>setMode('surface')}>Surface View</button><button onClick={loadExample}>Load Site01 reference</button></div>
-    {mode==='globe'&&<div className="apollo-controls"><label><input type="checkbox" checked={showApollo} onChange={e=>setShowApollo(e.target.checked)}/>Show Apollo landing sites</label>{showApollo&&<><p role="status">{apolloError||(!apolloPins.length?'Converting NASA DE421 coordinates…':'Six Lunar Module sites · exact frame conversion at displayed UTC.')}</p><div className="atlas-actions">{apolloPins.map(pin=><button key={pin.id} aria-pressed={apolloSelected===pin.id} onClick={()=>{setApolloSelected(pin.id);api?.focusCoordinate?.(pin.context_latitude,pin.context_longitude)}}>{pin.name}</button>)}</div></>}</div>}
-    {showApollo&&apolloPins.find(p=>p.id===apolloSelected)&&<ApolloSitePanel site={apolloPins.find(p=>p.id===apolloSelected)!} onClose={()=>setApolloSelected('')}/>}
+    {(mode==='globe'||mode==='images')&&<div className="apollo-controls"><label><input type="checkbox" checked={showApollo} onChange={e=>setShowApollo(e.target.checked)}/>Show Apollo landing sites</label><label><input type="checkbox" checked={showPolar} onChange={e=>setShowPolar(e.target.checked)}/>Show NASA south-polar locations</label><p role="status">{apolloError||polarError||((showApollo&&!apolloPins.length||showPolar&&!polarPins.length)?'Converting verified DE421 coordinates…':'Gold: Apollo · Cyan: polar study area. Colors indicate category, not suitability.')}</p><div className="atlas-actions">{visiblePins.map(pin=><button key={pin.id} aria-pressed={apolloSelected===pin.id} onClick={()=>selectCatalogPin(pin)}>{pin.name}</button>)}</div></div>}
+    {visiblePins.find(p=>p.id===apolloSelected)&&<ApolloSitePanel site={visiblePins.find(p=>p.id===apolloSelected)!} onClose={()=>setApolloSelected('')}/>}
     {pendingCoordinate&&<div className="coordinate-pick" role="status"><p className="mono">{pendingCoordinate.latitude.toFixed(4)}° N · {pendingCoordinate.longitude.toFixed(4)}° E · DE440/ME421</p><button onClick={adoptGlobeCoordinate}>Select this location</button><button onClick={()=>setPendingCoordinate(null)}>Cancel</button><p>Context-sphere coordinate. Local terrain coverage is not established.</p></div>}
     <div className="atlas-actions coordinate-actions"><Link to="/analysis">Analyze selected location</Link><button onClick={saveCandidate}>Add to comparison</button><button onClick={saveCandidate}>Save candidate</button><Link to="/compare">Open comparison</Link><Link to="/resilience#opportunity-finder">Find better landing opportunities</Link></div>
     <p className="viewer-location-help">{site.name} · {Math.abs(site.latitude)>80?`Near the Moon’s ${site.latitude<0?'south':'north'} pole.`:site.latitude<0?'In the Moon’s southern hemisphere.':'In the Moon’s northern hemisphere.'} {localMode?'Ridges and craters are elevation geometry from LOLA.':'Archived photographs; not terrain heights.'}</p>
@@ -201,7 +216,7 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
     {localMode&&<details className="viewer-display-settings" open={advanced}><summary>Terrain detail and display settings</summary><div className="viewer-settings"><label>Window half-width / m<select value={extent} onChange={e=>setExtent(Number(e.target.value))}>{[250,500,1000,2000,4000].map(v=><option key={v} value={v}>{v}</option>)}</select></label><label>Mesh detail / maximum side<select value={detail} onChange={e=>setDetail(Number(e.target.value) as 33|65|129)}><option value="33">33 · low detail</option><option value="65">65 · standard</option><option value="129">129 · high detail</option></select></label><label>Vertical exaggeration<select value={renderFactor} disabled={mode==='surface'} onChange={e=>setFactor(Number(e.target.value))}>{[1,2,5,10].map(v=><option key={v} value={v}>{v}×{v===1?' · true scale':''}</option>)}</select></label><label><input type="checkbox" checked={colors} onChange={e=>setColors(e.target.checked)}/>Elevation colors</label></div></details>}
     {localMode&&<p className="viewer-exaggeration">{renderFactor}× vertical exaggeration · {renderFactor===1?'true-scale spherical geometry':'rendering only; relative to selected-site elevation'}. {mode==='surface'?'Surface View locks true scale to preserve the DEM-derived eye height. ':''}Direction annotations retain true angles; visual intersections are not visibility classifications.</p>}
     {mode==='surface'&&<div className="surface-controls" aria-label="Surface camera orientation"><label>Camera azimuth / °<input aria-label="Surface camera azimuth" type="range" min="0" max="360" step="0.1" value={bearing.azimuth} onChange={e=>setBearing(surfaceBearing(Number(e.target.value),bearing.elevation))}/></label><label>Camera elevation / °<input aria-label="Surface camera elevation" type="range" min="-89" max="89" step="0.1" value={bearing.elevation} onChange={e=>setBearing(surfaceBearing(bearing.azimuth,Number(e.target.value)))}/></label><output className="mono">Az {number(bearing.azimuth,1)}° · El {number(bearing.elevation,1)}°</output><div className="viewer-camera">{[['N',0],['E',90],['S',180],['W',270]].map(([label,a])=><button key={label} onClick={()=>setBearing({azimuth:Number(a),elevation:0})}>{label} · {a}°</button>)}{(['sun','earth'] as const).map(body=><button key={body} disabled={native?.[body].azimuth_deg==null||native?.[body].elevation_deg==null} onClick={()=>setBearing(surfaceBearing(native![body].azimuth_deg!,native![body].elevation_deg!))}>Look toward {body==='sun'?'Sun':'Earth'}</button>)}</div></div>}
-    {mode==='images'&&<LunarImageMap anchor={imageAnchor} onAdopt={adoptImageCoordinate} onTerrain={()=>setMode('polar')}/>}
+    {mode==='images'&&<LunarImageMap anchor={imageAnchor} onAdopt={adoptImageCoordinate} onTerrain={()=>setMode('polar')} sites={visiblePins} onSite={selectCatalogPin}/>}
     <div className="viewer-stage-wrap" style={{display:mode==='images'?'none':undefined}}>
       <div className="viewer-stage" ref={host} style={{display:mode==='polar'||compatibility?'none':undefined}}/>
       <div className="globe-hover-coordinate" ref={hoverReadout} hidden aria-hidden="true"/>
