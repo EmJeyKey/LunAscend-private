@@ -9,6 +9,7 @@ from lunascend.api.routes import router
 from lunascend.api.terrain import router as terrain_router
 from lunascend.api.resilience import router as resilience_router
 from lunascend.api.imagery import router as imagery_router
+from lunascend.api.exploration import router as exploration_router
 from lunascend.contracts import AnalysisError, ErrorResponse
 
 
@@ -18,6 +19,7 @@ def create_app() -> FastAPI:
     app.include_router(terrain_router)
     app.include_router(resilience_router)
     app.include_router(imagery_router)
+    app.include_router(exploration_router)
 
     @app.exception_handler(RequestValidationError)
     async def invalid_request(request: Request, exc: RequestValidationError) -> JSONResponse:

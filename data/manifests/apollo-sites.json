@@ -1,0 +1,19 @@
+{
+  "version": "apollo-lm-nssdc-2017-v1",
+  "source": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_sites.html",
+  "reference_frame": "MOON_ME_DE421",
+  "latitude_type": "planetocentric",
+  "longitude_convention": "east_positive",
+  "height": "Not supplied by coordinate source; geometry requires an explicit hypothetical sphere-relative elevation.",
+  "sites": [
+    {"id":"apollo-11","name":"Apollo 11","latitude":0.67416,"longitude":23.47314,"landing_date":"1969-07-20","historical_utc":null},
+    {"id":"apollo-12","name":"Apollo 12","latitude":-3.01280,"longitude":-23.42190,"landing_date":"1969-11-19","historical_utc":null},
+    {"id":"apollo-14","name":"Apollo 14","latitude":-3.64589,"longitude":-17.47194,"landing_date":"1971-02-05","historical_utc":null},
+    {"id":"apollo-15","name":"Apollo 15","latitude":26.13239,"longitude":3.63330,"landing_date":"1971-07-30","historical_utc":null},
+    {"id":"apollo-16","name":"Apollo 16","latitude":-8.97340,"longitude":15.50110,"landing_date":"1972-04-21","historical_utc":"1972-04-21T02:23:35Z"},
+    {"id":"apollo-17","name":"Apollo 17","latitude":20.19110,"longitude":30.77230,"landing_date":"1972-12-11","historical_utc":"1972-12-11T19:54:57Z"}
+  ],
+  "historical_sources": ["https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo16info.html", "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo17info.html", "https://svs.gsfc.nasa.gov/4731"],
+  "historical_limit": "The existing UTC contract excludes dates before 1972. Apollo 11–15 historical epochs remain unavailable; source dates are historical context only. NASA summary/timeline touchdown seconds can differ; Apollo 16/17 use NSSDCA mission summaries.",
+  "attribution": "NASA NSSDCA; coordinates determined from LRO imagery, Wagner et al., Icarus 283 (2017), 92–103. No NASA endorsement."
+}

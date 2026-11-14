@@ -1192,3 +1192,7 @@ body, .app-main { background: var(--bg); }
 .content .panel-header { margin-bottom:18px; }
 .selected-site-detail>strong { display:block;font-family:Marcellus,Georgia,serif;color:#F0EEE9;font-weight:700;font-size:25px;margin-top:12px; }
 @media(max-width:600px) { .content :is(.page-header h1,.atlas-introduction h1) { font-size:32px; }.content h2,.content .panel-title h2,.content .metric-header h2 { font-size:25px; } }
+.apollo-controls,.coordinate-pick,.apollo-site-panel { margin:18px 0;padding:16px 0;border-block:1px solid var(--border); }
+.apollo-site-panel { max-width:65ch; }.apollo-site-panel label { display:block;margin:12px 0; }.apollo-site-panel input:not([type=checkbox]),.apollo-site-panel select { display:block;width:100%;margin-top:7px; }
+.globe-hover-coordinate { position:absolute;pointer-events:none;z-index:5;transform:translate(-50%,18px);max-width:90%;padding:7px 10px;background:#080d15ee;border:1px solid var(--gold);color:var(--gold);font:11px/1.6 var(--font-mono);white-space:nowrap; }
+.coordinate-actions { margin-block:16px;gap:16px; }

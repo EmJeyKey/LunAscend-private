@@ -3,10 +3,14 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js'
 import {elevationColor,exaggeratedPositions,geographicToScene,sceneToGeographic,surfaceBearing,surfacePose} from '../lib/lunarScene'
 import type {DirectionOverlay,RenderStats,SurfaceBearing,TerrainMesh,Vector3} from '../types/visualization'
 import {GlobeImagery,type GlobeImageStatus} from './GlobeImagery'
+import {surfaceFacing,type ApolloPin} from '../lib/apollo'
 
 export type SceneMode='globe'|'terrain'|'surface'
-export type Pick={kind:'globe';latitude:number;longitude:number}|{kind:'terrain';index:number}
+export type Pick={kind:'globe';latitude:number;longitude:number}|{kind:'terrain';index:number}|{kind:'apollo';id:string}
+export type HoverCoordinate={latitude:number;longitude:number;x:number;y:number}
 export interface LunarView {
+  setApollo?:(pins:ApolloPin[],visible:boolean,selected:string)=>void
+  focusCoordinate?:(latitude:number,longitude:number)=>void
   setMode:(mode:SceneMode)=>void;setMesh:(mesh:TerrainMesh|null)=>void;setMarker:(latitude:number,longitude:number)=>void
   setDirections:(directions:DirectionOverlay)=>void;setExaggeration:(factor:number)=>void;setColorMode:(elevation:boolean)=>void
   setSurfaceBearing:(bearing:SurfaceBearing)=>void;setIndicators:(visible:boolean)=>void
@@ -36,6 +40,7 @@ export class LunarRenderer implements LunarView {
   private readonly terrain=new THREE.Group()
   private readonly directions=new THREE.Group()
   private readonly marker=new THREE.Group()
+  private readonly apollo=new THREE.Group()
   private readonly sunLight=new THREE.DirectionalLight(0xffedcb,1.4)
   private readonly raycaster=new THREE.Raycaster()
   private readonly resize:ResizeObserver
@@ -58,7 +63,7 @@ export class LunarRenderer implements LunarView {
   private indicators=true
   private surfaceReady=false
 
-  constructor(private host:HTMLElement,private onPick:(pick:Pick)=>void,private onStats:(stats:RenderStats)=>void,private onFailure:(message:string)=>void,private onBearing:(bearing:SurfaceBearing)=>void=()=>{},private onSurfaceStatus:(message:string)=>void=()=>{},onImagery:(status:GlobeImageStatus)=>void=()=>{}) {
+  constructor(private host:HTMLElement,private onPick:(pick:Pick)=>void,private onStats:(stats:RenderStats)=>void,private onFailure:(message:string)=>void,private onBearing:(bearing:SurfaceBearing)=>void=()=>{},private onSurfaceStatus:(message:string)=>void=()=>{},onImagery:(status:GlobeImageStatus)=>void=()=>{},private onHover:(coordinate:HoverCoordinate|null)=>void=()=>{}) {
     this.renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'low-power'})
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5))
     this.renderer.setClearColor('#000000')
@@ -73,6 +78,7 @@ export class LunarRenderer implements LunarView {
     this.sunLight.position.set(3,4,2);this.scene.add(this.sunLight)
     this.globeSurface=new THREE.Mesh(new THREE.SphereGeometry(1,96,64),new THREE.MeshStandardMaterial({color:'#515762',roughness:1,depthWrite:false}))
     this.globe.add(this.globeSurface)
+    this.globe.add(this.apollo)
     this.photographic=new GlobeImagery(this.requestDraw,onImagery);this.globe.add(this.photographic.group)
     const lineMaterial=new THREE.LineBasicMaterial({color:0x9aaab9,transparent:true,opacity:.26})
     for(const latitude of [-60,-30,0,30,60]){
@@ -96,6 +102,7 @@ export class LunarRenderer implements LunarView {
     this.renderer.domElement.addEventListener('pointerup',this.pointerUp)
     this.renderer.domElement.addEventListener('pointermove',this.pointerMove)
     this.renderer.domElement.addEventListener('pointercancel',this.pointerCancel)
+    this.renderer.domElement.addEventListener('pointerleave',this.pointerLeave)
     this.renderer.domElement.addEventListener('webglcontextlost',this.contextLost)
     this.resize=new ResizeObserver(this.resizeScene);this.resize.observe(host)
     this.camera('reset');this.resizeScene()
@@ -110,7 +117,11 @@ export class LunarRenderer implements LunarView {
     if(this.disposed||this.frame!==null)return
     this.frame=requestAnimationFrame(()=>{
       this.frame=null;if(this.disposed)return
-      const start=performance.now();this.renderer.render(this.scene,this.cameraObject)
+      const start=performance.now()
+      this.globe.updateMatrixWorld(true)
+      const camera=this.globe.worldToLocal(this.cameraObject.position.clone()).toArray()
+      this.apollo.children.forEach(pin=>{pin.visible=surfaceFacing(pin.position.toArray(),camera)})
+      this.renderer.render(this.scene,this.cameraObject)
       this.stats={...this.stats,draws:this.stats.draws+1,triangles:this.renderer.info.render.triangles,lastDrawMs:performance.now()-start}
       this.onStats({...this.stats})
     })
@@ -118,7 +129,19 @@ export class LunarRenderer implements LunarView {
   }
   private pointerDown=(event:PointerEvent)=>{if(event.button===0){this.pointer=[event.clientX,event.clientY];if(this.mode==='surface')this.renderer.domElement.setPointerCapture?.(event.pointerId)}}
   private pointerCancel=()=>{this.pointer=null}
+  private pointerLeave=()=>this.onHover(null)
+  private globeIntersection(event:PointerEvent){
+    const box=this.renderer.domElement.getBoundingClientRect()
+    this.raycaster.setFromCamera(new THREE.Vector2((event.clientX-box.left)/box.width*2-1,-(event.clientY-box.top)/box.height*2+1),this.cameraObject)
+    return this.raycaster.intersectObject(this.globeSurface,false)[0]
+  }
   private pointerMove=(event:PointerEvent)=>{
+    if(this.mode==='globe'){
+      if(event.buttons){this.onHover(null);return}
+      const hit=this.globeIntersection(event),box=this.renderer.domElement.getBoundingClientRect()
+      this.onHover(hit?{...sceneToGeographic(this.globeSurface.worldToLocal(hit.point.clone()).toArray() as Vector3),x:event.clientX-box.left,y:event.clientY-box.top}:null)
+      return
+    }
     if(this.mode!=='surface'||!this.pointer)return
     const [x,y]=this.pointer;this.pointer=[event.clientX,event.clientY]
     this.setSurfaceBearing(surfaceBearing(this.bearing.azimuth-(event.clientX-x)*.2,this.bearing.elevation+(event.clientY-y)*.2))
@@ -134,7 +157,11 @@ export class LunarRenderer implements LunarView {
     if(!target)return
     const hit=this.raycaster.intersectObject(target,false)[0]
     if(!hit)return
-    if(this.mode==='globe')this.onPick({kind:'globe',...sceneToGeographic(hit.point.toArray() as Vector3)})
+    if(this.mode==='globe'){
+      const pin=this.apollo.visible?this.raycaster.intersectObjects(this.apollo.children.filter(p=>p.visible),false).find(p=>p.distance<=hit.distance+.04):undefined
+      if(pin){this.onPick({kind:'apollo',id:pin.object.userData.apolloId as string});return}
+      this.onPick({kind:'globe',...sceneToGeographic(this.globeSurface.worldToLocal(hit.point.clone()).toArray() as Vector3)})
+    }
     else if(hit.face&&this.surface){
       const buffer=this.surface.geometry.getAttribute('position')
       const ids=[hit.face.a,hit.face.b,hit.face.c]
@@ -143,12 +170,25 @@ export class LunarRenderer implements LunarView {
     }
   }
   setMode(mode:SceneMode){
+    this.onHover(null)
     if(this.mode===mode)return
     this.mode=mode;this.globe.visible=mode==='globe';this.terrain.visible=mode==='terrain'||mode==='surface'&&!!this.mesh&&this.mesh.request.observer_height_m>0
     if(mode==='surface')this.setExaggeration(1)
     if(mode==='surface')this.checkSurfaceObserver()
     this.controls.enabled=mode!=='surface'
     this.setMarker(this.latitude,this.longitude);this.setDirections(this.overlay);this.camera('reset')
+  }
+  setApollo(pins:ApolloPin[],visible:boolean,selected:string){
+    disposeGroup(this.apollo);this.apollo.visible=visible
+    for(const pin of pins){
+      const dot=new THREE.Mesh(new THREE.SphereGeometry(pin.id===selected?.022:.015,16,12),new THREE.MeshBasicMaterial({color:pin.id===selected?0xffffff:0xf2d38b,depthTest:true}))
+      dot.position.set(...geographicToScene(pin.context_latitude,pin.context_longitude,1.008));dot.userData.apolloId=pin.id
+      this.apollo.add(dot)
+    }
+    this.requestDraw()
+  }
+  focusCoordinate(latitude:number,longitude:number){
+    this.controls.target.set(0,0,0);this.cameraObject.position.set(...geographicToScene(latitude,longitude,2.4));this.controls.update();this.requestDraw()
   }
   setMesh(mesh:TerrainMesh|null){
     if(mesh===this.mesh)return
@@ -269,6 +309,8 @@ export class LunarRenderer implements LunarView {
     this.resize.disconnect();this.controls.removeEventListener('change',this.requestDraw);this.controls.dispose()
     this.renderer.domElement.removeEventListener('pointerdown',this.pointerDown);this.renderer.domElement.removeEventListener('pointerup',this.pointerUp);this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost)
     this.renderer.domElement.removeEventListener('pointermove',this.pointerMove);this.renderer.domElement.removeEventListener('pointercancel',this.pointerCancel)
+    this.renderer.domElement.removeEventListener('pointerleave',this.pointerLeave)
+    this.onHover(null)
     disposeGroup(this.scene);this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove()
   }
 }

@@ -14,6 +14,8 @@ import {LunarImageMap,type ImageAnchor} from './LunarImageMap'
 import {requestImageAnchor} from '../api/imagery'
 import type {GlobeImageStatus} from '../visualization/GlobeImagery'
 import type {LunarView,Pick} from '../visualization/LunarRenderer'
+import {loadApollo,type ApolloPin} from '../lib/apollo'
+import {ApolloSitePanel} from './ApolloSitePanel'
 
 const number=(v:number|null|undefined,places=3)=>v==null?'Unavailable':v.toFixed(places)
 
@@ -39,7 +41,10 @@ function PolarWindow({mesh,onInspect}:{mesh:TerrainMesh;onInspect:(index:number)
 const MemoPolarWindow=memo(PolarWindow)
 
 export function LunarExplorer({compact=false}:{compact?:boolean}) {
-  const {mission,options,updateMission,updateOptions,analysis,sampleIndex,selectSample}=useMission()
+  const {mission,options,updateMission,updateOptions,analysis,sampleIndex,selectSample,saveAlternative}=useMission()
+  const [showApollo,setShowApollo]=useState(false),[apolloPins,setApolloPins]=useState<ApolloPin[]>([]),[apolloError,setApolloError]=useState(''),[apolloSelected,setApolloSelected]=useState('')
+  const [pendingCoordinate,setPendingCoordinate]=useState<{latitude:number;longitude:number}|null>(null)
+  const hoverReadout=useRef<HTMLDivElement>(null)
   const {advanced}=usePresentation()
   const result=analysis.result
   const [mode,setMode]=useState<'globe'|'images'|'terrain'|'polar'|'surface'>('globe')
@@ -73,11 +78,21 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
     },reason=>{if(!controller.signal.aborted)setInspectMessage(reason instanceof Error?reason.message:'Terrain sample unavailable.')})
   },[])
   pickRef.current=pick=>{
+    if(pick.kind==='apollo'){
+      setApolloSelected(pick.id);const pin=apolloPins.find(p=>p.id===pick.id)
+      if(pin)api?.focusCoordinate?.(pin.context_latitude,pin.context_longitude)
+      return
+    }
     if(pick.kind==='terrain')inspect(pick.index)
-    else{
+    else setPendingCoordinate({latitude:pick.latitude,longitude:pick.longitude})
+  }
+  const adoptGlobeCoordinate=()=>{
+    const pick=pendingCoordinate
+    if(pick){
       const pickedEpoch=result?.provider_mode==='scientific'?result.observations?.[sampleIndex]?.time_utc||mission.startUtc:mission.startUtc
       updateMission({...mission,startUtc:pickedEpoch,site:{id:'custom',name:'Globe-selected coordinate',latitude:pick.latitude,longitude:pick.longitude,description:'Planetocentric / east-positive coordinate on the DE440/ME421 context sphere at the displayed UTC epoch. DEM coverage not established.'}})
       updateOptions({...options,frameConfirmed:false});setInspectMessage('Globe location selected; confirm its coordinate frame before loading terrain or analyzing.')
+      setPendingCoordinate(null)
     }
   }
   useEffect(()=>{
@@ -85,7 +100,11 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
     const element=host.current
     return rendererLease(async()=>{
       const module=await import('../visualization/LunarRenderer')
-      return new module.LunarRenderer(element,p=>pickRef.current(p),setStats,message=>{setGpuError(message);setApi(null)},setBearing,setSurfaceWarning,setImageStatus)
+      return new module.LunarRenderer(element,p=>pickRef.current(p),setStats,message=>{setGpuError(message);setApi(null)},setBearing,setSurfaceWarning,setImageStatus,coordinate=>{
+        const readout=hoverReadout.current;if(!readout)return
+        readout.hidden=!coordinate
+        if(coordinate){readout.style.left=`${coordinate.x}px`;readout.style.top=`${coordinate.y}px`;readout.textContent=`+ ${coordinate.latitude.toFixed(4)}° N · ${coordinate.longitude.toFixed(4)}° E · DE440/ME421`}
+      })
     },value=>{setApi(value);setGpuError('')},reason=>{setApi(null);setGpuError(`3D unavailable: ${reason instanceof Error?reason.message:'WebGL initialization failed'}. The coordinate form, polar DEM map and scientific analysis remain available.`)})
   },[compatibility])
   useEffect(()=>{
@@ -141,6 +160,15 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
     setMode('terrain')
   }
   const currentTime=observation?.time_utc||mission.startUtc
+  useEffect(()=>{
+    setApolloPins([]);setApolloError('');setApolloSelected('')
+    if(!showApollo)return
+    const controller=new AbortController()
+    void loadApollo(currentTime,controller.signal).then(pins=>{if(!controller.signal.aborted)setApolloPins(pins)},error=>{if(!controller.signal.aborted)setApolloError(error instanceof Error?error.message:'Apollo pins unavailable.')})
+    return ()=>controller.abort()
+  },[showApollo,currentTime])
+  useEffect(()=>{api?.setApollo?.(apolloPins,showApollo,apolloSelected)},[api,apolloPins,showApollo,apolloSelected])
+  useEffect(()=>setPendingCoordinate(null),[site.latitude,site.longitude,currentTime,mode])
   const anchorKey=JSON.stringify([site.latitude,site.longitude,mission.startUtc,options.frameConfirmed,options.providerMode])
   useEffect(()=>{
     if(!options.frameConfirmed||options.providerMode!=='scientific')return
@@ -158,6 +186,10 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
   return <section className={`panel lunar-explorer ${compact?'compact':''}`} aria-label="Scientific lunar explorer">
     <header className="section-introduction"><h2>Lunar exploration instrument</h2><p>{mode==='images'?'LROC photographic maps · lunar geographic / south-polar projection. Registration to the local DEM remains unverified.':mode==='globe'?'LROC photographs · no global elevation model. Image shadows are historical.':'NASA LOLA Site01 · actual elevations, finite data coverage. Rendering is independently unvalidated.'}</p></header>
     <div className="viewer-toolbar" aria-label="Lunar view"><button aria-pressed={mode==='globe'} onClick={()=>setMode('globe')}>Whole Moon</button><button aria-pressed={mode==='images'} onClick={()=>setMode('images')}>Photographic maps</button><button aria-pressed={mode==='polar'} onClick={()=>setMode('polar')}>Elevation map (2D)</button><button aria-pressed={mode==='terrain'} onClick={()=>setMode('terrain')}>Landing area (3D)</button><button aria-pressed={mode==='surface'} onClick={()=>setMode('surface')}>Surface View</button><button onClick={loadExample}>Load Site01 reference</button></div>
+    {mode==='globe'&&<div className="apollo-controls"><label><input type="checkbox" checked={showApollo} onChange={e=>setShowApollo(e.target.checked)}/>Show Apollo landing sites</label>{showApollo&&<><p role="status">{apolloError||(!apolloPins.length?'Converting NASA DE421 coordinates…':'Six Lunar Module sites · exact frame conversion at displayed UTC.')}</p><div className="atlas-actions">{apolloPins.map(pin=><button key={pin.id} aria-pressed={apolloSelected===pin.id} onClick={()=>{setApolloSelected(pin.id);api?.focusCoordinate?.(pin.context_latitude,pin.context_longitude)}}>{pin.name}</button>)}</div></>}</div>}
+    {showApollo&&apolloPins.find(p=>p.id===apolloSelected)&&<ApolloSitePanel site={apolloPins.find(p=>p.id===apolloSelected)!} onClose={()=>setApolloSelected('')}/>}
+    {pendingCoordinate&&<div className="coordinate-pick" role="status"><p className="mono">{pendingCoordinate.latitude.toFixed(4)}° N · {pendingCoordinate.longitude.toFixed(4)}° E · DE440/ME421</p><button onClick={adoptGlobeCoordinate}>Select this location</button><button onClick={()=>setPendingCoordinate(null)}>Cancel</button><p>Context-sphere coordinate. Local terrain coverage is not established.</p></div>}
+    <div className="atlas-actions coordinate-actions"><Link to="/analysis">Analyze selected location</Link><Link to="/compare">Add to comparison</Link><button onClick={()=>{saveAlternative();setInspectMessage('Candidate saved if a comparison slot is available. Review saved configurations in Comparison.')}}>Save candidate</button><Link to="/resilience#opportunity-finder">Find better landing opportunities</Link></div>
     <p className="viewer-location-help">{site.name} · {Math.abs(site.latitude)>80?`Near the Moon’s ${site.latitude<0?'south':'north'} pole.`:site.latitude<0?'In the Moon’s southern hemisphere.':'In the Moon’s northern hemisphere.'} {localMode?'Ridges and craters are elevation geometry from LOLA.':'Archived photographs; not terrain heights.'}</p>
     <details className="viewer-reference" open={advanced||localMode&&!options.frameConfirmed}><summary>Coordinates and scientific reference</summary><span>{site.name} · {number(site.latitude,6)}° N · {number(site.longitude,6)}° E</span><span>Input: DE440/ME421 at {mission.startUtc}</span>{<label><input type="checkbox" checked={options.frameConfirmed} onChange={e=>updateOptions({...options,frameConfirmed:e.target.checked})}/>I confirm these coordinates use DE440/ME421 at this UTC epoch.</label>}</details>
     {localMode&&<details className="viewer-display-settings" open={advanced}><summary>Terrain detail and display settings</summary><div className="viewer-settings"><label>Window half-width / m<select value={extent} onChange={e=>setExtent(Number(e.target.value))}>{[250,500,1000,2000,4000].map(v=><option key={v} value={v}>{v}</option>)}</select></label><label>Mesh detail / maximum side<select value={detail} onChange={e=>setDetail(Number(e.target.value) as 33|65|129)}><option value="33">33 · low detail</option><option value="65">65 · standard</option><option value="129">129 · high detail</option></select></label><label>Vertical exaggeration<select value={renderFactor} disabled={mode==='surface'} onChange={e=>setFactor(Number(e.target.value))}>{[1,2,5,10].map(v=><option key={v} value={v}>{v}×{v===1?' · true scale':''}</option>)}</select></label><label><input type="checkbox" checked={colors} onChange={e=>setColors(e.target.checked)}/>Elevation colors</label></div></details>}
@@ -166,6 +198,7 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
     {mode==='images'&&<LunarImageMap anchor={imageAnchor} onAdopt={adoptImageCoordinate}/>}
     <div className="viewer-stage-wrap" style={{display:mode==='images'?'none':undefined}}>
       <div className="viewer-stage" ref={host} style={{display:mode==='polar'||compatibility?'none':undefined}}/>
+      <div className="globe-hover-coordinate" ref={hoverReadout} hidden aria-hidden="true"/>
       {(mode==='polar'||compatibility)&&mesh&&<MemoPolarWindow mesh={mesh} onInspect={inspect}/>}
       {(mode==='polar'||compatibility)&&!mesh&&<div className="viewer-map-empty">{mode==='globe'?'3D compatibility mode. Select Local terrain or South polar map to load georeferenced data.':'No DEM window available. Check the coordinate confirmation and resource status below.'}</div>}
       <div className="viewer-epoch"><time>{currentTime}</time><span>{observation?'Returned scientific sample':'No scientific sample selected'}</span></div>
