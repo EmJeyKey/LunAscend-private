@@ -79,6 +79,15 @@ def evaluate(result: ScenarioResult | None, rules: MissionConstraints, distance_
         check("allowed_site",float(result.request.site.site_id in rules.allowed_site_ids) if result else None,1.0,"boolean",True)
     if rules.maximum_distance_m is not None:
         check("maximum_distance",distance_m,rules.maximum_distance_m,"m")
+    if rules.minimum_sun_clearance_fraction is not None:
+        windows=[w for w in result.visibility_windows if w.target=='sun'] if result and result.visibility_windows is not None else []
+        duration=(result.request.end_utc-result.request.start_utc).total_seconds() if result else 0
+        complete=duration>0 and abs(sum(w.duration_s for w in windows)-duration)<1e-6 and all(w.classification in ('conditional_clearance','modeled_obstruction') for w in windows)
+        fraction=sum(w.duration_s for w in windows if w.classification=='conditional_clearance')/duration if complete else None
+        check('minimum_conditional_sun_clearance_fraction',fraction,rules.minimum_sun_clearance_fraction,'fraction',True,
+            'Sample-supported Sun-center clearance within the finite terrain model, not disk illumination or guaranteed sunlight. Unknown intervals cannot pass.')
+    if rules.maximum_slope_deg is not None:
+        check('maximum_terrain_slope',None,rules.maximum_slope_deg,'deg',reason='No verified slope-at-scale product is installed; this mandatory criterion remains indeterminate. Slope alone cannot establish landing safety.')
     statuses = {r.status for r in rows}
     if "fail" in statuses: classification = "fails_modeled_requirement"
     elif "indeterminate" in statuses: classification = "insufficient_evidence"

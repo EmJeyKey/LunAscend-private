@@ -6,6 +6,7 @@ from functools import lru_cache
 from fastapi import APIRouter, HTTPException
 from typing import Literal
 from lunascend.contracts.imagery import ImageAnchorRequest
+from lunascend.terrain.screening import ScreeningCriteria
 
 router = APIRouter()
 CATALOG = json.loads((Path(__file__).resolve().parents[4] / 'data/manifests/apollo-sites.json').read_text(encoding='utf-8'))
@@ -55,3 +56,12 @@ async def environment_layer(layer: Literal['solar','earth','shadow']):
         return await asyncio.to_thread(polar_layer,layer)
     except (ImportError,OSError,ValueError):
         raise HTTPException(503,'Verified NASA environment window unavailable; no substitute layer supplied.') from None
+
+
+@router.post('/api/v1/exploration/screening')
+async def environment_screening(request: ScreeningCriteria):
+    try:
+        from lunascend.terrain.screening import screening_layer
+        return await asyncio.to_thread(screening_layer,request)
+    except (ImportError,OSError,ValueError):
+        raise HTTPException(503,'Screening evidence unavailable; no colored assessment supplied.') from None

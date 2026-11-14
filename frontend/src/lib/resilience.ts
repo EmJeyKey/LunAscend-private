@@ -4,6 +4,11 @@ import type { MissionSelection } from '../types/preview'
 import {opportunityLabels} from './humanize'
 export const defaultConstraints: MissionConstraints = { maximum_unmet_load_wh: 0, minimum_soc_pct: 10, require_conservative_pass: true, allow_optimistic_only: false, minimum_earth_clearance_deg: 1, maximum_dte_interruption_s: 3600, minimum_dte_access_s: 3600, required_duration_s: null, allowed_site_ids: [], maximum_distance_m: null }
 export const classLabels = opportunityLabels
+export function opportunitySummary(rows:Opportunity[]) {
+  if(!rows.length)return 'No candidates were evaluated.'
+  if(rows.some(row=>row.classification==='meets_tested_requirements'||row.classification==='conditionally_promising'))return 'Review the candidates that meet the tested requirements. Conditional results are not mission-safety guarantees.'
+  return rows.every(row=>row.classification==='fails_modeled_requirement')?'No evaluated candidate meets the selected mandatory requirements.':'No candidate has demonstrated all mandatory requirements. Missing evidence remains unknown.'
+}
 export function utcInput(value: string) {
   if (!/^\d{4}-\d\d-\d\dT\d\d:\d\d(?::\d\d(?:\.\d{1,3})?)?$/.test(value) || !Number.isFinite(Date.parse(value+'Z'))) throw new Error('Enter a valid UTC date.')
   const result=new Date(value+'Z').toISOString()

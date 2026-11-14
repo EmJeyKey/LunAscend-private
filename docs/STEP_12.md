@@ -73,3 +73,93 @@ Phase-B executed checks: 181 frontend tests, TypeScript/production build;
 8 targeted environment/exploration backend tests; actual browser solar-layer
 load and native-window focus. Raster tests cover scaling, valid zero versus
 nodata, hashes, native projection and binary shadow.
+
+## Phase C — screening and guided mission opportunities
+
+`POST /api/v1/exploration/screening` evaluates the three installed, co-registered
+NASA windows against explicit long-term sunlight/Earth fraction thresholds and
+an optional permanent-shadow exclusion. Its response includes per-cell evidence,
+reason codes, criteria and source hashes. No universal score, regional ranking,
+interpolated coverage or selected-date raster is generated.
+
+Classification precedence: **red** if any evaluated mandatory criterion fails;
+otherwise **gray** if all environmental evidence is absent; otherwise **amber**
+if a required input is unknown; otherwise **green** for the evaluated long-term
+criteria only. The default requires mission-date engineering, which is absent
+from these averages, so otherwise-passing pixels remain amber. Requesting slope
+also stays unknown. Green requires explicitly excluding those unevaluated
+requirements and is never certification of landing safety. Missing pixels
+remain unknown; an excluded valid shadow flag is a failure, not missing data.
+
+The existing Resilience page now contains the six-step **Find better landing
+opportunities** flow. It reuses the exact fixed-location date reconciliation,
+unchanged hardware, source provenance, cache and bounded backend search: at most
+12 candidates across three explicitly supplied sites, within 30 days of the
+original epoch; missions at most seven days/169 samples. It does not scan a
+continuous geographic region or discover an optimal location across the Moon.
+Candidate rows retain their numerical differences, constraint evidence,
+comparison transfer and model limitations. Missing results are gray; critical
+unknown criteria in calculated candidates are amber. Failures take precedence.
+
+Two optional, backward-compatible request fields were added to
+`MissionConstraints`: `minimum_sun_clearance_fraction` (0–1) and
+`maximum_slope_deg` (0–90). The first checks complete sample-supported conditional
+Sun-center clearance intervals in the existing finite terrain model; missing or
+indeterminate intervals cannot pass. It is not disk illumination. There is no
+verified slope-at-scale product, so a mandatory slope limit always remains
+indeterminate. Existing requests with these fields absent retain their rules.
+No ephemeris, horizon, power, battery or communications equations were changed.
+
+## Executed current API evidence
+
+`scripts/verify_step12.py` executed the actual local endpoints and wrote
+`docs/validation/step-12-api-check.json`; results below were not hardcoded into
+the UI. Site01: 24 hours, 25 samples, 2 m observer, 2 m² fixed-horizontal panels,
+25% panel efficiency, 90% system efficiency, 50 W demand, 500 Wh battery,
+100% initial/10% reserve charge and 95% charge/discharge efficiencies.
+
+| Arrival UTC | Optimistic solar Wh | Optimistic unmet demand Wh | Final battery Wh | Conditional DTE s |
+| --- | ---: | ---: | ---: | ---: |
+| 2026-11-14 00:00 | 371.364126 | 401.135874 | 50 | 0 |
+| 2026-11-15 00:00 | 343.414638 | 429.085362 | 50 | 0 |
+
+Both conservative cases generate 0 Wh under their stated assumptions and leave
+772.5 Wh unsupplied. Both optimistic and conservative battery cases fail the
+configured model. November 14 has 27.949488 Wh more optimistic solar energy;
+this relative advantage is not absolute feasibility or guaranteed survival.
+No candidate in this two-date grid meets the selected mandatory requirements.
+
+The API also returned 25 geometry-only samples for Apollo 11 on 2026-11-14,
+Apollo 16 at 1972-04-21 02:23:35 UTC and Apollo 17 at 1972-12-11 19:54:57 UTC.
+With an explicit hypothetical 0 m sphere-relative surface height and 0 m
+observer height, initial Sun/Earth geometric elevations were respectively
+−13.163567°/+64.944478°, +14.755166°/+77.127510°, +13.344699°/+45.281237°.
+These are unvalidated hypothetical geometry checks with no Apollo terrain or
+historical spacecraft power reconstruction. Original NASA coordinates remain
+unchanged; transformed context coordinates and assumptions are saved separately.
+
+## Verification and remaining limits
+
+Executed full backend suite: **281 passed** (one existing Starlette/httpx
+deprecation warning). Executed frontend suite: **182 passed**. TypeScript and
+production build passed; existing >500 kB chunk-size warnings remain.
+The offline source registry and saved validation identities still match.
+GPU-mocked tests exercised actual ray/pin intersections, far-side culling,
+hover leave/off-Moon behavior, plus existing rendering ownership and reuse.
+Coordinate tests covered world rotations, poles and longitude wrapping.
+
+Actual browser checks: Apollo 11 focused and selected by clicking its 3D pin;
+live coordinate readout; explicit globe selection; all three NASA environment
+layers; screening pixel evidence (solar 0.48728, Earth 0.58104, shadow 0) and
+failure reasons; guided Site01 two-date search and its numerical conclusions.
+Narrow-screen checks measured a 398 CSS-pixel viewport with no document overflow
+and exercised the mobile navigation drawer. Native multitouch gestures were not
+executed; pointer-selection support does not constitute a touch-device field test.
+
+Global environmental coverage, verified Apollo DEMs, verified slope/hazard
+products and exact Artemis region polygons are not installed. Photo registration
+remains unverified. The existing pre-1972 time restriction is retained. Full
+thermal, descent, boulder, RF link-budget and flight-safety evaluation are absent.
+Offline astronomy/terrain require restored scientific datasets; the bundled
+NASA windows work offline, while uncached photographs still require network.
+No new independent Horizons comparison or scientific-accuracy claim was made.

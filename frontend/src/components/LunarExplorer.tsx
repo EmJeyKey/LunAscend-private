@@ -41,7 +41,7 @@ function PolarWindow({mesh,onInspect}:{mesh:TerrainMesh;onInspect:(index:number)
 const MemoPolarWindow=memo(PolarWindow)
 
 export function LunarExplorer({compact=false}:{compact?:boolean}) {
-  const {mission,options,updateMission,updateOptions,analysis,sampleIndex,selectSample,saveAlternative}=useMission()
+  const {mission,options,updateMission,updateOptions,analysis,sampleIndex,selectSample,comparisonStore}=useMission()
   const [showApollo,setShowApollo]=useState(false),[apolloPins,setApolloPins]=useState<ApolloPin[]>([]),[apolloError,setApolloError]=useState(''),[apolloSelected,setApolloSelected]=useState('')
   const [pendingCoordinate,setPendingCoordinate]=useState<{latitude:number;longitude:number}|null>(null)
   const hoverReadout=useRef<HTMLDivElement>(null)
@@ -95,6 +95,12 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
       setPendingCoordinate(null)
     }
   }
+  const saveCandidate=()=>{
+    try{
+      const id=analysis.result?comparisonStore.addResult(mission,options,analysis.result,site.name):comparisonStore.add(mission,options)
+      setInspectMessage(id?'Selected candidate saved in Comparison. Uncalculated candidates still require analysis.':'Comparison is full. Remove a scenario first.')
+    }catch(error){setInspectMessage(error instanceof Error?error.message:'Candidate could not be saved.')}
+  }
   useEffect(()=>{
     if(compatibility||!host.current)return
     const element=host.current
@@ -103,7 +109,7 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
       return new module.LunarRenderer(element,p=>pickRef.current(p),setStats,message=>{setGpuError(message);setApi(null)},setBearing,setSurfaceWarning,setImageStatus,coordinate=>{
         const readout=hoverReadout.current;if(!readout)return
         readout.hidden=!coordinate
-        if(coordinate){readout.style.left=`${coordinate.x}px`;readout.style.top=`${coordinate.y}px`;readout.textContent=`+ ${coordinate.latitude.toFixed(4)}° N · ${coordinate.longitude.toFixed(4)}° E · DE440/ME421`}
+        if(coordinate){readout.style.left=`${coordinate.x}px`;readout.style.top=`${coordinate.y}px`;readout.textContent=`${coordinate.latitude.toFixed(4)}° N · ${coordinate.longitude.toFixed(4)}° E · DE440/ME421`}
       })
     },value=>{setApi(value);setGpuError('')},reason=>{setApi(null);setGpuError(`3D unavailable: ${reason instanceof Error?reason.message:'WebGL initialization failed'}. The coordinate form, polar DEM map and scientific analysis remain available.`)})
   },[compatibility])
@@ -189,7 +195,7 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
     {mode==='globe'&&<div className="apollo-controls"><label><input type="checkbox" checked={showApollo} onChange={e=>setShowApollo(e.target.checked)}/>Show Apollo landing sites</label>{showApollo&&<><p role="status">{apolloError||(!apolloPins.length?'Converting NASA DE421 coordinates…':'Six Lunar Module sites · exact frame conversion at displayed UTC.')}</p><div className="atlas-actions">{apolloPins.map(pin=><button key={pin.id} aria-pressed={apolloSelected===pin.id} onClick={()=>{setApolloSelected(pin.id);api?.focusCoordinate?.(pin.context_latitude,pin.context_longitude)}}>{pin.name}</button>)}</div></>}</div>}
     {showApollo&&apolloPins.find(p=>p.id===apolloSelected)&&<ApolloSitePanel site={apolloPins.find(p=>p.id===apolloSelected)!} onClose={()=>setApolloSelected('')}/>}
     {pendingCoordinate&&<div className="coordinate-pick" role="status"><p className="mono">{pendingCoordinate.latitude.toFixed(4)}° N · {pendingCoordinate.longitude.toFixed(4)}° E · DE440/ME421</p><button onClick={adoptGlobeCoordinate}>Select this location</button><button onClick={()=>setPendingCoordinate(null)}>Cancel</button><p>Context-sphere coordinate. Local terrain coverage is not established.</p></div>}
-    <div className="atlas-actions coordinate-actions"><Link to="/analysis">Analyze selected location</Link><Link to="/compare">Add to comparison</Link><button onClick={()=>{saveAlternative();setInspectMessage('Candidate saved if a comparison slot is available. Review saved configurations in Comparison.')}}>Save candidate</button><Link to="/resilience#opportunity-finder">Find better landing opportunities</Link></div>
+    <div className="atlas-actions coordinate-actions"><Link to="/analysis">Analyze selected location</Link><button onClick={saveCandidate}>Add to comparison</button><button onClick={saveCandidate}>Save candidate</button><Link to="/compare">Open comparison</Link><Link to="/resilience#opportunity-finder">Find better landing opportunities</Link></div>
     <p className="viewer-location-help">{site.name} · {Math.abs(site.latitude)>80?`Near the Moon’s ${site.latitude<0?'south':'north'} pole.`:site.latitude<0?'In the Moon’s southern hemisphere.':'In the Moon’s northern hemisphere.'} {localMode?'Ridges and craters are elevation geometry from LOLA.':'Archived photographs; not terrain heights.'}</p>
     <details className="viewer-reference" open={advanced||localMode&&!options.frameConfirmed}><summary>Coordinates and scientific reference</summary><span>{site.name} · {number(site.latitude,6)}° N · {number(site.longitude,6)}° E</span><span>Input: DE440/ME421 at {mission.startUtc}</span>{<label><input type="checkbox" checked={options.frameConfirmed} onChange={e=>updateOptions({...options,frameConfirmed:e.target.checked})}/>I confirm these coordinates use DE440/ME421 at this UTC epoch.</label>}</details>
     {localMode&&<details className="viewer-display-settings" open={advanced}><summary>Terrain detail and display settings</summary><div className="viewer-settings"><label>Window half-width / m<select value={extent} onChange={e=>setExtent(Number(e.target.value))}>{[250,500,1000,2000,4000].map(v=><option key={v} value={v}>{v}</option>)}</select></label><label>Mesh detail / maximum side<select value={detail} onChange={e=>setDetail(Number(e.target.value) as 33|65|129)}><option value="33">33 · low detail</option><option value="65">65 · standard</option><option value="129">129 · high detail</option></select></label><label>Vertical exaggeration<select value={renderFactor} disabled={mode==='surface'} onChange={e=>setFactor(Number(e.target.value))}>{[1,2,5,10].map(v=><option key={v} value={v}>{v}×{v===1?' · true scale':''}</option>)}</select></label><label><input type="checkbox" checked={colors} onChange={e=>setColors(e.target.checked)}/>Elevation colors</label></div></details>}

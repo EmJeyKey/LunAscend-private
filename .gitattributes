@@ -19,5 +19,5 @@ frontend/public/licenses/three-LICENSE.txt -text whitespace=-blank-at-eol
 # Preserve original NASA capability/FGDC bytes and their pinned checksums.
 data/fixtures/imagery/*.xml -text whitespace=-blank-at-eol
 data/fixtures/imagery/*.html -text whitespace=-blank-at-eol
-data/fixtures/polar-screening/*.LBL -text whitespace=-blank-at-eol
+data/fixtures/polar-screening/*.LBL -text whitespace=-blank-at-eol,-blank-at-eof
 data/fixtures/polar-screening/*.tif -text

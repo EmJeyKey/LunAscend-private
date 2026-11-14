@@ -22,13 +22,18 @@ Every step requires user review before the next. Step 1 creates a specification,
 | 11.5 — Ground-level Surface View and Scientific Horizon — IMPLEMENTED | Original-DEM observer, true-scale surface camera, native horizon profile, returned body cues and retained georeferenced views; optical imagery remains uninstalled | 245 backend / 129 frontend tests, TypeScript/build, fresh zero-residual Site01 horizon reproduction and actual surface/time/fallback/browser checks; see docs/STEP_11_5_LUNAR_REALISM.md |
 | 11.6 — Authentic NASA Photographic Maps — IMPLEMENTED WITH REGISTRATION LIMIT | Genuine WAC/NAC multi-resolution 2D maps and context globe, bounded cache and qualified shared coordinate anchor; original local LOLA terrain and Surface View retained | 266 full backend regression passes plus final targeted imagery/source checks, 145 frontend tests, TypeScript/build, real tile/API/browser evidence. Local photographic DEM draping remains incomplete pending verified registration; see docs/STEP_11_6_ORIGINAL_NASA_MAPS.md |
 | 11.7 — Human-Friendly UX and Data Transparency — IMPLEMENTED; RESPONSIVE QA INCOMPLETE | Shared Simple/Advanced presentation, returned-sample conditions, backend W/Wh plots, clear comparisons/delays, source explanations and glossary | 165 frontend passes before final wording correction; final focused UX/TypeScript/build checks, fresh exact Site01 regression and six-route desktop browser review. Narrow-screen override ineffective; see docs/STEP_11_7_USER_EXPERIENCE.md |
-| 12 — End-to-End Validation, Deployment, and Competition-PC Migration | Consolidated validation, production build, encrypted restore drill, fresh Windows rehearsal; hosting recommendation | Recorded clean-PC and disconnected mock tests, science regressions, provenance/rights review and actual submission-rule check; deployment only with separate explicit authorization |
+| 12 — Apollo Exploration, NASA Screening and Bounded Opportunity Finder — IMPLEMENTED WITH COVERAGE LIMITS | Exact-frame Apollo pins, live surface coordinates, native NASA polar windows and explicit constraint screening; existing bounded mission search | 281 backend / 182 frontend tests, TypeScript/build, current Site01/Apollo API checks and real browser/narrow-screen interaction; see docs/STEP_12.md. No global coverage, slope/hazard certification or new deployment authorization |
 
 ## Delivery priorities
 
 Preserve essential site/date selection, validated geometry, terrain visibility and rapid comparisons before advanced engineering or 3D polish. The numbered sequence is the requested plan; schedule pressure may justify a team-approved scope revision, never silent skipping of validation. Do not treat future link budgets or multi-objective ranking as required first implementations. Keep hosting undecided until needs, cost and privacy are known.
 
 ## Current handoff
+
+Step 12 supersedes the previously proposed Step 12 migration scope. Its three
+phases add exploration and screening while retaining original scientific engines.
+Apollo, NASA-layer and final opportunity checkpoints are local only. Stop after
+this milestone; migration/deployment and any later work require authorization.
 
 The authorized numerical-display follow-up exposes available backend values in both
 presentation modes, adds explicit Full Analysis and preserves calculated comparison

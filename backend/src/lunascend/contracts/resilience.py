@@ -7,6 +7,8 @@ from .models import ScenarioRequest, ScenarioResult, LunarSite
 
 
 class MissionConstraints(Contract):
+    minimum_sun_clearance_fraction: Annotated[Number, Field(ge=0, le=1)] | None = None
+    maximum_slope_deg: Annotated[Number, Field(ge=0, le=90)] | None = None
     maximum_unmet_load_wh: NonNegative = 0.0
     minimum_soc_pct: Annotated[NonNegative, Field(le=100)] = 10.0
     require_conservative_pass: bool = True

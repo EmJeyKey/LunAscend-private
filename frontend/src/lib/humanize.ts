@@ -67,6 +67,7 @@ export function opportunityExplanation(row:Opportunity):string[] {
   if(solar?.delta!=null)messages.push(`Optimistic solar-energy estimate changes by ${solar.delta.toFixed(2)} ${solar.units} compared with the original plan.`)
   const unmet=row.differences.conservative_unmet_load_wh
   if(unmet?.candidate!=null)messages.push(`The conservative case leaves ${unmet.candidate.toFixed(2)} ${unmet.units} of electrical demand unsupplied.`)
+  if(row.result?.power?.cases.find(c=>c.assumption==='optimistic')?.passes_configured_model===false)messages.push('The optimistic battery model also fails this candidate. A relative solar-energy improvement does not establish mission feasibility.')
   if(row.constraints.some(c=>c.status==='indeterminate'))messages.push('At least one requirement lacks enough evidence. Unknown results cannot count as a pass.')
   return messages
 }

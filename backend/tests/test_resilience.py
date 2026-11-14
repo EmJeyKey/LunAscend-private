@@ -22,6 +22,13 @@ def strip(value):
 def evidence():
     return ScenarioResult.model_validate(strip(json.loads((ROOT/'docs/validation/step-8-results.json').read_text(encoding='utf-8'))['result']))
 
+
+def test_requested_slope_remains_unknown_and_sun_criterion_has_evidence():
+    rows,_=evaluate(evidence(),MissionConstraints(maximum_slope_deg=10,minimum_sun_clearance_fraction=.2),0)
+    slope=next(r for r in rows if r.constraint_id=='maximum_terrain_slope')
+    assert slope.actual is None and slope.status=='indeterminate'
+    assert next(r for r in rows if r.constraint_id=='minimum_conditional_sun_clearance_fraction').units=='fraction'
+
 def search(**patch):
     r=evidence().request
     return OpportunityRequest.model_validate({'baseline':r,'earliest_utc':r.start_utc,'latest_utc':r.start_utc,'step_hours':24.0,**patch})

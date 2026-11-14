@@ -33,13 +33,33 @@ describe('renderer ownership and on-demand update separation (GPU mocked)',()=>{
     vi.stubGlobal('requestAnimationFrame',(callback:FrameRequestCallback)=>{pending.set(++id,callback);return id})
     vi.stubGlobal('cancelAnimationFrame',(key:number)=>{pending.delete(key);shared.cancel(key)})
     vi.stubGlobal('ResizeObserver',class {observe(){}disconnect(){shared.disconnect()}})
-    const host={clientWidth:800,clientHeight:500,appendChild:vi.fn()} as unknown as HTMLElement
+    const appendChild=vi.fn()
+    const host={clientWidth:800,clientHeight:500,appendChild} as unknown as HTMLElement
     const values:RenderStats[]=[]
     const surfaceStatus=vi.fn()
-    const renderer=new LunarRenderer(host,vi.fn(),s=>values.push(s),vi.fn(),vi.fn(),surfaceStatus)
+    const picks=vi.fn(),hover=vi.fn()
+    const renderer=new LunarRenderer(host,picks,s=>values.push(s),vi.fn(),vi.fn(),surfaceStatus,vi.fn(),hover)
     const flush=()=>{const callbacks=[...pending.values()];pending.clear();callbacks.forEach(fn=>fn(0))}
-    return {renderer,flush,values,surfaceStatus}
+    return {renderer,flush,values,surfaceStatus,picks,hover,canvas:appendChild.mock.calls[0][0] as EventTarget}
   }
+  it('raycasts the globe without marker interception and hides far-side pins (GPU mocked)',()=>{
+    const {renderer,flush,picks,hover,canvas}=setup()
+    renderer.setApollo([{id:'near',name:'Near',latitude:0,longitude:0,context_latitude:0,context_longitude:0,landing_date:'test',historical_utc:null},{id:'far',name:'Far',latitude:0,longitude:-180,context_latitude:0,context_longitude:-180,landing_date:'test',historical_utc:null}],true,'near')
+    renderer.focusCoordinate(0,0);flush()
+    const [scene,camera]=shared.draw.mock.calls.at(-1)! as [import('three').Scene,import('three').PerspectiveCamera]
+    camera.lookAt(0,0,0);camera.updateMatrixWorld(true);scene.updateMatrixWorld(true)
+    const pins:import('three').Object3D[]=[];scene.traverse(node=>{if(node.userData.apolloId)pins.push(node)})
+    expect(pins.find(p=>p.userData.apolloId==='near')?.visible).toBe(true)
+    expect(pins.find(p=>p.userData.apolloId==='far')?.visible).toBe(false)
+    const event=(name:string,x=400,y=250)=>{const e=new Event(name);Object.defineProperties(e,{clientX:{value:x},clientY:{value:y},button:{value:0},buttons:{value:0}});canvas.dispatchEvent(e)}
+    event('pointermove');expect(hover.mock.calls.at(-1)?.[0].latitude).toBeCloseTo(0,5)
+    event('pointerdown');event('pointerup');expect(picks).toHaveBeenLastCalledWith({kind:'apollo',id:'near'})
+    event('pointerleave');expect(hover).toHaveBeenLastCalledWith(null)
+    event('pointermove',-100,-100);expect(hover).toHaveBeenLastCalledWith(null)
+    renderer.setApollo([],false,'');flush();event('pointerdown');event('pointerup')
+    expect(picks.mock.calls.at(-1)?.[0].kind).toBe('globe')
+    renderer.dispose()
+  })
   it('reuses static geometry when directions/time change; exaggeration only updates vertices',()=>{
     const {renderer,flush,values}=setup()
     const mesh=parseMesh(evidence.mesh,evidence.mesh.request as MeshRequest)

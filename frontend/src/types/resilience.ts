@@ -1,6 +1,7 @@
 import type { ScenarioRequest, ScenarioResult } from './analysis'
 export type OpportunityClass = 'meets_tested_requirements' | 'conditionally_promising' | 'fails_modeled_requirement' | 'insufficient_evidence'
 export interface MissionConstraints {
+  minimum_sun_clearance_fraction?:number|null;maximum_slope_deg?:number|null
   maximum_unmet_load_wh: number; minimum_soc_pct: number; require_conservative_pass: boolean; allow_optimistic_only: boolean
   minimum_earth_clearance_deg: number; maximum_dte_interruption_s: number; minimum_dte_access_s: number
   required_duration_s: number | null; allowed_site_ids: string[]; maximum_distance_m: number | null

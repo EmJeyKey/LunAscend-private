@@ -1,4 +1,11 @@
-# LunAscend architecture — Step 11.7 scientific presentation
+# LunAscend architecture — Step 12 bounded exploration
+
+Step 12 adds isolated display/data adapters for exact-frame Apollo positions and
+small hash-pinned NASA long-term polar windows. The environment/screening APIs do
+not feed averages into ephemeris, terrain visibility, power or DTE calculations.
+Python evaluates explicit screening constraints; React displays classifications,
+evidence and source metadata. Optional resilience Sun-clearance/slope requirements
+preserve unknown evidence and existing engineering equations. See docs/STEP_12.md.
 
 The numerical-display follow-up maps retained result fields to shared visible readouts
 and preserves structured API failures. Full Analysis is an explicit frontend option
