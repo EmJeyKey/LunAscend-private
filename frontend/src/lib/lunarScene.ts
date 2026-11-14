@@ -1,4 +1,5 @@
-import type {TerrainMesh,Vector3} from '../types/visualization'
+import type {SurfaceBearing,TerrainMesh,Vector3} from '../types/visualization'
+import type {ScenarioResult} from '../types/analysis'
 const rad=(v:number)=>v*Math.PI/180
 // Rendering transforms only. No independent Sun/Earth ephemeris or visibility model.
 export function geographicToScene(latitude:number,longitude:number,radius=1):Vector3 {
@@ -13,6 +14,23 @@ export function localDirection(azimuth:number|null,elevation:number|null):Vector
   if(azimuth===null || elevation===null)return null
   const a=rad(azimuth),e=rad(elevation)
   return [Math.cos(e)*Math.sin(a),Math.sin(e),-Math.cos(e)*Math.cos(a)]
+}
+export function surfaceBearing(azimuth:number,elevation:number):SurfaceBearing {
+  return {azimuth:((azimuth%360)+360)%360,elevation:Math.max(-89,Math.min(89,elevation))}
+}
+export function surfacePose(mesh:TerrainMesh,bearing:SurfaceBearing) {
+  if(mesh.request.observer_height_m<=0)throw new Error('Surface View requires a positive observer height above the DEM.')
+  const eye=[...mesh.observer_scene_m] as Vector3
+  const direction=localDirection(bearing.azimuth,bearing.elevation)!
+  return {eye,target:eye.map((v,i)=>v+direction[i]) as Vector3}
+}
+// Compare physical native identity, not display-name or rounded input coordinates.
+export function matchingTerrain(result:ScenarioResult|null,mesh:TerrainMesh|null) {
+  const t=result?.terrain_visibility
+  return !!(result?.provider_mode==='scientific'&&t&&mesh&&t.dataset_id===mesh.request.dataset_id
+    &&t.observer_height_m===mesh.request.observer_height_m&&Math.abs(t.surface_elevation_m-mesh.surface_elevation_m)<1e-7
+    &&Math.abs(t.native_latitude_deg-mesh.native_latitude_deg)<1e-10&&Math.abs(t.native_longitude_deg-mesh.native_longitude_deg)<1e-10
+    &&result.provenance.some(p=>p.terrain_dataset===t.dataset_id&&p.sha256===mesh.source_sha256))
 }
 export function globalDirection(latitude:number,longitude:number,azimuth:number|null,elevation:number|null):Vector3|null {
   const d=localDirection(azimuth,elevation)

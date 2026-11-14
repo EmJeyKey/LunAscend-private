@@ -1,4 +1,5 @@
 import type {MeshRequest,TerrainMesh,TerrainInspection} from '../types/visualization'
+import type {TerrainHorizon} from '../types/analysis'
 const object=(v:unknown):v is Record<string,unknown>=>!!v&&typeof v==='object'&&!Array.isArray(v)
 const finite=(v:unknown):v is number=>typeof v==='number'&&Number.isFinite(v)
 const vector=(v:unknown)=>Array.isArray(v)&&v.length===3&&v.every(finite)
@@ -50,4 +51,31 @@ export async function inspectTerrain(anchor:MeshRequest,latitude_deg:number,long
     ||!['elevation_m','distance_from_site_m','input_frame_latitude_deg','input_frame_longitude_deg'].every(k=>finite(value[k]))
     ||value.method!=='bilinear original DEM; four finite neighbors'||typeof value.source_sha256!=='string')throw new Error('Incompatible terrain inspection response.')
   return value as unknown as TerrainInspection
+}
+export interface HorizonSettings {max_search_radius_m:number;radial_step_m:number;azimuth_samples:number}
+export function parseLocalHorizon(value:unknown,mesh:TerrainMesh,settings:HorizonSettings):TerrainHorizon {
+  const bad=()=>new Error('Incompatible native terrain horizon; no profile accepted.')
+  if(!object(value)||!object(value.request)||!object(value.horizon)||!Array.isArray(value.provenance))throw bad()
+  const r=value.request,h=value.horizon
+  if(r.dataset_id!==mesh.request.dataset_id||r.reference_frame!=='MOON_ME_DE421'
+    ||r.latitude_deg!==mesh.native_latitude_deg||r.longitude_deg!==mesh.native_longitude_deg||r.observer_height_m!==mesh.request.observer_height_m
+    ||r.max_search_radius_m!==settings.max_search_radius_m||r.radial_step_m!==settings.radial_step_m||r.azimuth_samples!==settings.azimuth_samples
+    ||h.reference_frame!=='MOON_ME_DE421'||h.terrain_source!==mesh.request.dataset_id||h.global_horizon_complete!==false||h.status!=='partial'
+    ||h.observer_height_m!==mesh.request.observer_height_m||!finite(h.surface_elevation_m)||Math.abs(h.surface_elevation_m-mesh.surface_elevation_m)>1e-7
+    ||h.max_search_radius_m!==settings.max_search_radius_m||h.radial_step_m!==settings.radial_step_m||h.azimuth_step_deg!==360/settings.azimuth_samples
+    ||!value.provenance.some(p=>object(p)&&p.terrain_dataset===mesh.request.dataset_id&&p.sha256===mesh.source_sha256))throw bad()
+  const n=settings.azimuth_samples
+  if(!numbers(h.azimuth_deg)||h.azimuth_deg.length!==n||h.azimuth_deg.some((a,i)=>Math.abs(a-i*360/n)>1e-8)
+    ||!Array.isArray(h.elevation_deg)||h.elevation_deg.length!==n||h.elevation_deg.some(v=>v!==null&&(!finite(v)||Math.abs(v)>90))
+    ||!Array.isArray(h.ray_coverage)||h.ray_coverage.length!==n||h.ray_coverage.some(v=>!['sampled_radius','boundary','nodata','boundary_and_nodata','unknown'].includes(String(v))))throw bad()
+  for(const key of ['obstruction_distance_m','sampled_distance_m','first_missing_distance_m']) {
+    const values=h[key]
+    if(!Array.isArray(values)||values.length!==n||values.some(v=>v!==null&&(!finite(v)||v<0||v>settings.max_search_radius_m)))throw bad()
+  }
+  return h as unknown as TerrainHorizon
+}
+export async function requestLocalHorizon(mesh:TerrainMesh,settings:HorizonSettings,signal:AbortSignal) {
+  const body={dataset_id:mesh.request.dataset_id,latitude_deg:mesh.native_latitude_deg,longitude_deg:mesh.native_longitude_deg,
+    reference_frame:'MOON_ME_DE421',observer_height_m:mesh.request.observer_height_m,...settings}
+  return parseLocalHorizon(await post('horizon',body,signal),mesh,settings)
 }

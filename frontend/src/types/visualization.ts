@@ -20,5 +20,6 @@ export interface TerrainInspection {
   input_frame_latitude_deg:number;input_frame_longitude_deg:number;input_reference_frame:string;coordinate_epoch_utc:string|null
   dataset_id:string;source_sha256:string;method:'bilinear original DEM; four finite neighbors'
 }
-export interface DirectionOverlay {sun:Vector3|null;earth:Vector3|null;origin:Vector3}
+export interface DirectionOverlay {sun:Vector3|null;earth:Vector3|null;origin:Vector3;surfaceSun?:boolean;surfaceEarth?:boolean}
+export interface SurfaceBearing {azimuth:number;elevation:number}
 export interface RenderStats {draws:number;meshBuilds:number;vertexUpdates:number;triangles:number;bufferBytes:number;lastDrawMs:number;meshBuildMs:number}

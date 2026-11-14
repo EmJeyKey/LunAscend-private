@@ -1,13 +1,14 @@
 import * as THREE from 'three'
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js'
-import {elevationColor,exaggeratedPositions,geographicToScene,sceneToGeographic} from '../lib/lunarScene'
-import type {DirectionOverlay,RenderStats,TerrainMesh,Vector3} from '../types/visualization'
+import {elevationColor,exaggeratedPositions,geographicToScene,sceneToGeographic,surfaceBearing,surfacePose} from '../lib/lunarScene'
+import type {DirectionOverlay,RenderStats,SurfaceBearing,TerrainMesh,Vector3} from '../types/visualization'
 
-export type SceneMode='globe'|'terrain'
+export type SceneMode='globe'|'terrain'|'surface'
 export type Pick={kind:'globe';latitude:number;longitude:number}|{kind:'terrain';index:number}
 export interface LunarView {
   setMode:(mode:SceneMode)=>void;setMesh:(mesh:TerrainMesh|null)=>void;setMarker:(latitude:number,longitude:number)=>void
   setDirections:(directions:DirectionOverlay)=>void;setExaggeration:(factor:number)=>void;setColorMode:(elevation:boolean)=>void
+  setSurfaceBearing:(bearing:SurfaceBearing)=>void;setIndicators:(visible:boolean)=>void
   camera:(preset:'reset'|'south'|'top'|'in'|'out')=>void;dispose:()=>void
 }
 
@@ -34,6 +35,7 @@ export class LunarRenderer implements LunarView {
   private readonly terrain=new THREE.Group()
   private readonly directions=new THREE.Group()
   private readonly marker=new THREE.Group()
+  private readonly sunLight=new THREE.DirectionalLight(0xffedcb,1.4)
   private readonly raycaster=new THREE.Raycaster()
   private readonly resize:ResizeObserver
   private mode:SceneMode='globe'
@@ -49,11 +51,15 @@ export class LunarRenderer implements LunarView {
   private stats:RenderStats={draws:0,meshBuilds:0,vertexUpdates:0,triangles:0,bufferBytes:0,lastDrawMs:0,meshBuildMs:0}
   private latitude=0
   private longitude=0
+  private bearing:SurfaceBearing={azimuth:0,elevation:0}
+  private overlay:DirectionOverlay={origin:[0,0,0],sun:null,earth:null}
+  private indicators=true
+  private surfaceReady=false
 
-  constructor(private host:HTMLElement,private onPick:(pick:Pick)=>void,private onStats:(stats:RenderStats)=>void,private onFailure:(message:string)=>void) {
+  constructor(private host:HTMLElement,private onPick:(pick:Pick)=>void,private onStats:(stats:RenderStats)=>void,private onFailure:(message:string)=>void,private onBearing:(bearing:SurfaceBearing)=>void=()=>{},private onSurfaceStatus:(message:string)=>void=()=>{}) {
     this.renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'low-power'})
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5))
-    this.renderer.setClearColor('#080d15')
+    this.renderer.setClearColor('#000000')
     this.renderer.toneMapping=THREE.ACESFilmicToneMapping
     this.renderer.domElement.setAttribute('aria-label','Interactive lunar scene: drag to orbit, right drag to pan, scroll to zoom. Use coordinate controls for precise selection.')
     this.renderer.domElement.setAttribute('role','img')
@@ -62,7 +68,7 @@ export class LunarRenderer implements LunarView {
     this.controls.enableDamping=false;this.controls.autoRotate=false
     this.controls.addEventListener('change',this.requestDraw)
     this.scene.add(new THREE.HemisphereLight(0xe2e8ef,0x16202c,1.4))
-    const light=new THREE.DirectionalLight(0xffedcb,1.4);light.position.set(3,4,2);this.scene.add(light)
+    this.sunLight.position.set(3,4,2);this.scene.add(this.sunLight)
     this.globeSurface=new THREE.Mesh(new THREE.SphereGeometry(1,96,64),new THREE.MeshStandardMaterial({color:'#515762',roughness:1}))
     this.globe.add(this.globeSurface)
     const lineMaterial=new THREE.LineBasicMaterial({color:0x9aaab9,transparent:true,opacity:.26})
@@ -85,6 +91,8 @@ export class LunarRenderer implements LunarView {
     this.terrain.visible=false
     this.renderer.domElement.addEventListener('pointerdown',this.pointerDown)
     this.renderer.domElement.addEventListener('pointerup',this.pointerUp)
+    this.renderer.domElement.addEventListener('pointermove',this.pointerMove)
+    this.renderer.domElement.addEventListener('pointercancel',this.pointerCancel)
     this.renderer.domElement.addEventListener('webglcontextlost',this.contextLost)
     this.resize=new ResizeObserver(this.resizeScene);this.resize.observe(host)
     this.camera('reset');this.resizeScene()
@@ -93,7 +101,7 @@ export class LunarRenderer implements LunarView {
   private resizeScene=()=>{
     if(this.disposed)return
     const width=Math.max(1,this.host.clientWidth),height=Math.max(1,this.host.clientHeight)
-    this.renderer.setSize(width,height,false);this.cameraObject.aspect=width/height;this.cameraObject.updateProjectionMatrix();this.camera('reset')
+    this.renderer.setSize(width,height,false);this.cameraObject.aspect=width/height;this.cameraObject.updateProjectionMatrix();this.camera(this.mode==='surface'?'top':'reset')
   }
   private requestDraw=()=>{
     if(this.disposed||this.frame!==null)return
@@ -104,9 +112,17 @@ export class LunarRenderer implements LunarView {
       this.onStats({...this.stats})
     })
   }
-  private pointerDown=(event:PointerEvent)=>{if(event.button===0)this.pointer=[event.clientX,event.clientY]}
+  private pointerDown=(event:PointerEvent)=>{if(event.button===0){this.pointer=[event.clientX,event.clientY];if(this.mode==='surface')this.renderer.domElement.setPointerCapture?.(event.pointerId)}}
+  private pointerCancel=()=>{this.pointer=null}
+  private pointerMove=(event:PointerEvent)=>{
+    if(this.mode!=='surface'||!this.pointer)return
+    const [x,y]=this.pointer;this.pointer=[event.clientX,event.clientY]
+    this.setSurfaceBearing(surfaceBearing(this.bearing.azimuth-(event.clientX-x)*.2,this.bearing.elevation+(event.clientY-y)*.2))
+    this.onBearing({...this.bearing})
+  }
   private pointerUp=(event:PointerEvent)=>{
     const down=this.pointer;this.pointer=null
+    if(this.mode==='surface')return
     if(!down||Math.hypot(event.clientX-down[0],event.clientY-down[1])>5)return
     const box=this.renderer.domElement.getBoundingClientRect()
     this.raycaster.setFromCamera(new THREE.Vector2((event.clientX-box.left)/box.width*2-1,-(event.clientY-box.top)/box.height*2+1),this.cameraObject)
@@ -124,13 +140,17 @@ export class LunarRenderer implements LunarView {
   }
   setMode(mode:SceneMode){
     if(this.mode===mode)return
-    this.mode=mode;this.globe.visible=mode==='globe';this.terrain.visible=mode==='terrain'
-    this.setMarker(this.latitude,this.longitude);disposeGroup(this.directions);this.camera('reset')
+    this.mode=mode;this.globe.visible=mode==='globe';this.terrain.visible=mode==='terrain'||mode==='surface'&&!!this.mesh&&this.mesh.request.observer_height_m>0
+    if(mode==='surface')this.setExaggeration(1)
+    if(mode==='surface')this.checkSurfaceObserver()
+    this.controls.enabled=mode!=='surface'
+    this.setMarker(this.latitude,this.longitude);this.setDirections(this.overlay);this.camera('reset')
   }
   setMesh(mesh:TerrainMesh|null){
     if(mesh===this.mesh)return
     const start=performance.now();this.mesh=mesh;disposeGroup(this.terrain)
-    if(!mesh){this.surface=null;this.edgeLines=null;this.marker.visible=this.mode==='globe';this.stats.bufferBytes=0;this.requestDraw();return}
+    this.terrain.visible=this.mode==='terrain'||this.mode==='surface'&&!!mesh&&mesh.request.observer_height_m>0
+    if(!mesh){this.surface=null;this.edgeLines=null;this.surfaceReady=false;this.onSurfaceStatus('');this.marker.visible=this.mode==='globe';this.stats.bufferBytes=0;this.requestDraw();return}
     const geometry=new THREE.BufferGeometry()
     geometry.setAttribute('position',new THREE.BufferAttribute(exaggeratedPositions(mesh,this.factor),3));geometry.setIndex(mesh.indices)
     geometry.computeVertexNormals();geometry.computeBoundingSphere()
@@ -139,9 +159,10 @@ export class LunarRenderer implements LunarView {
     this.edgeLines=new THREE.LineSegments(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xf2d38b,transparent:true,opacity:.85}))
     this.terrain.add(this.edgeLines)
     this.updateEdges();this.setColorMode(this.colorMode)
+    if(this.mode==='surface')this.checkSurfaceObserver()
     this.stats={...this.stats,meshBuilds:this.stats.meshBuilds+1,meshBuildMs:performance.now()-start,bufferBytes:geometry.getAttribute('position').array.byteLength+geometry.getAttribute('normal').array.byteLength+geometry.getAttribute('color').array.byteLength+(geometry.index?.array.byteLength||0)}
     this.setMarker(this.latitude,this.longitude)
-    if(this.mode==='terrain')this.camera('reset')
+    if(this.mode!=='globe')this.camera('reset')
     this.requestDraw()
   }
   private updateEdges(){
@@ -151,7 +172,20 @@ export class LunarRenderer implements LunarView {
     this.edgeLines.geometry.dispose();this.edgeLines.geometry=new THREE.BufferGeometry()
     this.edgeLines.geometry.setAttribute('position',new THREE.Float32BufferAttribute(edgeValues,3))
   }
+  private checkSurfaceObserver(){
+    this.surfaceReady=false;this.onSurfaceStatus('')
+    if(!this.mesh||!this.surface){this.terrain.visible=false;return}
+    // Display-only safeguard: never raise the scientific observer to fit a coarse triangle.
+    const start=this.mesh.original_elevation_range_m[1]-this.mesh.surface_elevation_m+100
+    const ray=new THREE.Raycaster(new THREE.Vector3(0,start,0),new THREE.Vector3(0,-1,0))
+    this.surface.updateMatrixWorld(true)
+    const ground=ray.intersectObject(this.surface,false)[0]
+    this.surfaceReady=this.mesh.request.observer_height_m>0&&!!ground&&ground.point.y+.05<this.mesh.observer_scene_m[1]
+    this.terrain.visible=this.surfaceReady
+    if(!this.surfaceReady)this.onSurfaceStatus('Surface View withheld: this mesh has no supported eye cell or crosses the DEM-derived observer. Select finer mesh detail or a positive observer height in Analysis. The real eye height has not been moved.')
+  }
   setExaggeration(factor:number){
+    if(this.mode==='surface')factor=1
     if(this.factor===factor)return
     this.factor=factor
     if(this.mesh&&this.surface){this.surface.geometry.setAttribute('position',new THREE.BufferAttribute(exaggeratedPositions(this.mesh,factor),3));this.surface.geometry.computeVertexNormals();this.surface.geometry.computeBoundingSphere();this.updateEdges();this.stats.vertexUpdates++;this.requestDraw()}
@@ -166,8 +200,8 @@ export class LunarRenderer implements LunarView {
   setMarker(latitude:number,longitude:number){
     const changed=latitude!==this.latitude||longitude!==this.longitude
     this.latitude=latitude;this.longitude=longitude;disposeGroup(this.marker)
-    this.marker.visible=this.mode==='globe'||!!this.mesh
-    const local=this.mode==='terrain',extent=this.mesh?.request.half_extent_m||1000
+    this.marker.visible=this.mode==='globe'||this.mode==='terrain'&&!!this.mesh
+    const local=this.mode!=='globe',extent=this.mesh?.request.half_extent_m||1000
     const position=local?this.mesh?.observer_scene_m||[0,0,0]:geographicToScene(latitude,longitude,1.014)
     const radius=local?extent*.012:.014
     const point=new THREE.Mesh(new THREE.SphereGeometry(radius,16,12),new THREE.MeshBasicMaterial({color:0xf2d38b,depthTest:false}))
@@ -175,14 +209,41 @@ export class LunarRenderer implements LunarView {
     if(changed&&this.mode==='globe')this.camera('reset')
   }
   setDirections(overlay:DirectionOverlay){
+    this.overlay=overlay
     disposeGroup(this.directions)
+    this.directions.visible=this.indicators
+    if(this.mode!=='globe'){
+      this.sunLight.visible=!!overlay.sun
+      if(overlay.sun)this.sunLight.position.copy(new THREE.Vector3(...overlay.sun).multiplyScalar(10000))
+    }else{this.sunLight.visible=true;this.sunLight.position.set(3,4,2)}
     const length=this.mode==='globe'?.62:(this.mesh?.request.half_extent_m||1000)*.72
-    for(const [vector,color] of [[overlay.sun,0xf2d38b],[overlay.earth,0x79c9de]] as [Vector3|null,number][]){
-      if(vector){const arrow=new THREE.ArrowHelper(new THREE.Vector3(...vector).normalize(),new THREE.Vector3(...overlay.origin),length,color,length*.085,length*.045);this.directions.add(arrow)}
+    for(const [vector,color,allowed] of [[overlay.sun,0xf2d38b,overlay.surfaceSun],[overlay.earth,0x79c9de,overlay.surfaceEarth]] as [Vector3|null,number,boolean|undefined][]){
+      if(!vector)continue
+      if(this.mode==='surface'){
+        // Direction annotations only, never disks or a claim of complete visibility.
+        if(!allowed||!this.mesh||!this.surfaceReady)continue
+        const point=new THREE.Mesh(new THREE.SphereGeometry(length*.006,12,8),new THREE.MeshBasicMaterial({color,depthTest:false}))
+        point.position.copy(new THREE.Vector3(...vector).multiplyScalar(length).add(new THREE.Vector3(...this.mesh.observer_scene_m)))
+        point.renderOrder=6;this.directions.add(point)
+      }else{const arrow=new THREE.ArrowHelper(new THREE.Vector3(...vector).normalize(),new THREE.Vector3(...overlay.origin),length,color,length*.085,length*.045);this.directions.add(arrow)}
     }
     this.requestDraw()
   }
+  setIndicators(visible:boolean){this.indicators=visible;this.directions.visible=visible;this.requestDraw()}
+  setSurfaceBearing(bearing:SurfaceBearing){
+    this.bearing=surfaceBearing(bearing.azimuth,bearing.elevation)
+    if(this.mode==='surface')this.camera('top')
+  }
   camera(preset:'reset'|'south'|'top'|'in'|'out'){
+    if(this.mode==='surface'){
+      if(preset==='reset'){this.bearing={azimuth:0,elevation:0};this.onBearing({...this.bearing})}
+      if(this.mesh&&this.surfaceReady){
+        const pose=surfacePose(this.mesh,this.bearing)
+        this.cameraObject.position.set(...pose.eye);this.cameraObject.up.set(0,1,0);this.cameraObject.lookAt(...pose.target)
+        this.cameraObject.near=.05;this.cameraObject.far=100000;this.cameraObject.updateProjectionMatrix()
+      }
+      this.requestDraw();return
+    }
     const local=this.mode==='terrain',scale=local?this.mesh?.request.half_extent_m||1000:1
     const fit=Math.max(1,1/this.cameraObject.aspect)
     this.controls.minDistance=scale*.1;this.controls.maxDistance=scale*12;this.controls.enablePan=local
@@ -201,6 +262,7 @@ export class LunarRenderer implements LunarView {
     this.disposed=true;if(this.frame!==null)cancelAnimationFrame(this.frame)
     this.resize.disconnect();this.controls.removeEventListener('change',this.requestDraw);this.controls.dispose()
     this.renderer.domElement.removeEventListener('pointerdown',this.pointerDown);this.renderer.domElement.removeEventListener('pointerup',this.pointerUp);this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost)
+    this.renderer.domElement.removeEventListener('pointermove',this.pointerMove);this.renderer.domElement.removeEventListener('pointercancel',this.pointerCancel)
     disposeGroup(this.scene);this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove()
   }
 }

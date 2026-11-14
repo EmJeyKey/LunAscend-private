@@ -207,7 +207,7 @@ svg { flex-shrink: 0; }
 .skip-link:focus { top: 10px; }
 .explorer-grid { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(280px, 1fr); gap: 20px; }
 .lunar-panel.large .lunar-art { min-height: 480px; }
-.explorer-sidebar { display: grid; gap: 20px; }
+.explorer-sidebar { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; min-width: 0; align-self: start; }
 .site-options { padding: 0 14px 14px; display: grid; gap: 5px; }
 .site-option { display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%; padding: 12px; background: #161f2a; border: 1px solid #2c3746; border-radius: 5px; text-align: left; }
 .site-option.selected { background: #29251e; border-color: #655135; }
@@ -345,7 +345,6 @@ svg { flex-shrink: 0; }
   .add-scenario-card p { font-size: 8px; }
   .explorer-grid { grid-template-columns: 1fr; }
   .lunar-panel.large .lunar-art { min-height: 380px; }
-  .explorer-sidebar { grid-template-columns: 1fr 1fr; }
   .info-banner .status-badge { display: none; }
   .methodology-grid { grid-template-columns: 1fr 1fr; }
   .methodology-intro { padding: 30px; grid-template-columns: 80px 1fr; gap: 28px; }
@@ -628,7 +627,8 @@ body, .app-main { background: var(--bg); }
 .workflow-strip span { color: #f2d38b; }
 @media (min-width: 1201px) { .sidebar { width: 214px; padding-inline: 11px; } .app-main { margin-left: 214px; } .nav-item { font-size: 11px; gap: 8px; } }
 @media (min-width: 1350px) { .explorer-grid { grid-template-columns: 185px minmax(0, 1fr) 245px; gap: 14px; } .explorer-grid .lunar-art { min-height: 530px; } }
-@media (max-width: 1349px) { .explorer-grid { grid-template-columns: 1fr 1fr; } .explorer-grid > .lunar-panel { grid-column: 1 / -1; grid-row: 1; } }
+@media (min-width: 981px) and (max-width: 1349px) { .explorer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 1349px) { .explorer-grid > .lunar-panel { grid-column: 1 / -1; grid-row: 1; } }
 @media (max-width: 760px) {
   .atlas-introduction { grid-template-columns: 1fr; gap: 8px; }
   .atlas-brand-art { order: -1; max-width: 500px; width: 100%; justify-self: center; }
@@ -991,6 +991,20 @@ body, .app-main { background: var(--bg); }
 @media (max-width:700px) { .viewer-stage { height:420px; }.viewer-settings { grid-template-columns:1fr 1fr; }.viewer-epoch { font-size:9px; }.viewer-epoch span { margin-left:0; } }
 @media (max-width:1349px) { .explorer-grid > .lunar-explorer { grid-column:1 / -1;grid-row:1; } }
 .viewer-data-state { position:absolute;top:50px;left:16px;right:16px;padding:14px;background:#0c1118e8;border-left:2px solid var(--gold);color:var(--muted);font-size:12px;line-height:1.8;overflow-wrap:anywhere;pointer-events:none; }
+.surface-controls { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;font-size:11px; }
+.surface-controls label { color:var(--muted); }
+.surface-controls input { margin-top:10px; }
+.surface-controls output,.surface-controls .viewer-camera { grid-column:1 / -1; }
+.surface-reticle { position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#f0eee980;pointer-events:none;font:20px var(--font-mono); }
+.lunar-explorer .surface-caption { position:absolute;bottom:12px;left:12px;right:12px;color:var(--gold);background:#000a;padding:6px;pointer-events:none;font:10px/1.7 var(--font-mono); }
+.lunar-horizon { border-top:1px solid #d6ad7055;margin:16px 0;padding-top:12px;font-size:11px;line-height:1.8; }
+.lunar-horizon h3 { font-size:16px; }
+.horizon-chart-scroll { overflow-x:auto;max-width:100%; }
+.lunar-horizon svg { display:block;width:100%;min-width:700px;min-height:180px; }
+.lunar-horizon svg text { font:13px var(--font-mono);fill:var(--muted); }
+.lunar-horizon p { margin:8px 0; }
+.horizon-unavailable { color:var(--muted); }
+@media (max-width:480px) { .surface-controls { grid-template-columns:minmax(0,1fr); }.lunar-horizon svg { min-height:130px; } }
 
 /* Source disclosures use the existing scientific typography and section strips. */
 .official-resources,.horizons-evidence,[aria-label="Local scientific source registry"] { margin-top:24px;scroll-margin-top:24px; }

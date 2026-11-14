@@ -1,0 +1,59 @@
+{
+  "scope": "Fresh existing mesh/horizon engines, compared with unchanged saved Step 9 directions; no new independent validation",
+  "reference_sha256": "e187129472fb28912907ec43557389b31268d8a21b48ead2675cf67dbcda4e45",
+  "utc": "2026-11-14T00:00:00Z",
+  "input": {
+    "dataset_id": "lola-site01-5m-v2020",
+    "site_id": "viewer-site",
+    "latitude_deg": -89.46315760953222,
+    "longitude_deg": -137.50097847854008,
+    "reference_frame": "MOON_ME_DE440_ME421",
+    "coordinate_epoch_utc": "2026-11-14T00:00:00Z",
+    "observer_height_m": 2.0,
+    "half_extent_m": 1000.0,
+    "max_grid_side": 65
+  },
+  "native_latitude_deg": -89.46315775697228,
+  "native_longitude_deg": -137.50198490762355,
+  "surface_elevation_m": 1944.7670898436575,
+  "observer_scene_m": [
+    0.0,
+    2.0,
+    0.0
+  ],
+  "source_sha256": "3ba7b97cb00a2bcf21189c3aeb535f65afc21207154ab9f0d43c5bdc1f7e747e",
+  "horizon_radius_m": 2500.0,
+  "radial_step_m": 5.0,
+  "azimuth_step_deg": 1.0,
+  "maximum_horizon_residual_deg": 0.0,
+  "rendered_grid_shape": [
+    59,
+    59
+  ],
+  "rendered_stride_pixels": 7,
+  "rendered_extent_m": [
+    2010.0,
+    2010.0
+  ],
+  "global_horizon_complete": false,
+  "bodies": {
+    "sun": {
+      "azimuth_deg": 264.11083058462435,
+      "elevation_deg": 1.5016027645265886,
+      "horizon_elevation_deg": -4.612548157097288,
+      "clearance_deg": 6.114150921623877,
+      "classification": "conditional_clearance",
+      "coverage": "sampled_radius",
+      "reason": "Center clears the evaluated finite sampled terrain only; farther and unresolved terrain remain unknown."
+    },
+    "earth": {
+      "azimuth_deg": 136.2449636825324,
+      "elevation_deg": -5.036238914765129,
+      "horizon_elevation_deg": 0.9803744697915846,
+      "clearance_deg": -6.016613384556714,
+      "classification": "modeled_obstruction",
+      "coverage": "sampled_radius",
+      "reason": "Center below the known circular-linear modeled obstruction; unresolved terrain cannot certify physical accuracy."
+    }
+  }
+}

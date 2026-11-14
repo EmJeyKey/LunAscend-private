@@ -1,9 +1,11 @@
 import {memo,useCallback,useEffect,useMemo,useRef,useState,type MouseEvent} from 'react'
 import {Link} from 'react-router'
 import {useMission} from '../state/MissionContext'
-import {inspectTerrain,requestMesh} from '../api/visualization'
-import {elevationColor,geographicToScene,globalDirection,localDirection,rendererLease} from '../lib/lunarScene'
-import type {DirectionOverlay,MeshRequest,RenderStats,TerrainInspection,TerrainMesh} from '../types/visualization'
+import {inspectTerrain,requestMesh,requestLocalHorizon} from '../api/visualization'
+import {elevationColor,geographicToScene,globalDirection,localDirection,matchingTerrain,rendererLease,surfaceBearing} from '../lib/lunarScene'
+import type {DirectionOverlay,MeshRequest,RenderStats,SurfaceBearing,TerrainInspection,TerrainMesh} from '../types/visualization'
+import type {TerrainHorizon} from '../types/analysis'
+import {LunarHorizon} from './LunarHorizon'
 import type {LunarView,Pick} from '../visualization/LunarRenderer'
 
 const number=(v:number|null|undefined,places=3)=>v==null?'Unavailable':v.toFixed(places)
@@ -32,12 +34,15 @@ const MemoPolarWindow=memo(PolarWindow)
 export function LunarExplorer({compact=false}:{compact?:boolean}) {
   const {mission,options,updateMission,updateOptions,analysis,sampleIndex,selectSample}=useMission()
   const result=analysis.result
-  const [mode,setMode]=useState<'globe'|'terrain'|'polar'>('globe')
+  const [mode,setMode]=useState<'globe'|'terrain'|'polar'|'surface'>('globe')
   const [api,setApi]=useState<LunarView|null>(null),[gpuError,setGpuError]=useState(''),[compatibility,setCompatibility]=useState(false)
   const [meshState,setMeshState]=useState<{key:string;value:TerrainMesh}|null>(null),[loading,setLoading]=useState(false),[error,setError]=useState('')
-  const [extent,setExtent]=useState(1000),[detail,setDetail]=useState<33|65|129>(65),[factor,setFactor]=useState(1),[colors,setColors]=useState(true),[retry,setRetry]=useState(0)
+  const [extent,setExtent]=useState(1000),[detail,setDetail]=useState<33|65|129>(65),[factor,setFactor]=useState(1),[colors,setColors]=useState(false),[retry,setRetry]=useState(0)
   const [inspection,setInspection]=useState<TerrainInspection|null>(null),[inspectMessage,setInspectMessage]=useState('')
   const [stats,setStats]=useState<RenderStats|null>(null)
+  const [surfaceWarning,setSurfaceWarning]=useState('')
+  const [bearing,setBearing]=useState<SurfaceBearing>({azimuth:0,elevation:0}),[indicators,setIndicators]=useState(true),[showHorizon,setShowHorizon]=useState(true)
+  const [horizonState,setHorizonState]=useState<{key:string;profile:TerrainHorizon}|null>(null),[horizonError,setHorizonError]=useState('')
   const host=useRef<HTMLDivElement>(null),meshRef=useRef<TerrainMesh|null>(null),pickRef=useRef<(p:Pick)=>void>(()=>{})
   const inspectionJob=useRef<AbortController|null>(null)
   const consumedRefresh=useRef(0)
@@ -69,15 +74,17 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
     const element=host.current
     return rendererLease(async()=>{
       const module=await import('../visualization/LunarRenderer')
-      return new module.LunarRenderer(element,p=>pickRef.current(p),setStats,message=>{setGpuError(message);setApi(null)})
+      return new module.LunarRenderer(element,p=>pickRef.current(p),setStats,message=>{setGpuError(message);setApi(null)},setBearing,setSurfaceWarning)
     },value=>{setApi(value);setGpuError('')},reason=>{setApi(null);setGpuError(`3D unavailable: ${reason instanceof Error?reason.message:'WebGL initialization failed'}. The coordinate form, polar DEM map and scientific analysis remain available.`)})
   },[compatibility])
   useEffect(()=>{
+    // Mode switches retain the same native mesh; changes to physical inputs still invalidate by requestKey.
+    if(mode==='globe'){setLoading(false);setError('');setInspection(null);inspectionJob.current?.abort();meshRef.current=mesh;return}
+    const refresh=retry!==consumedRefresh.current;consumedRefresh.current=retry
+    if(!refresh&&options.providerMode==='scientific'&&options.frameConfirmed&&meshState?.key===requestKey){meshRef.current=meshState.value;return}
     setMeshState(null);meshRef.current=null;setError('');setInspection(null);inspectionJob.current?.abort()
-    if(mode==='globe'){setLoading(false);return}
     if(options.providerMode!=='scientific'||!options.frameConfirmed){setLoading(false);setError('Confirm Scientific SPICE and the DE440/ME421 coordinate reference before loading NASA terrain. Mock data never supplies georeferenced terrain.');return}
     const controller=new AbortController();setLoading(true)
-    const refresh=retry!==consumedRefresh.current;consumedRefresh.current=retry
     void requestMesh(request,controller.signal,refresh).then(value=>{
       if(!controller.signal.aborted){meshRef.current=value;setMeshState({key:requestKey,value});setLoading(false)}
     },reason=>{if(!controller.signal.aborted){setError(reason instanceof Error?reason.message:'NASA terrain unavailable.');setLoading(false)}})
@@ -85,19 +92,36 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
     // Sample index/time cursor is deliberately absent: cached static terrain is independent of ephemeris selection.
   },[requestKey,mode==='globe',options.providerMode,options.frameConfirmed,retry])
   useEffect(()=>()=>inspectionJob.current?.abort(),[])
-  useEffect(()=>{api?.setMode(mode==='globe'?'globe':'terrain')},[api,mode])
+  useEffect(()=>{api?.setMode(mode==='globe'?'globe':mode==='surface'?'surface':'terrain')},[api,mode])
   useEffect(()=>{api?.setMesh(mesh)},[api,mesh])
-  useEffect(()=>{api?.setExaggeration(factor)},[api,factor])
+  const renderFactor=mode==='surface'?1:factor
+  useEffect(()=>{api?.setExaggeration(renderFactor)},[api,renderFactor])
   useEffect(()=>{api?.setColorMode(colors)},[api,colors])
+  useEffect(()=>{api?.setSurfaceBearing(bearing)},[api,bearing])
+  useEffect(()=>{api?.setIndicators(indicators)},[api,indicators])
   const observation=result?.provider_mode==='scientific'?result.observations?.[sampleIndex]:null
-  const native=result?.provider_mode==='scientific'?result.terrain_visibility?.observations[sampleIndex]:null
+  const matched=matchingTerrain(result,mesh)
+  const native=(mode==='globe'&&result?.provider_mode==='scientific'||matched)?result?.terrain_visibility?.observations[sampleIndex]:null
+  const horizonSettings=useMemo(()=>({max_search_radius_m:Number(options.terrainRadiusM||2500),radial_step_m:Number(options.terrainRadialStepM||5),azimuth_samples:Number(options.terrainAzimuthSamples||360)}),[options.terrainRadiusM,options.terrainRadialStepM,options.terrainAzimuthSamples])
+  const horizonKey=mesh?JSON.stringify([mesh.request.dataset_id,mesh.source_sha256,mesh.native_latitude_deg,mesh.native_longitude_deg,mesh.request.observer_height_m,horizonSettings]):''
+  const savedHorizon=matched&&result?.horizon?.reference_frame==='MOON_ME_DE421'?result.horizon:null
+  const horizon=savedHorizon||(horizonState?.key===horizonKey?horizonState.profile:null)
+  useEffect(()=>{
+    setHorizonError('')
+    if(!mesh||mode==='globe'||!showHorizon||horizon)return
+    const controller=new AbortController()
+    void requestLocalHorizon(mesh,horizonSettings,controller.signal).then(profile=>{
+      if(!controller.signal.aborted)setHorizonState({key:horizonKey,profile})
+    },reason=>{if(!controller.signal.aborted)setHorizonError(reason instanceof Error?reason.message:'Horizon unavailable.')})
+    return ()=>controller.abort()
+  },[mesh,mode==='globe',showHorizon,horizon,horizonKey,horizonSettings])
   const reconciled=result?.terrain_visibility?.observer_geometry?.[sampleIndex]
   const latitude=typeof reconciled?.latitude_deg_de440==='number'?reconciled.latitude_deg_de440:site.latitude
   const longitude=typeof reconciled?.longitude_deg_de440==='number'?reconciled.longitude_deg_de440:site.longitude
   useEffect(()=>{api?.setMarker(latitude,longitude)},[api,latitude,longitude])
   const overlays=useMemo<DirectionOverlay>(()=>{
     if(mode==='globe')return {origin:geographicToScene(latitude,longitude,1.014),sun:observation&&(!result?.terrain_visibility||reconciled)?globalDirection(latitude,longitude,observation.sun_azimuth_deg.value,observation.sun_elevation_deg.value):null,earth:observation&&(!result?.terrain_visibility||reconciled)?globalDirection(latitude,longitude,observation.earth_azimuth_deg.value,observation.earth_elevation_deg.value):null}
-    return {origin:mesh?.observer_scene_m||[0,0,0],sun:mesh&&native?localDirection(native.sun.azimuth_deg,native.sun.elevation_deg):null,earth:mesh&&native?localDirection(native.earth.azimuth_deg,native.earth.elevation_deg):null}
+    return {origin:mesh?.observer_scene_m||[0,0,0],sun:mesh&&native?localDirection(native.sun.azimuth_deg,native.sun.elevation_deg):null,earth:mesh&&native?localDirection(native.earth.azimuth_deg,native.earth.elevation_deg):null,surfaceSun:native?.sun.classification==='conditional_clearance',surfaceEarth:native?.earth.classification==='conditional_clearance'}
   },[mode,latitude,longitude,observation,native,mesh,reconciled,result])
   useEffect(()=>{api?.setDirections(overlays)},[api,overlays])
   const loadExample=()=>{
@@ -108,27 +132,34 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
   const currentTime=observation?.time_utc||mission.startUtc
   return <section className={`panel lunar-explorer ${compact?'compact':''}`} aria-label="Scientific lunar explorer">
     <header className="section-introduction"><h2>Lunar exploration instrument</h2><p>{mode==='globe'?'Geographic context sphere · no global DEM, texture or scientific illumination.':'NASA LOLA Site01 · actual elevations, finite data coverage. Rendering is independently unvalidated.'}</p></header>
-    <div className="viewer-toolbar" aria-label="Lunar view"><button aria-pressed={mode==='globe'} onClick={()=>setMode('globe')}>Global Moon</button><button aria-pressed={mode==='polar'} onClick={()=>setMode('polar')}>South polar map</button><button aria-pressed={mode==='terrain'} onClick={()=>setMode('terrain')}>Local terrain</button><button onClick={loadExample}>Load Site01 reference</button></div>
+    <div className="viewer-toolbar" aria-label="Lunar view"><button aria-pressed={mode==='globe'} onClick={()=>setMode('globe')}>Global Moon</button><button aria-pressed={mode==='polar'} onClick={()=>setMode('polar')}>South polar map</button><button aria-pressed={mode==='terrain'} onClick={()=>setMode('terrain')}>Local terrain</button><button aria-pressed={mode==='surface'} onClick={()=>setMode('surface')}>Surface View</button><button onClick={loadExample}>Load Site01 reference</button></div>
     <div className="viewer-reference"><span>{site.name} · {number(site.latitude,6)}° N · {number(site.longitude,6)}° E</span><span>Input: DE440/ME421 at {mission.startUtc}</span>{<label><input type="checkbox" checked={options.frameConfirmed} onChange={e=>updateOptions({...options,frameConfirmed:e.target.checked})}/>I confirm these coordinates use DE440/ME421 at this UTC epoch.</label>}</div>
-    {mode!=='globe'&&<div className="viewer-settings"><label>Window half-width / m<select value={extent} onChange={e=>setExtent(Number(e.target.value))}>{[250,500,1000,2000,4000].map(v=><option key={v} value={v}>{v}</option>)}</select></label><label>Mesh detail / maximum side<select value={detail} onChange={e=>setDetail(Number(e.target.value) as 33|65|129)}><option value="33">33 · low detail</option><option value="65">65 · standard</option><option value="129">129 · high detail</option></select></label><label>Vertical exaggeration<select value={factor} onChange={e=>setFactor(Number(e.target.value))}>{[1,2,5,10].map(v=><option key={v} value={v}>{v}×{v===1?' · true scale':''}</option>)}</select></label><label><input type="checkbox" checked={colors} onChange={e=>setColors(e.target.checked)}/>Elevation colors</label></div>}
-    {mode!=='globe'&&<p className="viewer-exaggeration">{factor}× vertical exaggeration · {factor===1?'true-scale spherical geometry':'rendering only; relative to selected-site elevation'}. Direction arrows retain true angles; visual intersections are not visibility classifications.</p>}
+    {mode!=='globe'&&<div className="viewer-settings"><label>Window half-width / m<select value={extent} onChange={e=>setExtent(Number(e.target.value))}>{[250,500,1000,2000,4000].map(v=><option key={v} value={v}>{v}</option>)}</select></label><label>Mesh detail / maximum side<select value={detail} onChange={e=>setDetail(Number(e.target.value) as 33|65|129)}><option value="33">33 · low detail</option><option value="65">65 · standard</option><option value="129">129 · high detail</option></select></label><label>Vertical exaggeration<select value={renderFactor} disabled={mode==='surface'} onChange={e=>setFactor(Number(e.target.value))}>{[1,2,5,10].map(v=><option key={v} value={v}>{v}×{v===1?' · true scale':''}</option>)}</select></label><label><input type="checkbox" checked={colors} onChange={e=>setColors(e.target.checked)}/>Elevation colors</label></div>}
+    {mode!=='globe'&&<p className="viewer-exaggeration">{renderFactor}× vertical exaggeration · {renderFactor===1?'true-scale spherical geometry':'rendering only; relative to selected-site elevation'}. {mode==='surface'?'Surface View locks true scale to preserve the DEM-derived eye height. ':''}Direction annotations retain true angles; visual intersections are not visibility classifications.</p>}
+    {mode==='surface'&&<div className="surface-controls" aria-label="Surface camera orientation"><label>Camera azimuth / °<input aria-label="Surface camera azimuth" type="range" min="0" max="360" step="0.1" value={bearing.azimuth} onChange={e=>setBearing(surfaceBearing(Number(e.target.value),bearing.elevation))}/></label><label>Camera elevation / °<input aria-label="Surface camera elevation" type="range" min="-89" max="89" step="0.1" value={bearing.elevation} onChange={e=>setBearing(surfaceBearing(bearing.azimuth,Number(e.target.value)))}/></label><output className="mono">Az {number(bearing.azimuth,1)}° · El {number(bearing.elevation,1)}°</output><div className="viewer-camera">{[['N',0],['E',90],['S',180],['W',270]].map(([label,a])=><button key={label} onClick={()=>setBearing({azimuth:Number(a),elevation:0})}>{label} · {a}°</button>)}{(['sun','earth'] as const).map(body=><button key={body} disabled={native?.[body].azimuth_deg==null||native?.[body].elevation_deg==null} onClick={()=>setBearing(surfaceBearing(native![body].azimuth_deg!,native![body].elevation_deg!))}>Look toward {body==='sun'?'Sun':'Earth'}</button>)}</div></div>}
     <div className="viewer-stage-wrap">
       <div className="viewer-stage" ref={host} style={{display:mode==='polar'||compatibility?'none':undefined}}/>
       {(mode==='polar'||compatibility)&&mesh&&<MemoPolarWindow mesh={mesh} onInspect={inspect}/>}
       {(mode==='polar'||compatibility)&&!mesh&&<div className="viewer-map-empty">{mode==='globe'?'3D compatibility mode. Select Local terrain or South polar map to load georeferenced data.':'No DEM window available. Check the coordinate confirmation and resource status below.'}</div>}
       <div className="viewer-epoch"><time>{currentTime}</time><span>{observation?'Returned scientific sample':'No scientific sample selected'}</span></div>
+      {mode==='surface'&&!compatibility&&!gpuError&&<div className="surface-reticle" aria-hidden="true">+</div>}
+      {mode==='surface'&&<p className="surface-caption">{compatibility||gpuError?'2D fallback · no ground-level perspective':mesh&&mesh.request.observer_height_m>0?`DEM observer ${number(mesh.request.observer_height_m)} m · az ${number(bearing.azimuth,1)}° · el ${number(bearing.elevation,1)}°`:'Surface observer unavailable; a supported DEM and positive observer height are required.'}</p>}
       {(loading||error||gpuError)&&<div className="viewer-data-state" role="status">{loading?'Verifying/loading bounded NASA terrain…':error||gpuError}</div>}
+      {mode==='surface'&&!compatibility&&surfaceWarning&&<div className="viewer-data-state" role="alert">{surfaceWarning}</div>}
     </div>
-    <div className="viewer-camera"><button onClick={()=>api?.camera('reset')} disabled={!api||compatibility}>Reset / selected site</button><button onClick={()=>api?.camera(mode==='globe'?'south':'top')} disabled={!api||compatibility}>{mode==='globe'?'South pole':'Top view'}</button><button onClick={()=>api?.camera('in')} disabled={!api||compatibility}>Zoom +</button><button onClick={()=>api?.camera('out')} disabled={!api||compatibility}>Zoom −</button><label><input type="checkbox" checked={compatibility} onChange={e=>{setApi(null);setCompatibility(e.target.checked)}}/>2D compatibility mode</label></div>
-    <p>Drag to orbit · scroll/pinch to zoom · right drag or two fingers to pan local terrain. Click a surface to select a context coordinate or inspect its nearest retained DEM vertex. Marker and arrows are annotations, not physical object sizes/distances. A globe click starts the new coordinate selection at the displayed UTC epoch.</p>
+    <div className="viewer-camera"><button onClick={()=>api?.camera('reset')} disabled={!api||compatibility}>Reset / selected site</button>{mode!=='surface'&&<><button onClick={()=>api?.camera(mode==='globe'?'south':'top')} disabled={!api||compatibility}>{mode==='globe'?'South pole':'Top view'}</button><button onClick={()=>api?.camera('in')} disabled={!api||compatibility}>Zoom +</button><button onClick={()=>api?.camera('out')} disabled={!api||compatibility}>Zoom −</button></>}<label><input type="checkbox" checked={compatibility} onChange={e=>{setApi(null);setCompatibility(e.target.checked)}}/>2D compatibility mode</label><label><input type="checkbox" checked={indicators} onChange={e=>setIndicators(e.target.checked)}/>Sun / Earth indicators</label>{mode!=='globe'&&<label><input type="checkbox" checked={showHorizon} onChange={e=>setShowHorizon(e.target.checked)}/>Scientific horizon profile</label>}</div>
+    <p>{mode==='surface'?'Drag to look around the fixed DEM observer, or use the azimuth/elevation controls. No translation or arbitrary eye altitude. Gold/cyan sky points are direction annotations, not apparent disks; obstructed or unknown centers are withheld from the sky and retain bearing cues below.':'Drag to orbit · scroll/pinch to zoom · right drag or two fingers to pan local terrain. Click a surface to select a context coordinate or inspect its nearest retained DEM vertex. Marker and arrows are annotations, not physical object sizes/distances. A globe click starts the new coordinate selection at the displayed UTC epoch.'}</p>
+    {mode!=='globe'&&<p>Black sky · elevation-shaded NASA DEM. Unshadowed illustrative lighting follows the returned native SPICE Sun direction when available; ambient fill aids inspection. No atmospheric haze, optical imagery or validated browser shadow model is installed.</p>}
+    {mode!=='globe'&&showHorizon&&<><LunarHorizon horizon={horizon} row={native} azimuth={mode==='surface'&&!compatibility&&!gpuError?bearing.azimuth:null}/>{horizonError&&<p role="alert">{horizonError}</p>}{mesh&&<p>The scientific horizon and this rendered window have independent extents and sampling. The mesh spans approximately {number(mesh.projected_x_m.at(-1)!-mesh.projected_x_m[0],0)} × {number(mesh.projected_y_m[0]-mesh.projected_y_m.at(-1)!,0)} m at retained pixel spacing; horizon rays use {horizon?.radial_step_m??'unknown'} m steps out to {horizon?.max_search_radius_m??'unknown'} m. The separate profile is authoritative for the modeled horizon; no distant terrain is fabricated to match it. Decimated triangles may differ near the DEM-derived camera.</p>}</>}
     {gpuError&&<p role="alert" className="analysis-error">{gpuError} <button onClick={()=>{setCompatibility(true);setMode('polar')}}>Use polar DEM fallback</button> <Link to="/analysis">Open scientific analysis</Link></p>}
     {loading&&<p role="status">Loading and verifying a bounded NASA DEM window…</p>}{error&&<p role="alert" className="analysis-error">{error}</p>}
     {mode!=='globe'&&<button className="text-link" onClick={()=>setRetry(v=>v+1)} disabled={loading}>Reload verified terrain</button>}
-    {mesh&&mode!=='globe'&&<div className="viewer-metadata"><p>Native DE421 site {number(mesh.native_latitude_deg,8)}° N / {number(mesh.native_longitude_deg,8)}° E · surface {number(mesh.surface_elevation_m)} m · observer {number(mesh.request.observer_height_m)} m above terrain.</p><p>Elevation scale: {number(mesh.original_elevation_range_m[0],1)}–{number(mesh.original_elevation_range_m[1],1)} m above the 1,737,400 m sphere · low slate → high sand. Retained {mesh.grid_shape.join(' × ')} vertices / {mesh.indices.length/3} triangles · source {mesh.source_pixel_spacing_m} m pixels, stride {mesh.source_stride_pixels}; last cell spacing may differ. Original read {mesh.source_window_shape.join(' × ')} pixels.</p><p>Gold edges bound the finite rendered surface and nodata holes. Nodata source pixels: {mesh.nodata_pixels}; omitted cells: {mesh.omitted_cells}. Retained window {number(mesh.projected_x_m.at(-1)!-mesh.projected_x_m[0],1)} × {number(mesh.projected_y_m[0]-mesh.projected_y_m.at(-1)!,1)} m. Dataset projected bounds / m: {mesh.dataset_bounds_m.join(', ')}. No terrain is supplied outside supported faces; this decimated window does not replace the native horizon DEM.</p><details><summary>Georeferencing and source provenance</summary><p>{mesh.source_url}</p><p className="mono">SHA256 {mesh.source_sha256}</p><p>{mesh.vertical_reference}</p><pre>{JSON.stringify({body_origin_m:mesh.body_origin_m,body_to_scene:mesh.body_to_scene,frame_transform:mesh.frame_transform,crs_wkt:mesh.crs_wkt},null,2)}</pre>{mesh.warnings.map(w=><p key={w}>{w}</p>)}</details></div>}
+    {mesh&&mode!=='globe'&&<div className="viewer-metadata"><p>Native DE421 site {number(mesh.native_latitude_deg,8)}° N / {number(mesh.native_longitude_deg,8)}° E · surface {number(mesh.surface_elevation_m)} m · observer {number(mesh.request.observer_height_m)} m above terrain.</p><p>Elevation scale: {number(mesh.original_elevation_range_m[0],1)}–{number(mesh.original_elevation_range_m[1],1)} m above the 1,737,400 m sphere · optional elevation colors: low slate → high sand. Retained {mesh.grid_shape.join(' × ')} vertices / {mesh.indices.length/3} triangles · source {mesh.source_pixel_spacing_m} m pixels, stride {mesh.source_stride_pixels}; last cell spacing may differ. Original read {mesh.source_window_shape.join(' × ')} pixels.</p><p>Gold edges bound the finite rendered surface and nodata holes. Nodata source pixels: {mesh.nodata_pixels}; omitted cells: {mesh.omitted_cells}. Retained window {number(mesh.projected_x_m.at(-1)!-mesh.projected_x_m[0],1)} × {number(mesh.projected_y_m[0]-mesh.projected_y_m.at(-1)!,1)} m. Dataset projected bounds / m: {mesh.dataset_bounds_m.join(', ')}. No terrain is supplied outside supported faces; this decimated window does not replace the native horizon DEM.</p><details><summary>Georeferencing and source provenance</summary><p>{mesh.source_url}</p><p className="mono">SHA256 {mesh.source_sha256}</p><p>{mesh.vertical_reference}</p><pre>{JSON.stringify({body_origin_m:mesh.body_origin_m,body_to_scene:mesh.body_to_scene,frame_transform:mesh.frame_transform,crs_wkt:mesh.crs_wkt},null,2)}</pre>{mesh.warnings.map(w=><p key={w}>{w}</p>)}</details></div>}
     {inspection&&<div className="viewer-inspection"><h3>Original DEM inspection</h3><p>{number(inspection.latitude_deg,8)}° N · {number(inspection.longitude_deg,8)}° E · {number(inspection.elevation_m)} m · {number(inspection.distance_from_site_m)} m from selected site on reference sphere.</p><p>MOON_ME_DE421 · {inspection.dataset_id} · {inspection.method}.</p><button className="button secondary" onClick={()=>{
       updateMission({...mission,site:{id:'custom',name:'Inspected LOLA coordinate',latitude:inspection.input_frame_latitude_deg,longitude:inspection.input_frame_longitude_deg,description:'Coordinate returned by the exact backend frame bridge at the original mission epoch. Reconfirm before analysis.'}});updateOptions({...options,frameConfirmed:false})
     }}>Use inspected coordinate</button></div>}
     {inspectMessage&&<p role="status">{inspectMessage}</p>}
+    <details className="viewer-imagery"><summary>Optical imagery availability</summary><p>No registered optical texture is installed. The local surface uses original NASA LOLA elevation geometry and illustrative shading. The global Moon remains a reference sphere. The published <a href="https://data.lroc.im-ldi.com/lroc/view_rdr_product/WAC_GLOBAL_E000N0000_008P" target="_blank" rel="noopener noreferrer">LROC WAC_GLOBAL_E000N0000_008P mosaic</a> is a coarse global imagery candidate (8 pixels/degree), not an installed local terrain layer. Its exact registration to this viewer has not been verified. <a href="https://trek.nasa.gov/tiles/apidoc/trekAPI.html?body=moon" target="_blank" rel="noopener noreferrer">Moon Trek WMTS documentation</a> describes additional external imagery services. These references do not affect offline analysis.</p></details>
     <div className="viewer-directions"><h3>Returned Sun / Earth directions</h3>{mode==='globe'&&<p>Scene marker at selected epoch: {number(latitude,8)}° N / {number(longitude,8)}° E in DE440/ME421.</p>}<p>Gold = Sun · cyan = Earth. {mode==='globe'?'Body-fixed DE440/ME421 context directions.':'Native DE421 local scene: +X east, +Y up, −Z north. Local arrows require terrain-aware per-epoch reconciliation.'}</p>{(['sun','earth'] as const).map(body=>{
       const b=native?.[body],az=mode==='globe'?observation?.[`${body}_azimuth_deg`].value:b?.azimuth_deg,el=mode==='globe'?observation?.[`${body}_elevation_deg`].value:b?.elevation_deg
       return <p key={body} className={`viewer-${body}`}>{body.toUpperCase()} · azimuth {number(az)}° · elevation {number(el)}° · terrain clearance {number(b?.clearance_deg)}° · {b?.classification.replaceAll('_',' ')||'Terrain classification unavailable'}.</p>

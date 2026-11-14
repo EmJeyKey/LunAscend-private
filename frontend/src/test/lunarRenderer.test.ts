@@ -3,7 +3,7 @@ import type {RenderStats} from '../types/visualization'
 import evidence from '../../../docs/validation/step-10-results.json'
 import {parseMesh} from '../api/visualization'
 import type {MeshRequest} from '../types/visualization'
-const shared=vi.hoisted(()=>({dispose:vi.fn(),forceLoss:vi.fn(),controlDispose:vi.fn(),disconnect:vi.fn(),remove:vi.fn(),cancel:vi.fn()}))
+const shared=vi.hoisted(()=>({dispose:vi.fn(),forceLoss:vi.fn(),controlDispose:vi.fn(),disconnect:vi.fn(),remove:vi.fn(),cancel:vi.fn(),draw:vi.fn()}))
 vi.mock('three',async()=>{
   const real=await vi.importActual<typeof import('three')>('three')
   class Renderer {
@@ -12,7 +12,7 @@ vi.mock('three',async()=>{
       getBoundingClientRect(){return {left:0,top:0,width:800,height:500}}
     }()
     info={render:{triangles:0}}
-    setPixelRatio(){}setClearColor(){}setSize(){}render(){this.info.render.triangles=6728}
+    setPixelRatio(){}setClearColor(){}setSize(){}render(scene:unknown,camera:unknown){this.info.render.triangles=6728;shared.draw(scene,camera)}
     dispose(){shared.dispose()}forceContextLoss(){shared.forceLoss()}
   }
   return {...real,WebGLRenderer:Renderer}
@@ -35,9 +35,10 @@ describe('renderer ownership and on-demand update separation (GPU mocked)',()=>{
     vi.stubGlobal('ResizeObserver',class {observe(){}disconnect(){shared.disconnect()}})
     const host={clientWidth:800,clientHeight:500,appendChild:vi.fn()} as unknown as HTMLElement
     const values:RenderStats[]=[]
-    const renderer=new LunarRenderer(host,vi.fn(),s=>values.push(s),vi.fn())
+    const surfaceStatus=vi.fn()
+    const renderer=new LunarRenderer(host,vi.fn(),s=>values.push(s),vi.fn(),vi.fn(),surfaceStatus)
     const flush=()=>{const callbacks=[...pending.values()];pending.clear();callbacks.forEach(fn=>fn(0))}
-    return {renderer,flush,values}
+    return {renderer,flush,values,surfaceStatus}
   }
   it('reuses static geometry when directions/time change; exaggeration only updates vertices',()=>{
     const {renderer,flush,values}=setup()
@@ -57,5 +58,39 @@ describe('renderer ownership and on-demand update separation (GPU mocked)',()=>{
     expect(shared.dispose).toHaveBeenCalledTimes(1);expect(shared.forceLoss).toHaveBeenCalledTimes(1)
     expect(shared.controlDispose).toHaveBeenCalledTimes(1);expect(shared.disconnect).toHaveBeenCalledTimes(1)
     expect(shared.remove).toHaveBeenCalledTimes(1);expect(shared.cancel).toHaveBeenCalledTimes(1)
+  })
+  it('anchors surface camera at DEM + 2 m, locks true scale and reuses geometry through camera/time/view changes',async()=>{
+    const THREE=await vi.importActual<typeof import('three')>('three')
+    const {renderer,flush,values}=setup(),mesh=parseMesh(evidence.mesh,evidence.mesh.request as MeshRequest)
+    renderer.setMesh(mesh);renderer.setMode('surface');renderer.setSurfaceBearing({azimuth:90,elevation:0});flush()
+    const [scene,camera]=shared.draw.mock.calls.at(-1)! as [import('three').Scene,import('three').PerspectiveCamera]
+    expect(camera.position.toArray()).toEqual([0,2,0])
+    expect(camera.getWorldDirection(new THREE.Vector3()).x).toBeCloseTo(1)
+    // Measure decimated terrain underneath the DEM-derived observer, without changing its real height.
+    const ray=new THREE.Raycaster(new THREE.Vector3(0,1000,0),new THREE.Vector3(0,-1,0))
+    scene.updateMatrixWorld(true)
+    const terrainObjects:import('three').Object3D[]=[]
+    scene.traverse(node=>{if(node instanceof THREE.Mesh&&node.geometry.getAttribute('position').count===mesh.positions_m.length)terrainObjects.push(node)})
+    const ground=ray.intersectObjects(terrainObjects,false)[0]
+    expect(ground).toBeDefined();expect(ground.point.y).toBeLessThan(camera.position.y)
+    renderer.setDirections({origin:mesh.observer_scene_m,sun:[1,0,0],earth:[0,-1,0],surfaceSun:true,surfaceEarth:false});flush()
+    const sky=scene.children.find(g=>g.children.some(n=>n instanceof THREE.Mesh&&n.renderOrder===6))!
+    expect(sky.children).toHaveLength(1)
+    renderer.setExaggeration(5);renderer.setSurfaceBearing({azimuth:270,elevation:-30});flush()
+    expect(camera.position.toArray()).toEqual([0,2,0]);expect(values.at(-1)?.vertexUpdates).toBe(0)
+    for(const mode of ['terrain','globe','surface'] as const){renderer.setMode(mode);flush()}
+    expect(values.at(-1)?.meshBuilds).toBe(1);expect(camera.position.toArray()).toEqual([0,2,0])
+    renderer.dispose()
+  })
+  it('withholds a coarse surface crossing the DEM eye instead of inventing a higher camera',()=>{
+    const {renderer,flush,surfaceStatus}=setup(),mesh=parseMesh(evidence.mesh,evidence.mesh.request as MeshRequest)
+    // Deliberately mismatched display heights model a decimation error; not another NASA dataset.
+    renderer.setMesh({...mesh,positions_m:mesh.positions_m.map(p=>p?[p[0],p[1]+10,p[2]]:null)})
+    renderer.setMode('surface');flush()
+    expect(surfaceStatus).toHaveBeenLastCalledWith(expect.stringContaining('real eye height has not been moved'))
+    const scene=shared.draw.mock.calls.at(-1)![0] as import('three').Scene
+    let visibleTerrain=false
+    scene.traverse(node=>{const n=node as import('three').Mesh;if(n.geometry?.getAttribute('position')?.count===mesh.positions_m.length)visibleTerrain=!!n.parent?.visible})
+    expect(visibleTerrain).toBe(false);renderer.dispose()
   })
 })
