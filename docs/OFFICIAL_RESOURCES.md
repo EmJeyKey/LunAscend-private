@@ -1,5 +1,11 @@
 # Step 11 — Official resources and scientific provenance
 
+Historical Step 11 report. Step 11.6 subsequently added three verified NASA Moon Trek
+photographic WMTS products to the internal map/context globe. Current source roles
+come from the registry and imagery manifests; the reference-only statements below
+describe the earlier milestone. QuickMap remains external; local DEM photographic
+draping remains withheld. See [Step 11.6](STEP_11_6_ORIGINAL_NASA_MAPS.md).
+
 ## Implemented scope
 
 This milestone makes source roles, product identity, attribution and the existing Horizons comparison evidence visible in Scientific Methodology. Explorer provides contextual external-map links alongside the selected input coordinates and epoch. Result provenance links to the saved comparison explanation in a separate local tab, preserving the original analysis workspace.

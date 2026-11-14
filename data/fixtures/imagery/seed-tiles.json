@@ -1,0 +1,38 @@
+[
+  {
+    "key": "wac-global/0/0/0",
+    "file": "global-l0-west.jpg",
+    "url": "https://trek.nasa.gov/tiles/Moon/EQ/LRO_WAC_Mosaic_Global_303ppd_v02/1.0.0/default/default028mm/0/0/0.jpg",
+    "resolved_url": "https://trek.nasa.gov/tiles/Moon/EQ/LRO_WAC_Mosaic_Global_303ppd_v02/1.0.0/default/default028mm/0/0/0.jpg",
+    "bytes": 49475,
+    "sha256": "de4dcb39468cc7210da9e6a49912049235fc88d1584d9ac72c2889e039d352d0",
+    "content_type": "image/jpeg"
+  },
+  {
+    "key": "wac-global/0/0/1",
+    "file": "global-l0-east.jpg",
+    "url": "https://trek.nasa.gov/tiles/Moon/EQ/LRO_WAC_Mosaic_Global_303ppd_v02/1.0.0/default/default028mm/0/0/1.jpg",
+    "resolved_url": "https://trek.nasa.gov/tiles/Moon/EQ/LRO_WAC_Mosaic_Global_303ppd_v02/1.0.0/default/default028mm/0/0/1.jpg",
+    "bytes": 51335,
+    "sha256": "199d3a250290f60886c368fc5539acdee34c7e724dea48b2a4d45eb5a4186e40",
+    "content_type": "image/jpeg"
+  },
+  {
+    "key": "wac-south/0/0/0",
+    "file": "south-wac-l0.png",
+    "url": "https://trek.nasa.gov/tiles/Moon/SP/LRO_WAC_Mosaic_SPole60_100m_v02/1.0.0/default/default028mm/0/0/0.png",
+    "resolved_url": "https://trek.nasa.gov/tiles/Moon/SP/LRO_WAC_Mosaic_SPole60_100m_v02/1.0.0/default/default028mm/0/0/0.png",
+    "bytes": 61115,
+    "sha256": "6d9135570fa69c562899c8bb7ead9405a06761dab744717bbc6d3d92632f4d88",
+    "content_type": "image/png"
+  },
+  {
+    "key": "nac-south/11/1035/1013",
+    "file": "site01-nac-l11.png",
+    "url": "https://trek.nasa.gov/tiles/Moon/SP/LRO_NAC_Mosaic_SPole85.5_1mp/1.0.0/default/default028mm/11/1035/1013.png",
+    "resolved_url": "https://trek.nasa.gov/tiles/Moon/SP/LRO_NAC_Mosaic_SPole85.5_1mp/1.0.0/default/default028mm/11/1035/1013.png",
+    "bytes": 63089,
+    "sha256": "b24c83cf0749cb94535bbff0aafa8f8843d08f53beb36909f49626e5d11e81b9",
+    "content_type": "image/png"
+  }
+]

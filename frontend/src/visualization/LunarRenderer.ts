@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js'
 import {elevationColor,exaggeratedPositions,geographicToScene,sceneToGeographic,surfaceBearing,surfacePose} from '../lib/lunarScene'
 import type {DirectionOverlay,RenderStats,SurfaceBearing,TerrainMesh,Vector3} from '../types/visualization'
+import {GlobeImagery,type GlobeImageStatus} from './GlobeImagery'
 
 export type SceneMode='globe'|'terrain'|'surface'
 export type Pick={kind:'globe';latitude:number;longitude:number}|{kind:'terrain';index:number}
@@ -9,7 +10,7 @@ export interface LunarView {
   setMode:(mode:SceneMode)=>void;setMesh:(mesh:TerrainMesh|null)=>void;setMarker:(latitude:number,longitude:number)=>void
   setDirections:(directions:DirectionOverlay)=>void;setExaggeration:(factor:number)=>void;setColorMode:(elevation:boolean)=>void
   setSurfaceBearing:(bearing:SurfaceBearing)=>void;setIndicators:(visible:boolean)=>void
-  camera:(preset:'reset'|'south'|'top'|'in'|'out')=>void;dispose:()=>void
+  camera:(preset:'reset'|'south'|'top'|'in'|'out'|'regional'|'neighborhood')=>void;dispose:()=>void
 }
 
 function disposeGroup(group:THREE.Object3D) {
@@ -42,6 +43,7 @@ export class LunarRenderer implements LunarView {
   private mesh:TerrainMesh|null=null
   private surface:THREE.Mesh<THREE.BufferGeometry,THREE.MeshStandardMaterial>|null=null
   private globeSurface:THREE.Mesh
+  private photographic:GlobeImagery|null=null
   private edgeLines:THREE.LineSegments|null=null
   private factor=1
   private colorMode=true
@@ -56,7 +58,7 @@ export class LunarRenderer implements LunarView {
   private indicators=true
   private surfaceReady=false
 
-  constructor(private host:HTMLElement,private onPick:(pick:Pick)=>void,private onStats:(stats:RenderStats)=>void,private onFailure:(message:string)=>void,private onBearing:(bearing:SurfaceBearing)=>void=()=>{},private onSurfaceStatus:(message:string)=>void=()=>{}) {
+  constructor(private host:HTMLElement,private onPick:(pick:Pick)=>void,private onStats:(stats:RenderStats)=>void,private onFailure:(message:string)=>void,private onBearing:(bearing:SurfaceBearing)=>void=()=>{},private onSurfaceStatus:(message:string)=>void=()=>{},onImagery:(status:GlobeImageStatus)=>void=()=>{}) {
     this.renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'low-power'})
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5))
     this.renderer.setClearColor('#000000')
@@ -69,8 +71,9 @@ export class LunarRenderer implements LunarView {
     this.controls.addEventListener('change',this.requestDraw)
     this.scene.add(new THREE.HemisphereLight(0xe2e8ef,0x16202c,1.4))
     this.sunLight.position.set(3,4,2);this.scene.add(this.sunLight)
-    this.globeSurface=new THREE.Mesh(new THREE.SphereGeometry(1,96,64),new THREE.MeshStandardMaterial({color:'#515762',roughness:1}))
+    this.globeSurface=new THREE.Mesh(new THREE.SphereGeometry(1,96,64),new THREE.MeshStandardMaterial({color:'#515762',roughness:1,depthWrite:false}))
     this.globe.add(this.globeSurface)
+    this.photographic=new GlobeImagery(this.requestDraw,onImagery);this.globe.add(this.photographic.group)
     const lineMaterial=new THREE.LineBasicMaterial({color:0x9aaab9,transparent:true,opacity:.26})
     for(const latitude of [-60,-30,0,30,60]){
       const points=Array.from({length:181},(_,i)=>new THREE.Vector3(...geographicToScene(latitude,i*2-180,1.002)))
@@ -111,6 +114,7 @@ export class LunarRenderer implements LunarView {
       this.stats={...this.stats,draws:this.stats.draws+1,triangles:this.renderer.info.render.triangles,lastDrawMs:performance.now()-start}
       this.onStats({...this.stats})
     })
+    this.photographic?.update(this.cameraObject.position,this.host.clientHeight,this.mode==='globe')
   }
   private pointerDown=(event:PointerEvent)=>{if(event.button===0){this.pointer=[event.clientX,event.clientY];if(this.mode==='surface')this.renderer.domElement.setPointerCapture?.(event.pointerId)}}
   private pointerCancel=()=>{this.pointer=null}
@@ -234,7 +238,7 @@ export class LunarRenderer implements LunarView {
     this.bearing=surfaceBearing(bearing.azimuth,bearing.elevation)
     if(this.mode==='surface')this.camera('top')
   }
-  camera(preset:'reset'|'south'|'top'|'in'|'out'){
+  camera(preset:'reset'|'south'|'top'|'in'|'out'|'regional'|'neighborhood'){
     if(this.mode==='surface'){
       if(preset==='reset'){this.bearing={azimuth:0,elevation:0};this.onBearing({...this.bearing})}
       if(this.mesh&&this.surfaceReady){
@@ -246,11 +250,12 @@ export class LunarRenderer implements LunarView {
     }
     const local=this.mode==='terrain',scale=local?this.mesh?.request.half_extent_m||1000:1
     const fit=Math.max(1,1/this.cameraObject.aspect)
-    this.controls.minDistance=scale*.1;this.controls.maxDistance=scale*12;this.controls.enablePan=local
+    this.controls.minDistance=local?scale*.1:1.005;this.controls.maxDistance=scale*12;this.controls.enablePan=local
     if(preset==='in'||preset==='out')this.cameraObject.position.sub(this.controls.target).multiplyScalar(preset==='in'?.8:1.25).add(this.controls.target)
     else{
       this.controls.target.set(0,0,0)
-      if(preset==='south'&&!local)this.cameraObject.position.set(.01,-3.2*fit,.12)
+      if(preset==='south'&&!local)this.cameraObject.position.set(.001,-1.7*fit,.01)
+      else if((preset==='regional'||preset==='neighborhood')&&!local)this.cameraObject.position.copy(new THREE.Vector3(...geographicToScene(this.latitude,this.longitude,preset==='regional'?1.4:1.03)))
       else if(preset==='top'&&local)this.cameraObject.position.set(0,scale*4.3*fit,.01)
       else if(local)this.cameraObject.position.set(scale*2.4*fit,scale*1.9*fit,scale*2.9*fit)
       else this.cameraObject.position.copy(new THREE.Vector3(...geographicToScene(this.latitude,this.longitude,3.4*fit)))
@@ -260,6 +265,7 @@ export class LunarRenderer implements LunarView {
   dispose(){
     if(this.disposed)return
     this.disposed=true;if(this.frame!==null)cancelAnimationFrame(this.frame)
+    this.photographic?.dispose();this.photographic=null
     this.resize.disconnect();this.controls.removeEventListener('change',this.requestDraw);this.controls.dispose()
     this.renderer.domElement.removeEventListener('pointerdown',this.pointerDown);this.renderer.domElement.removeEventListener('pointerup',this.pointerUp);this.renderer.domElement.removeEventListener('webglcontextlost',this.contextLost)
     this.renderer.domElement.removeEventListener('pointermove',this.pointerMove);this.renderer.domElement.removeEventListener('pointercancel',this.pointerCancel)

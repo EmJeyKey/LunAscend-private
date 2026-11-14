@@ -1,4 +1,20 @@
-# LunAscend architecture — Step 11 source transparency
+# LunAscend architecture — Step 11.6 optical context imagery
+
+## Step 11.6 source-backed cartographic imagery
+
+An isolated standard-library imagery adapter serves three verified NASA Moon Trek
+WMTS products through a bounded allowlisted tile/cache API. Frozen coordinate-anchor
+contracts reuse the existing exact isolated DE440/DE421 bridge; no scientific engine
+or result contract is changed. The 2D map uses the source lunar geographic / spherical
+polar grid; progressive Three.js tile patches provide an optical context shell. The
+source metadata does not establish an exact dynamical realization or local image-to-DEM
+tie. Scientific markers retain their frame, photo placement is qualified, cartographic
+picks require separate scientific confirmation, and local terrain draping is withheld.
+Source masks, delivered resolution, finite coverage and acquisition shadows remain
+explicit. Images never enter ephemeris, horizon, visibility or engineering calculations.
+Cached/bundled photographs and the original DEM viewer support service failure; science
+remains local. See docs/STEP_11_6_ORIGINAL_NASA_MAPS.md for limits and executed evidence.
+The following Step 11 description records that earlier milestone's reference-only state.
 
 Status: Step 6 adds independent scientific scenario comparison to the existing Step 5 integration and Step 5.5 design. The validated Step 3 engine and Step 4 mock generator are preserved. Challenge title and November 14–15 competition dates come from the team brief; official event details and submission rules still require team verification.
 

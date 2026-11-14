@@ -69,7 +69,11 @@ def saved_validation(root: Path) -> dict:
 def build_catalog(root: Path = ROOT) -> dict:
     registry = deepcopy(load(root, 'data/manifests/source-registry.json'))
     for source in registry['sources']:
-        if source['id'] == 'spice':
+        if source['id'] == 'moon-trek':
+            m = load(root, 'data/manifests/lunar-imagery.json')
+            source.update(product_id='; '.join(l['product'] for l in m['layers']), version=m['version'],
+                original_resolution='Delivered finest sampling: global WAC ~83.3 m/px meridional; south WAC 267.56 projected m/px; polar NAC 4.18 projected m/px. Nominal originals differ.')
+        elif source['id'] == 'spice':
             m = load(root, source['manifest'])
             source.update(product_id=m['kernel_set_id'], version=m['kernel_set_id'],
                 coordinate_system=f"{m['frame_id']}; planetocentric, east-positive; {m['reference_radius_m']:g} m sphere. Native terrain uses a separate exact DE421 bridge.",

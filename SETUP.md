@@ -223,6 +223,34 @@ Backend http://127.0.0.1:8000; frontend http://127.0.0.1:5173. Stop each with Ct
 
 Backend tests: from backend, `uv run --frozen pytest -q`. Scientific extras will have documented names before use. Frontend tests/build: from frontend, `npm.cmd test` and `npm.cmd run build`. Vite explicitly sets `build.sourcemap: false`; inspect dist for maps, secrets and Python sources. `npm.cmd run preview` is a local preview, not a production hosting solution. Keep backend deployment separate, never copy it into frontend/public or dist. Browser JavaScript is inspectable even minified. Never delete original source after building. Hosting remains undecided and requires separate authorization.
 
+## Step 11.6 optional photographic viewer
+
+No dependency or lock change is required. The existing loopback backend now serves
+`/api/v1/imagery/catalog`, bounded `tiles/{layer}/{level}/{row}/{column}` and the
+exact scientific coordinate `anchor` adapter through the existing frontend proxy.
+The anchor needs the already documented science/frame kernels; image tiles alone
+use the standard library. Restore the existing local environment normally.
+
+Four small authentic source tiles are tracked with their hashes/attribution. They
+provide coarse global photos offline; higher detail is fetched from the fixed official
+NASA host and cached under ignored `data/cache/lunar-imagery` (64 MB / 1024 files).
+No credentials, API key, external embed, CDN, database or new service is needed.
+Uncached imagery requires internet; missing imagery does not disable local science
+or the DEM fallback. A fresh computer does not inherit the ignored live cache.
+
+From the repository root, with the backend running, use the existing environment:
+
+```powershell
+backend\.venv\Scripts\python.exe scripts/build_imagery_catalog.py
+backend\.venv\Scripts\python.exe scripts/build_source_registry.py --check
+backend\.venv\Scripts\python.exe scripts/verify_lunar_imagery.py
+```
+
+The first command reproducibly rebuilds metadata from saved official capabilities;
+the last performs eight bounded live/local tile checks and the existing exact Site01
+anchor, saving a small report. It does not prove local photographic registration.
+Local terrain draping remains withheld; see docs/STEP_11_6_ORIGINAL_NASA_MAPS.md.
+
 ## Local Git — usable now after initialization
 
 Step 1 baseline has been committed and tagged locally. The following illustrates that milestone's workflow; do not recreate the existing tag. Review before staging each later milestone:

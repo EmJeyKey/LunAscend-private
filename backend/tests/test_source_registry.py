@@ -34,8 +34,10 @@ def test_registry_roles_attribution_urls_and_access_claims_are_explicit():
     assert sources['spice']['roles'] == ['calculation']
     assert sources['lola']['roles'] == ['calculation', 'visualization']
     assert sources['horizons']['roles'] == ['validation']
-    for name in ('quickmap', 'moon-trek', 'csa'):
+    for name in ('quickmap', 'csa'):
         assert sources[name]['roles'] == ['reference'] and sources[name]['product_id'] is None
+    assert sources['moon-trek']['roles'] == ['visualization', 'reference']
+    assert 'LRO_WAC_Mosaic_Global_303ppd_v02' in sources['moon-trek']['product_id']
     expected = {'quickmap': 'quickmap.lroc.asu.edu', 'moon-trek': 'trek.nasa.gov', 'horizons': 'ssd.jpl.nasa.gov', 'csa': 'www.asc-csa.gc.ca'}
     for name, host in expected.items():
         assert urlparse(sources[name]['official_url']).hostname == host

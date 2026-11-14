@@ -1,0 +1,92 @@
+{
+  "scope": "Executed loopback imagery API, actual source bytes and reuse of exact existing frame bridge. Not local image registration or new scientific validation.",
+  "catalog_version": "lunar-imagery-v1",
+  "request": {
+    "latitude_deg": -89.46315760953222,
+    "longitude_deg": -137.50097847854008,
+    "coordinate_epoch_utc": "2026-11-14T00:00:00Z"
+  },
+  "native_anchor": {
+    "latitude_deg": -89.46315775697228,
+    "longitude_deg": -137.50198490762355,
+    "reference_frame": "MOON_ME_DE421",
+    "registration_verified": false,
+    "qualification": "Exact scientific anchor in native DE421; nominal placement on Moon cartographic imagery only. Image realization / local tie remains unverified."
+  },
+  "native_anchor_difference_from_saved_step10_deg": {
+    "latitude_deg": 0.0,
+    "longitude_deg": 0.0
+  },
+  "tiles": [
+    {
+      "key": "wac-global/0/0/0",
+      "bytes": 49475,
+      "sha256": "de4dcb39468cc7210da9e6a49912049235fc88d1584d9ac72c2889e039d352d0",
+      "media_type": "image/jpeg",
+      "origin": "cache",
+      "elapsed_s": 0.0037
+    },
+    {
+      "key": "wac-global/1/1/1",
+      "bytes": 49777,
+      "sha256": "133cad92a1be6b4baf99ff0f88bb7dc26ae35d7ffcca62a4ef107caeb60d5a22",
+      "media_type": "image/jpeg",
+      "origin": "cache",
+      "elapsed_s": 0.004
+    },
+    {
+      "key": "wac-global/3/4/6",
+      "bytes": 34653,
+      "sha256": "f3fc0ec5c0c8d243ff77d42170210e459fe3a8bca1a9cecfd3c6f12aa103a8e3",
+      "media_type": "image/jpeg",
+      "origin": "official-service",
+      "elapsed_s": 1.264
+    },
+    {
+      "key": "wac-south/0/0/0",
+      "bytes": 61115,
+      "sha256": "6d9135570fa69c562899c8bb7ead9405a06761dab744717bbc6d3d92632f4d88",
+      "media_type": "image/png",
+      "origin": "cache",
+      "elapsed_s": 0.0076
+    },
+    {
+      "key": "wac-south/2/1/1",
+      "bytes": 71458,
+      "sha256": "37034df7f49bef6f4a550b1ef304987031da095222df0f19a0b75e743f6b22da",
+      "media_type": "image/png",
+      "origin": "cache",
+      "elapsed_s": 0.0072
+    },
+    {
+      "key": "nac-south/10/517/506",
+      "bytes": 64624,
+      "sha256": "422d43c1e464338aa50eafc484d4f1ac207127730152291bf1c547df8a5d9bab",
+      "media_type": "image/png",
+      "origin": "cache",
+      "elapsed_s": 0.0242
+    },
+    {
+      "key": "nac-south/11/1035/1013",
+      "bytes": 63089,
+      "sha256": "b24c83cf0749cb94535bbff0aafa8f8843d08f53beb36909f49626e5d11e81b9",
+      "media_type": "image/png",
+      "origin": "cache",
+      "elapsed_s": 0.0084
+    },
+    {
+      "key": "nac-south/11/1035/1014",
+      "bytes": 65691,
+      "sha256": "04f003d688205bd3155957bd027f9281c1ba2c74921510bd85a1d6c87b7b6dfc",
+      "media_type": "image/png",
+      "origin": "cache",
+      "elapsed_s": 0.0272
+    }
+  ],
+  "limitations": [
+    "Source imagery exact dynamical realization remains unspecified.",
+    "No measured image-to-Site01 DEM tie; photographic local draping remains incomplete.",
+    "Live tiles are not a frozen complete archive. Only bundled seed bytes and source metadata are pinned.",
+    "Browser checks and test counts are documented separately."
+  ]
+}

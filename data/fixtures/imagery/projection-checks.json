@@ -1,0 +1,43 @@
+{
+  "method": "Executed PyProj spherical polar stereographic, source FGDC parameters; cartographic projection only, not dynamical frame validation",
+  "pyproj_version": "3.8.0",
+  "projection": "+proj=stere +lat_0=-90 +lat_ts=-90 +lon_0=0 +x_0=0 +y_0=0 +R=1737400 +units=m +no_defs",
+  "rows": [
+    {
+      "latitude_deg": -89.463158,
+      "longitude_deg": -137.501985,
+      "x_m": -10997.495002026993,
+      "y_m": -12002.49458414107
+    },
+    {
+      "latitude_deg": -80,
+      "longitude_deg": 90,
+      "x_m": 304005.6080198808,
+      "y_m": 1.8614974739219596e-11
+    },
+    {
+      "latitude_deg": -60,
+      "longitude_deg": 0,
+      "x_m": 0.0,
+      "y_m": 931069.8538596653
+    },
+    {
+      "latitude_deg": -85,
+      "longitude_deg": 179.99,
+      "x_m": 26.478921298856463,
+      "y_m": -151713.04210777575
+    },
+    {
+      "latitude_deg": -89.9,
+      "longitude_deg": -90,
+      "x_m": -3032.3358121667247,
+      "y_m": 1.8567701731549344e-13
+    },
+    {
+      "latitude_deg": -90,
+      "longitude_deg": 0,
+      "x_m": 0.0,
+      "y_m": 0.0
+    }
+  ]
+}

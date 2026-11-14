@@ -18,15 +18,15 @@
     },
     {
       "id": "moon-trek", "name": "NASA Moon Trek", "organization": "NASA SSERVI / JPL Solar System Treks",
-      "official_url": "https://trek.nasa.gov/moon/", "challenge_resource": true, "roles": ["reference"],
+      "official_url": "https://trek.nasa.gov/moon/", "challenge_resource": true, "roles": ["visualization", "reference"],
       "purpose": "Explore lunar maps, layer metadata and documented WMTS services.",
-      "use_in_lunascend": "External map and service-documentation links. No Moon Trek basemap or texture is installed.",
-      "product_id": null, "version": null, "coordinate_system": "Layer-specific equirectangular or polar tile matrix sets; no reprojection or registration is assumed.",
-      "quantities": ["External imagery and map context"], "original_resolution": null,
-      "usage_conditions": "Review each layer's metadata, attribution and usage conditions before integration. Portal access does not certify a layer's registration or confer blanket rights.",
+      "use_in_lunascend": "Verified WAC global / south-polar and USGS 2011 NAC south-polar WMTS photographs appear in the internal 2D map and context globe. Local DEM draping is withheld pending verified registration.",
+      "product_id": null, "version": null, "coordinate_system": "Lunar geographic and spherical south-polar stereographic, radius 1737400 m. Exact dynamical realization unspecified; no image-to-DE421 tie is inferred.",
+      "quantities": ["Optical cartographic context only; no numerical science input"], "original_resolution": null,
+      "usage_conditions": "Specific NASA / USGS / LMMP products are credited; small checked source tiles and metadata are bundled. PDS-delivered products are distinct from copyrighted website media.",
       "terms_url": "https://trek.nasa.gov/tiles/apidoc/trekAPI.html?body=moon", "attribution": "NASA SSERVI / JPL Solar System Treks; individual layers retain their originating credits.",
-      "offline": "Resource notes available locally; external portal and WMTS documentation require internet.",
-      "limitations": "WMTS documentation was reviewed. A complete product, capabilities, rights and frame-alignment chain was not verified; no external layer is requested by the application."
+      "offline": "Bundled global parent photographs and viewed cached tiles work offline; uncached detail needs the service. Local SPICE / LOLA calculations remain independent.",
+      "limitations": "Saved capabilities and actual pixels were checked. Delivered NAC finest spacing is 4.18 projected m/px despite nominal 1 m source. Exact image-to-DEM registration is unverified; source-era acquisition shadows are not current illumination."
     },
     {
       "id": "horizons", "name": "JPL Horizons", "organization": "NASA / JPL Solar System Dynamics Group",
@@ -70,7 +70,7 @@
       "official_url": "https://pgda.gsfc.nasa.gov/products/78", "challenge_resource": false, "roles": ["calculation", "visualization"],
       "manifest": "data/manifests/lola-site01.json",
       "purpose": "Finite surface elevation, terrain horizons and a georeferenced local display mesh.",
-      "use_in_lunascend": "Original DEM heights feed terrain/visibility calculations and the decimated 3D/polar viewer. Optical imagery is a separate product and is not installed.",
+      "use_in_lunascend": "Original DEM heights feed terrain/visibility calculations and the decimated 3D/polar viewer. Optical context photographs are separate from elevation and are not draped onto this DEM without verified registration.",
       "quantities": ["Sphere-relative elevation in meters", "Finite sampled terrain horizon", "Retained pixel-center mesh positions"],
       "usage_conditions": "Acknowledge the LOLA/PGDA producers and the manifest's Barker et al. citation. Preserve product metadata and attribution; no new raw-data redistribution in this milestone.",
       "terms_url": "https://pgda.gsfc.nasa.gov/products/78", "attribution": "NASA/GSFC/LRO LOLA; Barker et al. (2021), as recorded in the pinned manifest.",

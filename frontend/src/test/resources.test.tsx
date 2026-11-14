@@ -21,7 +21,8 @@ describe('honest offline scientific source disclosures', () => {
     }
     expect(html).toContain('noopener noreferrer')
     expect(html).toContain('No QuickMap imagery')
-    expect(html).toContain('No Moon Trek basemap')
+    expect(html).toContain('internal 2D map and context globe')
+    expect(challengeResources.find(s=>s.id==='moon-trek')!.roles).toEqual(['visualization','reference'])
   })
   it('displays saved counts, residuals, sites and epochs without inventing validation', () => {
     const html = renderToStaticMarkup(<HorizonsEvidence/>)
