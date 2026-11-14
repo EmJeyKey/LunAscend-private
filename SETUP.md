@@ -2,6 +2,13 @@
 
 ## Current status
 
+Numerical-display follow-up: the existing Analysis form now includes **Run Full
+Analysis** to explicitly request terrain, power/battery and conditional DTE using the
+current hardware assumptions. Load Site01, confirm the reference, review the settings
+and run; no automatic search or new dependency is introduced. Normal Run Analysis
+retains its selected options. Numerical results are visible in Simple and Advanced,
+and matching calculated results transfer to Comparison. See docs/NUMERICAL_DATA_DISPLAY.md.
+
 Step 11.7 adds shared Simple/Advanced presentation with the same scientific results;
 no new dependencies or setup commands. On **Sunlight & Earth Visibility**, load the
 Site01 example, open **Location, terrain & power settings**, confirm the scientific

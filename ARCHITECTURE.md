@@ -1,5 +1,11 @@
 # LunAscend architecture — Step 11.7 scientific presentation
 
+The numerical-display follow-up maps retained result fields to shared visible readouts
+and preserves structured API failures. Full Analysis is an explicit frontend option
+bundle for the existing analyze endpoint; no scientific/API contract is changed.
+Comparison transfer validates the complete current result against its request before
+reuse. See docs/NUMERICAL_DATA_DISPLAY.md for the field audit and executed API/DOM checks.
+
 ## Step 11.7 shared human-friendly presentation
 
 One session-level React presentation context switches Simple/Advanced detail without

@@ -15,7 +15,7 @@ interface MissionContextValue {
   analysis: typeof emptyAnalysis
   options: AnalysisOptions
   updateOptions: (value: AnalysisOptions) => void
-  runAnalysis: (selection: MissionSelection) => void
+  runAnalysis: (selection: MissionSelection, requestedOptions?: AnalysisOptions) => void
   invalidate: () => void
   sampleIndex: number
   resultsCleared: boolean
@@ -40,10 +40,10 @@ export function MissionProvider({ children }: PropsWithChildren) {
   const updateOptions = (value: AnalysisOptions) => { invalidate(); setOptions(value) }
   const series = analysis.result?.observations || []
   const selectSample = (index: number) => setSampleIndex(Math.max(0, Math.min(series.length - 1, Math.trunc(index))))
-  const runAnalysis = (selection: MissionSelection) => {
+  const runAnalysis = (selection: MissionSelection, requestedOptions=options) => {
     invalidate()
     setResultsCleared(false)
-    try { const request = buildRequest(selection, options); setMission(selection); void runner.run(request) }
+    try { const request = buildRequest(selection, requestedOptions); setOptions(requestedOptions); setMission(selection); void runner.run(request) }
     catch (error) { setAnalysis({ status: 'error', result: null, message: error instanceof Error ? error.message : 'Invalid analysis inputs.' }) }
   }
   useEffect(() => () => runner.clear(), [runner])
@@ -54,7 +54,10 @@ export function MissionProvider({ children }: PropsWithChildren) {
   const comparison = useSyncExternalStore(comparisonStore.subscribe, comparisonStore.getSnapshot, comparisonStore.getSnapshot)
   useEffect(() => () => comparisonStore.dispose(), [comparisonStore])
   const alternatives: PreviewScenario[] = comparison.scenarios.filter(s => s.id !== comparison.baselineId).map(s => ({ ...s.selection, id: s.id }))
-  const saveAlternative = () => { comparisonStore.add(mission, options) }
+  const saveAlternative = () => {
+    if(analysis.result)comparisonStore.addResult(mission,options,analysis.result,mission.site.name)
+    else comparisonStore.add(mission, options)
+  }
   const removeAlternative = (id: string) => comparisonStore.remove(id)
   const inspectScenario = (id: string) => {
     const scenario = comparisonStore.getSnapshot().scenarios.find(s => s.id === id)

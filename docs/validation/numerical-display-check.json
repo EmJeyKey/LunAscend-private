@@ -1,0 +1,481 @@
+{
+  "executed_utc": "2026-11-14T16:22:19.976101+00:00",
+  "scope": "Fresh local API compared with captured browser DOM values, rounded text/units, graph points and timeline classes. Data-flow regression, not new external scientific validation.",
+  "browser_checks": [
+    {
+      "trace": "numerical-display-day1.json",
+      "selected_utc": "2026-11-14T00:00:00Z",
+      "matched_numeric_fields": 39,
+      "matched_graph_points": 100,
+      "matched_timeline_samples": 50
+    },
+    {
+      "trace": "numerical-display-hour1.json",
+      "selected_utc": "2026-11-14T01:00:00Z",
+      "matched_numeric_fields": 39,
+      "matched_graph_points": 100,
+      "matched_timeline_samples": 50
+    },
+    {
+      "trace": "numerical-display-day2.json",
+      "selected_utc": "2026-11-15T00:00:00Z",
+      "matched_numeric_fields": 39,
+      "matched_graph_points": 100,
+      "matched_timeline_samples": 50
+    }
+  ],
+  "dates": [
+    {
+      "request": {
+        "start_utc": "2026-11-14T00:00:00Z",
+        "end_utc": "2026-11-15T00:00:00Z",
+        "schema_version": "1.0",
+        "site": {
+          "site_id": "custom",
+          "name": "LOLA Site01 example",
+          "latitude_deg": -89.46315760953222,
+          "longitude_deg": -137.50097847854008,
+          "surface_elevation_m": null,
+          "observer_height_m": 2.0,
+          "description": null,
+          "coordinate_reference": {
+            "body": "MOON",
+            "latitude_type": "planetocentric",
+            "longitude_convention": "east_positive",
+            "frame_id": "MOON_ME_DE440_ME421",
+            "frame_realization": "DE440/ME421",
+            "reference_surface": "MOON_SPHERE_1737400_M",
+            "reference_radius_m": 1737400.0
+          }
+        },
+        "provider_mode": "scientific",
+        "sample_step_s": 3600.0,
+        "settings": {
+          "terrain_enabled": true,
+          "power_enabled": true,
+          "communication_enabled": true,
+          "horizon_mode": "terrain",
+          "disk_policy": "center",
+          "correction_mode": "NONE",
+          "sun_clearance_deg": 0.0,
+          "earth_clearance_deg": 0.0,
+          "terrain_options": {
+            "dataset_id": "lola-site01-5m-v2020",
+            "coordinate_epoch_utc": "2026-11-14T00:00:00Z",
+            "azimuth_samples": 360,
+            "max_search_radius_m": 2500.0,
+            "radial_step_m": 5.0
+          },
+          "power_options": {
+            "panel_area_m2": 2.0,
+            "panel_efficiency": 0.25,
+            "solar_irradiance_w_m2": 1361.0,
+            "orientation_mode": "fixed_horizontal",
+            "system_efficiency": 0.9,
+            "derating_factor": 1.0,
+            "baseline_load_w": 50.0,
+            "heater_load_w": 0.0,
+            "battery_capacity_wh": 500.0,
+            "initial_soc_pct": 100.0,
+            "minimum_soc_pct": 10.0,
+            "charging_efficiency": 0.95,
+            "discharging_efficiency": 0.95
+          },
+          "communication_options": {
+            "minimum_earth_clearance_deg": 1.0
+          }
+        }
+      },
+      "status": "partial",
+      "samples": 25,
+      "first_geometry": {
+        "status": "calculated",
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "assumptions": [],
+        "time_utc": "2026-11-14T00:00:00Z",
+        "reference_frame": "MOON_ME_DE440_ME421",
+        "correction_mode": "NONE",
+        "sun_azimuth_deg": {
+          "value": 264.10982697915534,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "sun_elevation_deg": {
+          "value": 1.501602764526588,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "earth_azimuth_deg": {
+          "value": 136.24396007706338,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "earth_elevation_deg": {
+          "value": -5.036238914765133,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        }
+      },
+      "first_terrain": {
+        "time_utc": "2026-11-14T00:00:00Z",
+        "reference_frame": "MOON_ME_DE421",
+        "sun": {
+          "azimuth_deg": 264.11083058462435,
+          "elevation_deg": 1.5016027645265886,
+          "horizon_elevation_deg": -4.612548157097288,
+          "clearance_deg": 6.114150921623877,
+          "classification": "conditional_clearance",
+          "coverage": "sampled_radius",
+          "reason": "Center clears the evaluated finite sampled terrain only; farther and unresolved terrain remain unknown."
+        },
+        "earth": {
+          "azimuth_deg": 136.2449636825324,
+          "elevation_deg": -5.036238914765129,
+          "horizon_elevation_deg": 0.9803744697915846,
+          "clearance_deg": -6.016613384556714,
+          "classification": "modeled_obstruction",
+          "coverage": "sampled_radius",
+          "reason": "Center below the known circular-linear modeled obstruction; unresolved terrain cannot certify physical accuracy."
+        },
+        "status": "partial"
+      },
+      "surface_elevation_m": 1944.7670898436575,
+      "power_outcome": "fail_both",
+      "cases": [
+        {
+          "assumption": "conservative",
+          "first_sample": {
+            "time_utc": "2026-11-14T00:00:00Z",
+            "solar_generation_w": 0.0,
+            "load_w": 50.0,
+            "battery_energy_wh": 500.0,
+            "soc_pct": 100.0,
+            "environmental_status": "conditional_clearance"
+          },
+          "totals": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          }
+        },
+        {
+          "assumption": "optimistic",
+          "first_sample": {
+            "time_utc": "2026-11-14T00:00:00Z",
+            "solar_generation_w": 16.049198495217368,
+            "load_w": 50.0,
+            "battery_energy_wh": 500.0,
+            "soc_pct": 100.0,
+            "environmental_status": "conditional_clearance"
+          },
+          "totals": {
+            "solar_generated_wh": 371.3641257110819,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 371.3641257110819,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.0,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000018,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 401.1358742889181,
+            "energy_balance_residual_wh": -1.7763568394002505e-14
+          }
+        }
+      ],
+      "dte": {
+        "access_s": 0.0,
+        "longest_interruption_s": 86400.0,
+        "unknown_duration_s": 0.0
+      }
+    },
+    {
+      "request": {
+        "start_utc": "2026-11-15T00:00:00Z",
+        "end_utc": "2026-11-16T00:00:00Z",
+        "schema_version": "1.0",
+        "site": {
+          "site_id": "custom",
+          "name": "LOLA Site01 example",
+          "latitude_deg": -89.46315760953222,
+          "longitude_deg": -137.50097847854008,
+          "surface_elevation_m": null,
+          "observer_height_m": 2.0,
+          "description": null,
+          "coordinate_reference": {
+            "body": "MOON",
+            "latitude_type": "planetocentric",
+            "longitude_convention": "east_positive",
+            "frame_id": "MOON_ME_DE440_ME421",
+            "frame_realization": "DE440/ME421",
+            "reference_surface": "MOON_SPHERE_1737400_M",
+            "reference_radius_m": 1737400.0
+          }
+        },
+        "provider_mode": "scientific",
+        "sample_step_s": 3600.0,
+        "settings": {
+          "terrain_enabled": true,
+          "power_enabled": true,
+          "communication_enabled": true,
+          "horizon_mode": "terrain",
+          "disk_policy": "center",
+          "correction_mode": "NONE",
+          "sun_clearance_deg": 0.0,
+          "earth_clearance_deg": 0.0,
+          "terrain_options": {
+            "dataset_id": "lola-site01-5m-v2020",
+            "coordinate_epoch_utc": "2026-11-15T00:00:00Z",
+            "azimuth_samples": 360,
+            "max_search_radius_m": 2500.0,
+            "radial_step_m": 5.0
+          },
+          "power_options": {
+            "panel_area_m2": 2.0,
+            "panel_efficiency": 0.25,
+            "solar_irradiance_w_m2": 1361.0,
+            "orientation_mode": "fixed_horizontal",
+            "system_efficiency": 0.9,
+            "derating_factor": 1.0,
+            "baseline_load_w": 50.0,
+            "heater_load_w": 0.0,
+            "battery_capacity_wh": 500.0,
+            "initial_soc_pct": 100.0,
+            "minimum_soc_pct": 10.0,
+            "charging_efficiency": 0.95,
+            "discharging_efficiency": 0.95
+          },
+          "communication_options": {
+            "minimum_earth_clearance_deg": 1.0
+          }
+        }
+      },
+      "status": "partial",
+      "samples": 25,
+      "first_geometry": {
+        "status": "calculated",
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "assumptions": [],
+        "time_utc": "2026-11-15T00:00:00Z",
+        "reference_frame": "MOON_ME_DE440_ME421",
+        "correction_mode": "NONE",
+        "sun_azimuth_deg": {
+          "value": 251.92482851960366,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "sun_elevation_deg": {
+          "value": 1.3898710548156006,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "earth_azimuth_deg": {
+          "value": 134.85786380378758,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "earth_elevation_deg": {
+          "value": -3.9317613149632473,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        }
+      },
+      "first_terrain": {
+        "time_utc": "2026-11-15T00:00:00Z",
+        "reference_frame": "MOON_ME_DE421",
+        "sun": {
+          "azimuth_deg": 251.9257866982777,
+          "elevation_deg": 1.3898710548155988,
+          "horizon_elevation_deg": -4.194711837177324,
+          "clearance_deg": 5.584582891992922,
+          "classification": "conditional_clearance",
+          "coverage": "sampled_radius",
+          "reason": "Center clears the evaluated finite sampled terrain only; farther and unresolved terrain remain unknown."
+        },
+        "earth": {
+          "azimuth_deg": 134.85882198246162,
+          "elevation_deg": -3.931761314963252,
+          "horizon_elevation_deg": 0.931974686835966,
+          "clearance_deg": -4.863736001799218,
+          "classification": "modeled_obstruction",
+          "coverage": "sampled_radius",
+          "reason": "Center below the known circular-linear modeled obstruction; unresolved terrain cannot certify physical accuracy."
+        },
+        "status": "partial"
+      },
+      "surface_elevation_m": 1944.7677026579263,
+      "power_outcome": "fail_both",
+      "cases": [
+        {
+          "assumption": "conservative",
+          "first_sample": {
+            "time_utc": "2026-11-15T00:00:00Z",
+            "solar_generation_w": 0.0,
+            "load_w": 50.0,
+            "battery_energy_wh": 500.0,
+            "soc_pct": 100.0,
+            "environmental_status": "conditional_clearance"
+          },
+          "totals": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          }
+        },
+        {
+          "assumption": "optimistic",
+          "first_sample": {
+            "time_utc": "2026-11-15T00:00:00Z",
+            "solar_generation_w": 14.855248576538475,
+            "load_w": 50.0,
+            "battery_energy_wh": 500.0,
+            "soc_pct": 100.0,
+            "environmental_status": "conditional_clearance"
+          },
+          "totals": {
+            "solar_generated_wh": 343.414493884845,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 343.414493884845,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.00000000000006,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.50000000000003,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 429.085506115155,
+            "energy_balance_residual_wh": -2.842170943040401e-14
+          }
+        }
+      ],
+      "dte": {
+        "access_s": 0.0,
+        "longest_interruption_s": 86400.0,
+        "unknown_duration_s": 0.0
+      }
+    }
+  ],
+  "unsupported_terrain_browser": {
+    "apiError": "OUTSIDE_COVERAGE: Requested region lies outside DEM coverage.",
+    "graphCount": 0,
+    "message": "Analysis could not be completed\n\nTerrain data are unavailable at this location: it is outside the supported DEM coverage or has no valid elevation pixels.\n\nRun analysis\nWhere does this data come from?",
+    "readoutCount": 0
+  }
+}

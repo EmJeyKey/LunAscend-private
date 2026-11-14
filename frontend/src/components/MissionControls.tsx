@@ -8,6 +8,7 @@ import type { ProviderMode } from '../types/analysis'
 import { TerrainOptions } from './TerrainOptions'
 import type { MissionSelection } from '../types/preview'
 import {usePresentation} from '../state/PresentationContext'
+import {fullAnalysisOptions,initialEngineering} from '../lib/engineering'
 
 export function MissionControls({ compact = false, onDraftChange }: { compact?: boolean; onDraftChange?: (draft: MissionSelection) => void }) {
   const { mission, updateMission, analysis, options, updateOptions, runAnalysis, invalidate } = useMission()
@@ -27,7 +28,9 @@ export function MissionControls({ compact = false, onDraftChange }: { compact?: 
     const startUtc = toUtc(String(new FormData(event.currentTarget).get('start_utc') || ''))
     if (!startUtc) { invalidate(); setMessage('Enter a valid UTC date and time.'); return }
     setMessage('')
-    runAnalysis({ site, startUtc, durationHours: Number(hours) })
+    const full=(event.nativeEvent as SubmitEvent).submitter?.getAttribute('value')==='full'
+    if(full&&!options.frameConfirmed){const details=event.currentTarget.querySelector('details');if(details)details.open=true}
+    runAnalysis({ site, startUtc, durationHours: Number(hours) },full?fullAnalysisOptions(options):options)
   }
   return <div className="mission-controls-wrap"><form id="mission-analysis-form" className="panel analysis-form" onSubmit={apply} onInvalid={event => { const details = (event.target as HTMLElement).closest('details'); if (details) details.open = true;setMessage('Check the highlighted location, height or reference setting before running analysis.') }} onChange={() => { invalidate(); setMessage('') }}>
     <header className="section-introduction"><h2>Plan this mission</h2><p>Choose a location, landing time and mission length. All times use UTC, not your computer’s local time.</p></header>
@@ -37,8 +40,10 @@ export function MissionControls({ compact = false, onDraftChange }: { compact?: 
       <label className="control-field period-field"><span><Clock3 size={13}/>DURATION (HOURS)</span><input aria-label="Analysis duration in hours" type="number" min="0.000001" max="8784" step="any" list="analysis-periods" required value={hours} onChange={event => setHours(event.target.value)}/><datalist id="analysis-periods">{durationOptions.map(value => <option key={value} value={value}/>)}</datalist></label>
       <label className="control-field"><span>DATA SOURCE</span><select aria-label="Data source" value={options.providerMode} onChange={event => updateOptions({ ...options, providerMode: event.target.value as ProviderMode, terrainEnabled: event.target.value === 'scientific' && options.terrainEnabled, powerEnabled: event.target.value === 'scientific' && options.powerEnabled, communicationEnabled: event.target.value === 'scientific' && options.communicationEnabled })}><option value="scientific">Scientific SPICE</option><option value="mock">Mock Demonstration</option></select></label>
       <button className="button primary" type="submit" disabled={analysis.status === 'loading'}>{analysis.status === 'loading' ? 'Calculating…' : 'Run Analysis'}<ArrowRight size={16}/></button>
+      <button className="button secondary" type="submit" value="full" formNoValidate disabled={!scientific||analysis.status==='loading'}>Run Full Analysis</button>
     </div>
     <p className="mission-setup-help">{scientific?'Scientific analysis needs confirmed lunar coordinates and a known surface height or supported LOLA terrain. Open the settings below, or start with the documented Site01 example.':'Mock mode shows illustrative curves only; it cannot predict a lunar mission.'}</p>
+    {scientific&&<p className="mission-setup-help">Run Analysis uses selected options: terrain {options.terrainEnabled?'on':'off'}, power/battery {options.powerEnabled?'on':'off'}, DTE {options.communicationEnabled?'on':'off'}. Run Full Analysis explicitly requests all three for this site/date, with the panel and battery settings below. Current assumptions: {(options.engineering||initialEngineering).panel_area_m2} m² panels, {(options.engineering||initialEngineering).orientation_mode.replaceAll('_',' ')}, {(options.engineering||initialEngineering).baseline_load_w} W base load, {(options.engineering||initialEngineering).battery_capacity_wh} Wh battery. Coordinate confirmation is still required; coverage is checked by the backend. No opportunity search is started.</p>}
     {scientific && <button className="text-link terrain-example" type="button" onClick={() => {
       updateMission({ site: { id: 'custom', name: 'LOLA Site01 example', latitude: -89.46315760953222, longitude: -137.50097847854008, description: 'Documented Site01 DEM pixel-center example, converted to DE440/ME421 at the original landing epoch; not a surveyed or approved landing site.' }, startUtc: '2026-11-14T00:00:00.000Z', durationHours: 24 })
       updateOptions({ ...options, terrainEnabled: true, observerHeightM: '2', sampleStepS: '3600', frameConfirmed: false })

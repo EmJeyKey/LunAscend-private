@@ -1,13 +1,16 @@
-import type {ScenarioResult,TerrainClassification} from '../types/analysis'
+import type {AnalysisError,ScenarioResult,TerrainClassification} from '../types/analysis'
 import type {AccessClassification,PowerAnalysis} from '../types/engineering'
 import type {Opportunity} from '../types/resilience'
 
 export type ConditionState='blocked'|'potential'|'below'|'unknown'|'not_calculated'|'mock'
 export interface HumanSample {timeUtc:string;state:ConditionState;label:string;reason:string}
-export function analysisProblem(message:string) {
-  if(/MISSING_DATA|OUTSIDE_COVERAGE|PROVIDER_UNAVAILABLE/i.test(message)&&/terrain|LOLA|DEM/i.test(message))return 'We do not have enough terrain data to analyze this location.'
-  if(/Failed to fetch|Network|ECONNREFUSED|HTTP 50[234]|backend.*unavailable/i.test(message))return 'The scientific analysis service is currently unavailable.'
-  if(/MISSING_DATA|PROVIDER_UNAVAILABLE/i.test(message))return 'Required scientific data or software are unavailable.'
+export function analysisProblem(message:string,errors:AnalysisError[]=[]) {
+  const detail=message+' '+errors.map(e=>`${e.code} ${e.module||''} ${e.message}`).join(' ')
+  if(/OUTSIDE_COVERAGE/i.test(detail))return /frame|epoch/i.test(detail)?'The coordinate or date is outside the supported frame coverage.':'Terrain data are unavailable at this location: it is outside the supported DEM coverage or has no valid elevation pixels.'
+  if(/MISSING_DATA/i.test(detail)&&/terrain|LOLA|DEM/i.test(detail))return 'We do not have enough terrain data to analyze this location. The required local dataset is missing, invalid or incomplete.'
+  if(/MISSING_DATA|PROVIDER_UNAVAILABLE/i.test(detail))return 'Required scientific data or software are unavailable.'
+  if(/incompatible analysis response|unreadable response/i.test(detail))return 'The API returned data that the frontend could not accept. No numerical values from that response are displayed.'
+  if(/Failed to fetch|Cannot reach the backend|Network|ECONNREFUSED|HTTP 50[234]|backend.*unavailable/i.test(detail))return 'The scientific analysis service is currently unavailable.'
   return 'Check the location, date and settings, then retry. No mock values were substituted.'
 }
 const terrainStates:Record<TerrainClassification,ConditionState>={modeled_obstruction:'blocked',conditional_clearance:'potential',indeterminate:'unknown',unavailable:'unknown'}

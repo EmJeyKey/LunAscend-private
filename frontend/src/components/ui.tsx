@@ -6,6 +6,7 @@ import { formatUtc } from '../lib/time'
 import { useMission } from '../state/MissionContext'
 import { formatAngle } from '../lib/analysis'
 import type { EphemerisObservation, ProviderMode } from '../types/analysis'
+import type {AnalysisState} from '../api/analysis'
 
 export function StatusBadge({ children, tone = 'neutral' }: PropsWithChildren<{ tone?: 'gold' | 'cyan' | 'green' | 'neutral' }>) {
   return <span className={`status-badge ${tone}`}><span className="status-dot" />{children}</span>
@@ -56,12 +57,13 @@ export function MetricCard({ kind }: { kind: 'solar' | 'earth' }) {
   return <PositionReadout kind={kind} observation={observation} provider={analysis.result?.provider_mode}/>
 }
 
-export function ScenarioCard({ selection, label, baseline = false, onRemove }: { selection: MissionSelection; label: string; baseline?: boolean; onRemove?: () => void }) {
+export function ScenarioCard({ selection, label, baseline = false, onRemove, analysis }: { selection: MissionSelection; label: string; baseline?: boolean; onRemove?: () => void; analysis?:AnalysisState }) {
+  const result=analysis?.result,arrival=result?.observations?.[0]
   return <article className={`scenario-card ${baseline ? 'baseline' : ''}`}>
     <div className="scenario-top"><span className="scenario-label">{label}</span>{onRemove ? <button className="icon-button" onClick={onRemove} aria-label={`Remove ${label}`}><Trash2 size={15} /></button> : <Moon size={15} />}</div>
     <h3>{selection.site.name}</h3><p className="scenario-time">{formatUtc(selection.startUtc, true)} <span>UTC</span></p>
-    <div className="scenario-metrics"><div><Sun size={14} /><span>Sunlight</span><strong>— h</strong></div><div><Radio size={14} /><span>Earth visibility</span><strong>— h</strong></div></div>
-    <div className="scenario-footer"><span className="tiny-dot" />{selection.durationHours} h preview · results unavailable</div>
+    <div className="scenario-metrics"><div><Sun size={14} /><span>Sun elevation at arrival</span><strong>{formatAngle(arrival?.sun_elevation_deg,true)}</strong></div><div><Radio size={14} /><span>Earth elevation at arrival</span><strong>{formatAngle(arrival?.earth_elevation_deg,true)}</strong></div></div>
+    <div className="scenario-footer"><span className="tiny-dot" />{selection.durationHours} h · {result?`${result.observations?.length||0} samples · ${result.provider_mode==='mock'?'MOCK / NOT LUNAR PREDICTIONS':result.status}`:analysis?.status==='loading'?'Calculating…':analysis?.status==='error'?analysis.message:'Run this scenario in Comparison to calculate values.'}</div>
   </article>
 }
 

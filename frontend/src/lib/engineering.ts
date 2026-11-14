@@ -6,6 +6,12 @@ export const initialEngineering: EngineeringDraft = {
   system_efficiency: '0.9', derating_factor: '1', baseline_load_w: '50', heater_load_w: '0', battery_capacity_wh: '500',
   initial_soc_pct: '100', minimum_soc_pct: '10', charging_efficiency: '0.95', discharging_efficiency: '0.95', minimum_earth_clearance_deg: '1',
 }
+// Explicit UI action only. Keep the user's hardware and frame confirmation;
+// never select a provider, coordinate, date or new assumption silently.
+export function fullAnalysisOptions(options:AnalysisOptions):AnalysisOptions {
+  if(options.providerMode!=='scientific')throw new Error('Full analysis requires Scientific SPICE. No mock values are substituted.')
+  return {...options,terrainEnabled:true,powerEnabled:true,communicationEnabled:true,engineering:{...(options.engineering||initialEngineering)}}
+}
 export function engineeringSettings(options: AnalysisOptions) {
   const power = !!options.powerEnabled, communication = !!options.communicationEnabled
   if ((power || communication) && (options.providerMode !== 'scientific' || !options.terrainEnabled)) throw new Error('Engineering requires explicit Scientific SPICE and terrain analysis; no mock hardware fallback.')

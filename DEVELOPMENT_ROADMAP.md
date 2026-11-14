@@ -30,6 +30,12 @@ Preserve essential site/date selection, validated geometry, terrain visibility a
 
 ## Current handoff
 
+The authorized numerical-display follow-up exposes available backend values in both
+presentation modes, adds explicit Full Analysis and preserves calculated comparison
+snapshots. Two real Site01 dates and per-field/plot mappings were verified; see
+docs/NUMERICAL_DATA_DISPLAY.md. This is a Step 11.7 integration correction, not a
+new scientific milestone. Stop after this fix; no automatic later work or publication.
+
 Step 11.7 simplifies all six routes around the same scientific results, retaining the
 original technical displays, imagery and local terrain. Its source explanations read
 the existing registry; no calculation or source identity changed. Desktop workflows

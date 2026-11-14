@@ -1,4 +1,4 @@
-import { emptyAnalysis, requestAnalysis, parseResult, type AnalysisState } from '../api/analysis'
+import { AnalysisFailure, emptyAnalysis, requestAnalysis, parseResult, type AnalysisState } from '../api/analysis'
 import { buildRequest } from '../lib/analysis'
 import type { AnalysisOptions, ScenarioRequest, ScenarioResult } from '../types/analysis'
 import type { MissionSelection } from '../types/preview'
@@ -54,9 +54,9 @@ export class ComparisonStore {
     const item = this.snapshot.scenarios.find(s => s.id === id)
     return item ? this.add(item.selection, item.options, `${item.name} copy`.slice(0, 100)) : null
   }
-  addResult(selection: MissionSelection, options: AnalysisOptions, result: ScenarioResult) {
+  addResult(selection: MissionSelection, options: AnalysisOptions, result: ScenarioResult, name=selection.site.name+' · opportunity') {
     const verified = parseResult(result, buildRequest(selection, options))
-    const id = this.add(selection, structuredClone(options), selection.site.name+' · opportunity')
+    const id = this.add(selection, structuredClone(options), name)
     if (id) {
       this.cache.set(JSON.stringify(buildRequest(selection, options)), verified)
       this.status(id, { status:'success', result:verified, message:'' })
@@ -97,7 +97,7 @@ export class ComparisonStore {
     job.promise = (async () => {
       let state: AnalysisState
       try { state = { status: 'success', result: await this.transport(request, job.controller.signal), message: '' } }
-      catch (error) { state = { status: 'error', result: null, message: error instanceof Error ? error.message : 'Analysis failed.' } }
+      catch (error) { state = { status: 'error', result: null, message: error instanceof Error ? error.message : 'Analysis failed.', ...(error instanceof AnalysisFailure ? {errors:error.errors} : {}) } }
       if (this.jobs.get(key) !== job) return // Cancelled/replaced, including transports ignoring AbortSignal.
       this.jobs.delete(key)
       if (state.result) this.cache.set(key, state.result)

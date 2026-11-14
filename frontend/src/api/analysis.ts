@@ -151,7 +151,7 @@ export async function requestAnalysis(request: ScenarioRequest, signal: AbortSig
   return result
 }
 
-export interface AnalysisState { status: 'idle' | 'loading' | 'success' | 'error'; result: ScenarioResult | null; message: string }
+export interface AnalysisState { status: 'idle' | 'loading' | 'success' | 'error'; result: ScenarioResult | null; message: string; errors?: AnalysisError[] }
 export const emptyAnalysis: AnalysisState = { status: 'idle', result: null, message: '' }
 // Shared by React and tests: cancelling invalidates even fetchers that ignore AbortSignal.
 export class AnalysisRunner {
@@ -168,7 +168,7 @@ export class AnalysisRunner {
       const result = await this.transport(request, this.controller.signal)
       if (version === this.version) this.publish({ status: 'success', result, message: '' })
     } catch (error) {
-      if (version === this.version) this.publish({ status: 'error', result: null, message: error instanceof Error ? error.message : 'Analysis failed.' })
+      if (version === this.version) this.publish({ status: 'error', result: null, message: error instanceof Error ? error.message : 'Analysis failed.', ...(error instanceof AnalysisFailure ? {errors:error.errors} : {}) })
     }
   }
 }
