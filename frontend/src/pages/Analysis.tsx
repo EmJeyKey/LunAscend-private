@@ -9,7 +9,7 @@ import { OperationalConditions } from '../components/OperationalConditions'
 import { ScientificDetails } from '../components/PresentationControls'
 
 export function Analysis() {
-  return <><PageHeader eyebrow="SUNLIGHT / EARTH / POWER" title="Sunlight & Earth Visibility" description="See how the modeled terrain affects the Sun and Earth, then inspect power and battery estimates when requested."/><div id="mission-configuration"><MissionControls/></div><OperationalConditions/>
+  return <><PageHeader eyebrow="SUNLIGHT / EARTH / POWER" title="Sunlight & Earth Visibility" description="Inspect Sun, Earth and terrain conditions. Request power and battery estimates when needed."/><div id="mission-configuration"><MissionControls/></div><OperationalConditions/>
     <ScientificDetails><ScientificChartPanel interactive/>
     <div className="two-columns section-gap"><MetricCard kind="solar"/><MetricCard kind="earth"/></div>
     <TerrainVisibilityPanel/><EngineeringPanel/><AnalysisProvenance/>

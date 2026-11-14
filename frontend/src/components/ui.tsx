@@ -19,12 +19,12 @@ export function PageHeader({ eyebrow, title, description, action }: { eyebrow: s
 
 const sectionExplanations: Record<string, string> = {
   'Lunar site overview': 'View the selected location with illustrative surface artwork. This is not a georeferenced terrain map.',
-  'Sun/Earth elevation': 'Follow Sun and Earth elevations through the returned UTC samples, relative to the ideal geometric horizon.',
-  'Scenario comparison': 'Keep alternative sites and dates side by side. Open Comparison to calculate conditions and requested engineering estimates.',
+  'Sun/Earth elevation': 'Sun and Earth elevations over time, above the geometric horizon.',
+  'Scenario comparison': 'Compare calculated conditions across sites and dates.',
   'Terrain horizon': 'Local terrain may obstruct low directions. A verified elevation model is required before calculating this horizon.',
   'Local sky view': 'Use the angular readouts to inspect sky directions. A sky diagram is not yet implemented.',
-  'Locations': 'Filter the synthetic input locations and choose one to inspect.',
-  'Site coordinates': 'Enter a location, then confirm its reference frame and height before scientific analysis.',
+  'Locations': 'Choose an example location or enter coordinates.',
+  'Site coordinates': 'Enter coordinates. Confirm frame and height before analysis.',
   'Engineering trade-offs': 'This area will compare supported engineering results when those models are available.',
   'Landing delay preview': 'Shift the proposed arrival time to inspect the date change. Conditions are not recalculated here.',
   'Power & battery resilience': 'Electrical generation and storage require engineering models that are not yet implemented.',

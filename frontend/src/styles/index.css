@@ -1179,3 +1179,16 @@ body, .app-main { background: var(--bg); }
   .sidebar-collapsed .breadcrumb { font-size:14px; }
 }
 @media(max-width:760px) { .sidebar-toggle { display:none; } }
+
+/* Stronger title hierarchy with compact, readable supporting copy. */
+.content :is(.page-header h1,.atlas-introduction h1) { font-size:clamp(32px,3.2vw,46px);font-weight:700;line-height:1.18;letter-spacing:.01em;margin-block:8px 20px;text-wrap:pretty; }
+.content h2, .content .panel-title h2, .content .metric-header h2 { font-family:Marcellus,Georgia,serif;font-size:clamp(25px,2.3vw,32px);font-weight:700;line-height:1.3;letter-spacing:.005em;margin-block:0 16px;text-wrap:pretty; }
+.content h3 { font-family:Marcellus,Georgia,serif;color:var(--text);font-size:21px;font-weight:700;line-height:1.4;margin-block:22px 12px; }
+.content :is(.panel-header,.metric-header) h2 { margin-bottom:0; }
+.section-introduction { margin-bottom:24px; }
+.section-introduction p,.section-explanation,.page-description { max-width:65ch;line-height:1.75; }
+.content :is(h1,h2),.content .panel-title h2,.content .metric-header h2 { font-family:Marcellus,Georgia,serif;color:#F0EEE9; }
+.content :is(.section-introduction p,.section-explanation,.page-description,.atlas-deck,.viewer-location-help,.position-pending p,.mission-setup-help,.info-banner p) { color:var(--gold); }
+.content .panel-header { margin-bottom:18px; }
+.selected-site-detail>strong { display:block;font-family:Marcellus,Georgia,serif;color:#F0EEE9;font-weight:700;font-size:25px;margin-top:12px; }
+@media(max-width:600px) { .content :is(.page-header h1,.atlas-introduction h1) { font-size:32px; }.content h2,.content .panel-title h2,.content .metric-header h2 { font-size:25px; } }

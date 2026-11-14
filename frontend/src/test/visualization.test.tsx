@@ -71,7 +71,7 @@ describe('display-only lunar coordinates and authoritative science overlays',()=
       if(text==='No global'||text==='WebGL')continue
       expect(html).toContain(text)
     }
-    expect(html).toContain('no global DEM');expect(html).toContain('modeled obstruction');expect(html).toContain('Explorer scientific time sample')
+    expect(html).toContain('no global elevation model');expect(html).toContain('modeled obstruction');expect(html).toContain('Explorer scientific time sample')
   })
   it('loads validated mesh once, reuses identical geometry, and never falls back on missing DEM',async()=>{
     const fetcher=vi.fn(async()=>({ok:true,json:async()=>evidence.mesh}) as Response);vi.stubGlobal('fetch',fetcher)

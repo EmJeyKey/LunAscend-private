@@ -33,7 +33,7 @@ export function MissionControls({ compact = false, onDraftChange }: { compact?: 
     runAnalysis({ site, startUtc, durationHours: Number(hours) },full?fullAnalysisOptions(options):options)
   }
   return <div className="mission-controls-wrap"><form id="mission-analysis-form" className="panel analysis-form" onSubmit={apply} onInvalid={event => { const details = (event.target as HTMLElement).closest('details'); if (details) details.open = true;setMessage('Check the highlighted location, height or reference setting before running analysis.') }} onChange={() => { invalidate(); setMessage('') }}>
-    <header className="section-introduction"><h2>Plan this mission</h2><p>Choose a location, landing time and mission length. All times use UTC, not your computer’s local time.</p></header>
+    <header className="section-introduction"><h2>Plan this mission</h2><p>Set location, landing time and duration. All times are UTC.</p></header>
     <div className="mission-controls">
       <label className="control-field"><span><MapPin size={13}/>LANDING SITE</span><select aria-label="Landing site" value={site.id} onChange={event => setSite(previewSites.find(item => item.id === event.target.value) || { ...site, id: 'custom' })}>{previewSites.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}<option value="custom">Custom coordinates</option></select></label>
       <label className="control-field"><span><CalendarDays size={13}/>START TIME (UTC)</span><input ref={startInput} key={mission.startUtc} name="start_utc" aria-label="Landing date and time in UTC" type="datetime-local" step="0.001" required defaultValue={mission.startUtc.replace(/Z$/, '').replace(/\.000$/, '')} onInput={()=>{setDateVersion(v=>v+1);invalidate()}}/></label>
