@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from functools import lru_cache
 from fastapi import APIRouter, HTTPException
+from typing import Literal
 from lunascend.contracts.imagery import ImageAnchorRequest
 
 router = APIRouter()
@@ -45,3 +46,12 @@ async def apollo_sites(request: ImageAnchorRequest):
         raise HTTPException(503, 'Exact Apollo frame conversion unavailable at this epoch; no approximate pins supplied.') from None
     finally:
         _slot.release()
+
+
+@router.get('/api/v1/exploration/environment/{layer}')
+async def environment_layer(layer: Literal['solar','earth','shadow']):
+    try:
+        from lunascend.terrain.polar_screening import polar_layer
+        return await asyncio.to_thread(polar_layer,layer)
+    except (ImportError,OSError,ValueError):
+        raise HTTPException(503,'Verified NASA environment window unavailable; no substitute layer supplied.') from None

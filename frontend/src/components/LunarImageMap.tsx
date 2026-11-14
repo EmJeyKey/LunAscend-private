@@ -1,8 +1,19 @@
 import {useEffect,useRef,useState} from 'react'
 import {imageLayer,imageResolution,inImageBounds,mapLevel,mapPoint,mapProject,mapScale,mapUnproject,panMap,screenPoint,tileBounds,TilePool,visibleTiles,zoomMap,type MapView} from '../lib/imagery'
+import {environmentColor,loadEnvironment,type EnvironmentId,type EnvironmentRaster} from '../lib/environment'
 
 export interface ImageAnchor {latitude:number;longitude:number;qualification:string}
-export function LunarImageMap({anchor,onAdopt}:{anchor:ImageAnchor;onAdopt:(latitude:number,longitude:number)=>void}) {
+export function LunarImageMap({anchor,onAdopt,onTerrain}:{anchor:ImageAnchor;onAdopt:(latitude:number,longitude:number)=>void;onTerrain?:()=>void}) {
+  const [environment,setEnvironment]=useState<EnvironmentId|'none'>('none'),[environmentMode,setEnvironmentMode]=useState('long_term')
+  const [raster,setRaster]=useState<EnvironmentRaster|null>(null),[environmentError,setEnvironmentError]=useState(''),[regions,setRegions]=useState(false)
+  const activeRaster=environmentMode==='long_term'&&raster?.layer===environment?raster:null
+  useEffect(()=>{
+    setRaster(null);setEnvironmentError('')
+    if(environment==='none'||environmentMode!=='long_term')return
+    const controller=new AbortController()
+    void loadEnvironment(environment,controller.signal).then(value=>{if(!controller.signal.aborted)setRaster(value)},reason=>{if(!controller.signal.aborted)setEnvironmentError(reason instanceof Error?reason.message:'NASA layer unavailable.')})
+    return ()=>controller.abort()
+  },[environment,environmentMode])
   const [mode,setMode]=useState<'global'|'south'|'local'>('global')
   const [layerId,setLayerId]=useState('wac-global'),[revision,setRevision]=useState(0)
   const layer=imageLayer(layerId)
@@ -53,12 +64,22 @@ export function LunarImageMap({anchor,onAdopt}:{anchor:ImageAnchor;onAdopt:(lati
       if(tile.level===level)ready++
     }
     context.restore()
+    if(activeRaster){
+      const raster=activeRaster
+      for(let row=0;row<65;row++)for(let col=0;col<65;col++){
+        const color=environmentColor(raster.layer,raster.values[row*65+col]);if(!color)continue
+        const ids=[row*66+col,row*66+col+1,(row+1)*66+col+1,(row+1)*66+col]
+        context.beginPath()
+        ids.forEach((index,i)=>{const [lat,lon]=raster.corners[index],p=screenPoint(view,width,height,...mapProject(layer,lat,lon));if(i===0)context.moveTo(...p);else context.lineTo(...p)})
+        context.closePath();context.fillStyle=color;context.fill()
+      }
+    }
     const [x,y]=mapProject(layer,anchor.latitude,anchor.longitude),point=screenPoint(view,width,height,x,y)
     context.strokeStyle='#ffe6a5';context.lineWidth=2;context.beginPath();context.arc(...point,7,0,Math.PI*2);context.moveTo(point[0]-13,point[1]);context.lineTo(point[0]+13,point[1]);context.moveTo(point[0],point[1]-13);context.lineTo(point[0],point[1]+13);context.stroke()
     if(picked){const p=screenPoint(view,width,height,...mapProject(layer,picked.latitude,picked.longitude));context.strokeStyle='#7bbfd0';context.strokeRect(p[0]-5,p[1]-5,10,10)}
     const failures=tiles.errorsFor(layer.id)
     setLoad(old=>old.ready===ready&&old.total===requested.length&&old.failures===failures&&old.level===level?old:{ready,total:requested.length,failures,level})
-  },[layer,view,size,revision,anchor,picked])
+  },[layer,view,size,revision,anchor,picked,activeRaster])
   useEffect(()=>{
     const element=canvas.current;if(!element)return
     const wheel=(event:WheelEvent)=>{event.preventDefault();const rect=element.getBoundingClientRect();setView(v=>zoomMap(v,rect.width,rect.height,event.clientX-rect.left,event.clientY-rect.top,Math.exp(Math.max(-200,Math.min(200,event.deltaY))*.0025),layer))}
@@ -66,7 +87,15 @@ export function LunarImageMap({anchor,onAdopt}:{anchor:ImageAnchor;onAdopt:(lati
   },[layer])
   const scale=mapScale(layer,view),sitePoint=mapProject(layer,anchor.latitude,anchor.longitude),supported=inImageBounds(layer,...sitePoint)
   const zoom=(factor:number)=>setView(v=>zoomMap(v,size.width,size.height,size.width/2,size.height/2,factor,layer))
+  const inspectEnvironment=()=>{
+    if(!activeRaster||!picked)return null
+    const polar=imageLayer('wac-south'),[x,y]=mapProject(polar,picked.latitude,picked.longitude),[x0,y0]=mapProject(polar,...activeRaster.corners[0])
+    const col=Math.floor((x-x0)/60),row=Math.floor((y0-y)/60)
+    return row>=0&&row<65&&col>=0&&col<65?activeRaster.values[row*65+col]:null
+  }
   return <section className="lunar-image-map" aria-label="Photographic lunar map">
+    <details className="environment-controls" open><summary>LUNAR ENVIRONMENT LAYERS</summary><div className="viewer-toolbar"><label>Environment mode<select value={environmentMode} onChange={e=>setEnvironmentMode(e.target.value)}><option value="long_term">A · Long-term environment</option><option value="mission">B · Selected mission date</option></select></label>{environmentMode==='long_term'?<label>NASA polar layer<select value={environment} onChange={e=>setEnvironment(e.target.value as EnvironmentId|'none')}><option value="none">Photographs only</option><option value="solar">Solar illumination · long-term fraction</option><option value="earth">Earth visibility · long-term fraction</option><option value="shadow">Permanent shadow · NASA model flag</option><option disabled>Terrain slope · no verified slope layer installed</option></select></label>:<p>Use Run Analysis for the selected UTC. Long-term colors are hidden; no date-specific raster is inferred.</p>}<button onClick={onTerrain}>Terrain elevation · existing LOLA view</button></div>{environment!=='none'&&environmentMode==='long_term'&&<><p role="status">{environmentError||(!activeRaster?'Loading verified NASA window…':`${activeRaster.product} · ${activeRaster.product_version} · 60 m pixels · native DE421`)}</p><p>Long-term NASA model, not conditions on your mission date. Only a 3.9 km window near Site01 is installed; other areas remain uncolored.</p>{activeRaster&&<><button onClick={()=>{const source=imageLayer('nac-south'),corner=activeRaster.corners[2178];setMode('local');setLayerId('nac-south');const [x,y]=mapProject(source,...corner);setView({x,y,resolution:Math.max(12,4500/Math.min(size.width,size.height))})}}>Show installed NASA window</button><p className="environment-legend">{environment==='shadow'?'Purple: modeled permanent shadow · faint neutral: not flagged':'Faint → strong color: 0 → 100% any-disk visibility'} · no color: not evaluated / missing.</p><p>Nominal placement on photographs; image-to-DE421 registration remains unverified. Earth-disk visibility does not establish DTE or radio contact.</p></>}</>}
+    <label><input type="checkbox" checked={regions} onChange={e=>setRegions(e.target.checked)}/>NASA Artemis candidate regions</label>{regions&&<><p>October 2024 assessment · no priority order. Verified boundaries are not installed; no polygons inferred.</p><ul>{['Peak near Cabeus B','Haworth','Malapert Massif','Mons Mouton Plateau','Mons Mouton','Nobile Rim 1','Nobile Rim 2','de Gerlache Rim 2','Slater Plain'].map(name=><li key={name}>{name}</li>)}</ul><a href="https://www.nasa.gov/news-release/nasa-provides-update-on-artemis-iii-moon-landing-regions/" target="_blank" rel="noopener noreferrer">NASA assessment · 28 October 2024</a></>}</details>
     <div className="viewer-toolbar" aria-label="Photographic map modes"><button aria-pressed={mode==='global'} onClick={()=>fit('global')}>Global map</button><button aria-pressed={mode==='south'} onClick={()=>fit('south')}>South polar imagery</button><button aria-pressed={mode==='local'} onClick={()=>fit('local')}>Local site imagery</button></div>
     <div className="image-map-canvas" ref={container}>
       <canvas ref={canvas} tabIndex={0} role="img" aria-label="Interactive photographic lunar map. Drag to pan, wheel or pinch to zoom, click to inspect cartographic coordinates. Arrow keys pan; plus and minus zoom."
@@ -85,6 +114,8 @@ export function LunarImageMap({anchor,onAdopt}:{anchor:ImageAnchor;onAdopt:(lati
     <div className="viewer-camera"><button onClick={()=>fit('global')}>Fit Moon</button><button onClick={()=>fit('south')}>Fit south pole</button><button onClick={()=>fit('local')}>Zoom to landing site</button><button onClick={()=>fit(mode,layerId)}>Reset map</button><button onClick={()=>{pool.current?.retry();setRevision(v=>v+1)}}>Retry images</button>{mode!=='global'&&<label>Photographic layer<select value={layerId} onChange={e=>fit(mode,e.target.value)}><option value="wac-south">WAC · regional context</option><option value="nac-south">NAC · supported polar region</option></select></label>}</div>
     <p className="mono image-map-status">{layer.title} · source level {load.level}/{layer.levels.length-1} · {imageResolution(layer,load.level)} · {load.ready}/{load.total} detail tiles loaded{load.failures?` · ${load.failures} failed requests; cached parents retained`:''}.</p>
     {!supported&&<p role="status">The selected site is outside this layer’s declared coverage. Use the global WAC map; no high-resolution NAC detail is inferred.</p>}
+    {picked&&activeRaster&&<p className="mono">NASA layer at inspected pixel: {inspectEnvironment()===null?'Outside installed coverage / unavailable':activeRaster.layer==='shadow'?(inspectEnvironment()===1?'Modeled permanent shadow':'Not flagged as permanent shadow'):`${(inspectEnvironment()!*100).toFixed(3)}% long-term any-disk visibility`}. Not a selected-date forecast.</p>}
+    {activeRaster&&<details><summary>NASA raster source and limitations</summary><p>{activeRaster.attribution}</p><p>{activeRaster.time_basis}</p><p className="mono">Window SHA256 {activeRaster.source_sha256}</p>{activeRaster.limitations.map(line=><p key={line}>{line}</p>)}<a href={activeRaster.source_url} target="_blank" rel="noopener noreferrer">Official scientific raster</a></details>}
     <p>Gold cross: selected scientific input, placed nominally on the source cartographic grid. {anchor.qualification} No verified image-to-DEM registration; photographs are not used for elevation, visibility or power. Acquisition shadows are from {layer.acquisition}, not the selected UTC.</p>
     {picked&&<div className="viewer-inspection"><p className="mono">Cartographic image inspection · {picked.latitude.toFixed(7)}° N · {picked.longitude.toFixed(7)}° E. Exact dynamical frame unspecified by source.</p><button onClick={()=>onAdopt(picked.latitude,picked.longitude)}>Use as unconfirmed coordinate input</button><p>This action clears previous results. Declare and confirm the scientific frame separately before analysis; no image-to-DE421 conversion is implied.</p></div>}
     <details><summary>Image source, projection and attribution</summary><p>{layer.provider} · {layer.product}</p><p>Coverage: {layer.coverage}. Nominal original product {layer.nominal_source_m_per_pixel} m/px; delivered service resolution shown above. Transparent pixels and absent tiles remain missing.</p><p>{layer.projection==='geographic'?'Lunar geographic grid; planetocentric latitude / east-positive longitude on radius 1,737,400 m.': 'Lunar south-polar stereographic; radius 1,737,400 m, central meridian 0°, standard parallel −90°, false E/N 0.'} {layer.frame}</p><p>{layer.usage}</p><a href={layer.source_url+'/1.0.0/WMTSCapabilities.xml'} target="_blank" rel="noopener noreferrer">Official source capabilities</a></details>

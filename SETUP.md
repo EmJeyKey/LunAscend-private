@@ -2,6 +2,14 @@
 
 ## Current status
 
+Step 12 adds small bundled NASA polar screening windows (about 33 KB of raster
+and label files), served locally with the existing terrain extra. They work
+offline; uncached photographic tiles still need the image service. To reproduce
+the source windows, run `backend/.venv/Scripts/python.exe scripts/prepare_polar_screening.py`
+from the project root with network access. It enforces bounded HTTP ranges;
+inspect changed source metadata/hashes before accepting a different product.
+Apollo markers require the existing verified science/frame kernels. See docs/STEP_12.md.
+
 Numerical-display follow-up: the existing Analysis form now includes **Run Full
 Analysis** to explicitly request terrain, power/battery and conditional DTE using the
 current hardware assumptions. Load Site01, confirm the reference, review the settings

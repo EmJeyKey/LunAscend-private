@@ -1196,3 +1196,8 @@ body, .app-main { background: var(--bg); }
 .apollo-site-panel { max-width:65ch; }.apollo-site-panel label { display:block;margin:12px 0; }.apollo-site-panel input:not([type=checkbox]),.apollo-site-panel select { display:block;width:100%;margin-top:7px; }
 .globe-hover-coordinate { position:absolute;pointer-events:none;z-index:5;transform:translate(-50%,18px);max-width:90%;padding:7px 10px;background:#080d15ee;border:1px solid var(--gold);color:var(--gold);font:11px/1.6 var(--font-mono);white-space:nowrap; }
 .coordinate-actions { margin-block:16px;gap:16px; }
+.environment-controls { margin:18px 0;padding:16px 0;border-block:1px solid var(--border); }
+.environment-controls>summary { color:var(--gold);font-weight:700;cursor:pointer;letter-spacing:.08em; }
+.environment-controls p { margin:12px 0;max-width:75ch;line-height:1.7; }
+.environment-controls select { display:block;margin-top:8px;max-width:100%; }
+.environment-legend { color:var(--gold);font-family:var(--font-mono);font-size:12px; }

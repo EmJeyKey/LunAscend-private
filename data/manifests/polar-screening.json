@@ -1,0 +1,147 @@
+{
+  "version": "nasa-pgda-polar-window-v1",
+  "region": "Site01 context window only; 65 \u00d7 65 native 60 m pixels",
+  "meaning": "Long-term NASA model products, not selected-date predictions or flight safety.",
+  "source": "https://pgda.gsfc.nasa.gov/products/69",
+  "attribution": "NASA/LOLA team; cite Mazarico et al. (2011), doi:10.1016/j.icarus.2010.10.030. No agency endorsement.",
+  "products": [
+    {
+      "id": "solar",
+      "product_id": "AVGVISIB_85S_060M_201608",
+      "product_version": "V1.05",
+      "file": "solar-site01-60m.tif",
+      "sha256": "c749c65df43e93e2cd38913a33126f15a497971d014122b6df483695df56e29c",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/MoonIllumination/AVGVISIB_85S_060M_201608.TIF",
+      "label_url": "https://imbrium.mit.edu/EXTRAS/ILLUMINATION/IMG/AVGVISIB_85S_060M_201608.LBL",
+      "label_sha256": "33decce957d5d4d9608557d8d969d1e1b94056a159b2563624ade4b528a0c917",
+      "source_shape": [
+        5058,
+        5058
+      ],
+      "window": [
+        2313,
+        2697,
+        65,
+        65
+      ],
+      "source_crs_wkt": "PROJCS[\"Moon2000_spole\",GEOGCS[\"GCS_Moon\",DATUM[\"D_Moon_2000\",SPHEROID[\"Moon_2000_IAU_IAG\",1737400,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH]]",
+      "transform": [
+        60.0,
+        0.0,
+        -12960.0,
+        0.0,
+        -60.0,
+        -10080.0
+      ],
+      "scale": 4e-05,
+      "offset": 0.0,
+      "nodata": -32768.0,
+      "valid_pixels": 4225,
+      "raw_range": [
+        0.0,
+        22111.0
+      ],
+      "scaled_range": [
+        0.0,
+        0.8844400000000001
+      ],
+      "source_etag": "W/\"206b6e0-195b4134a70\"",
+      "source_bytes": 33994464,
+      "bytes_transferred": 124315,
+      "range_requests": 16,
+      "reference_frame": "MOON_ME_DE421"
+    },
+    {
+      "id": "earth",
+      "product_id": "AVGVISIB_85S_060M_201608_EARTH",
+      "product_version": "V1.05",
+      "file": "earth-site01-60m.tif",
+      "sha256": "7d2b54f501115a4701cc377c2dbec6c9690b8e48d6bf011f60ebb07ce6229b59",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/MoonIllumination/AVGVISIB_85S_060M_201608_EARTH.TIF",
+      "label_url": "https://imbrium.mit.edu/EXTRAS/ILLUMINATION/IMG/AVGVISIB_85S_060M_201608_EARTH.LBL",
+      "label_sha256": "45a61697d779fdb9170bca2553f9e0188aeda1159811d3531c348df8f57f68bd",
+      "source_shape": [
+        5058,
+        5058
+      ],
+      "window": [
+        2313,
+        2697,
+        65,
+        65
+      ],
+      "source_crs_wkt": "PROJCS[\"Moon2000_spole\",GEOGCS[\"GCS_Moon\",DATUM[\"D_Moon_2000\",SPHEROID[\"Moon_2000_IAU_IAG\",1737400,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH]]",
+      "transform": [
+        60.0,
+        0.0,
+        -12960.0,
+        0.0,
+        -60.0,
+        -10080.0
+      ],
+      "scale": 4e-05,
+      "offset": 0.0,
+      "nodata": -32768.0,
+      "valid_pixels": 4225,
+      "raw_range": [
+        0.0,
+        14551.0
+      ],
+      "scaled_range": [
+        0.0,
+        0.58204
+      ],
+      "source_etag": "W/\"17b60ee-195b4133eb8\"",
+      "source_bytes": 24862958,
+      "bytes_transferred": 94209,
+      "range_requests": 16,
+      "reference_frame": "MOON_ME_DE421"
+    },
+    {
+      "id": "shadow",
+      "product_id": "LPSR_85S_060M_201608",
+      "product_version": "V1.05",
+      "file": "shadow-site01-60m.tif",
+      "sha256": "c5e8da95289f1df2f62e33ac7161ea40f8c7c7af1126373fe27c249fc9ee6824",
+      "source_url": "https://pgda.gsfc.nasa.gov/data/MoonIllumination/LPSR_85S_060M_201608.TIF",
+      "label_url": "https://imbrium.mit.edu/EXTRAS/ILLUMINATION/IMG/LPSR_85S_060M_201608.LBL",
+      "label_sha256": "42ae7cb0ae64ff8df7a17106228921bd07eb9afba8fb833c4a8cfd2f53487c0f",
+      "source_shape": [
+        5058,
+        5058
+      ],
+      "window": [
+        2313,
+        2697,
+        65,
+        65
+      ],
+      "source_crs_wkt": "PROJCS[\"Moon2000_spole\",GEOGCS[\"GCS_Moon\",DATUM[\"D_Moon_2000\",SPHEROID[\"Moon_2000_IAU_IAG\",1737400,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH]]",
+      "transform": [
+        60.0,
+        0.0,
+        -12960.0,
+        0.0,
+        -60.0,
+        -10080.0
+      ],
+      "scale": 2.5e-05,
+      "offset": 0.5,
+      "nodata": -32768.0,
+      "valid_pixels": 4225,
+      "raw_range": [
+        -20000.0,
+        20000.0
+      ],
+      "scaled_range": [
+        0.0,
+        1.0
+      ],
+      "source_etag": "W/\"a0337-195b4138120\"",
+      "source_bytes": 656183,
+      "bytes_transferred": 28912,
+      "range_requests": 16,
+      "reference_frame": "MOON_ME_DE421"
+    }
+  ]
+}
