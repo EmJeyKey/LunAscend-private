@@ -7,6 +7,7 @@ import { useMission } from '../state/MissionContext'
 import { formatAngle } from '../lib/analysis'
 import type { EphemerisObservation, ProviderMode } from '../types/analysis'
 import type {AnalysisState} from '../api/analysis'
+import { analysisProblem } from '../lib/humanize'
 
 export function StatusBadge({ children, tone = 'neutral' }: PropsWithChildren<{ tone?: 'gold' | 'cyan' | 'green' | 'neutral' }>) {
   return <span className={`status-badge ${tone}`}><span className="status-dot" />{children}</span>
@@ -53,8 +54,21 @@ export function PositionReadout({ kind, observation, provider }: { kind: 'solar'
 }
 
 export function MetricCard({ kind }: { kind: 'solar' | 'earth' }) {
-  const { observation, analysis } = useMission()
+  const { observation, analysis, resultsCleared, mission } = useMission()
+  if (!observation) return <PositionPending kind={kind} analysis={analysis} resultsCleared={resultsCleared} mission={mission}/>
   return <PositionReadout kind={kind} observation={observation} provider={analysis.result?.provider_mode}/>
+}
+
+export function PositionPending({ kind, analysis, resultsCleared, mission }: { kind: 'solar' | 'earth'; analysis: AnalysisState; resultsCleared: boolean; mission: MissionSelection }) {
+  const loading = analysis.status === 'loading'
+  const failed = analysis.status === 'error'
+  const title = kind === 'solar' ? 'Sun position' : 'Earth position'
+  return <section className={`panel metric-card position-pending ${kind}`} aria-label={title}>
+    <div className="metric-header"><h2>{title}</h2><StatusBadge>{loading ? 'Calculating' : failed ? 'Analysis failed' : analysis.result ? 'No samples' : 'Analysis required'}</StatusBadge></div>
+    <p role="status">{loading ? 'Calculating the selected location and date…' : failed ? analysisProblem(analysis.message, analysis.errors) : analysis.result ? 'The analysis returned no observation samples. Inspect the analysis status and provenance.' : resultsCleared ? 'Location, date or settings changed. Run analysis again; previous values were cleared.' : 'Run analysis for this location and date to calculate numerical results. Selecting a map location does not run analysis.'}</p>
+    <p>{mission.site.name}<br/><span className="mono">{formatUtc(mission.startUtc, true)} UTC</span></p>
+    {!loading && <a className="text-link" href="#mission-configuration">Configure / Run analysis<ArrowUpRight size={15}/></a>}
+  </section>
 }
 
 export function ScenarioCard({ selection, label, baseline = false, onRemove, analysis }: { selection: MissionSelection; label: string; baseline?: boolean; onRemove?: () => void; analysis?:AnalysisState }) {

@@ -1160,3 +1160,22 @@ body, .app-main { background: var(--bg); }
 .numerical-results h3 { font:500 17px var(--font-sans);margin:12px 0; }
 .numerical-results>p { font-size:12px;line-height:1.8;overflow-wrap:anywhere; }
 .numerical-results .friendly-table td { overflow-wrap:anywhere; }
+
+/* Expanded reading workspace; the page title and navigation toggle stay available. */
+.sidebar-toggle { display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:7px 10px;border:1px solid var(--border);background:transparent;color:var(--gold);font:inherit;cursor:pointer;white-space:nowrap; }
+.sidebar-toggle:focus-visible { outline:2px solid var(--gold);outline-offset:3px; }
+.position-pending p { font-size:13px;line-height:1.8;overflow-wrap:anywhere; }
+.position-pending .metric-header { flex-wrap:wrap; }
+#mission-configuration { scroll-margin-top:85px; }
+@media(min-width:761px) {
+  .sidebar { transition:transform .22s ease,visibility .22s; }
+  .app-main { transition:margin-left .22s ease; }
+  .topbar { position:sticky;top:0;z-index:19;flex-wrap:wrap;padding-block:8px; }
+  .sidebar-collapsed .sidebar { transform:translateX(-100%);visibility:hidden; }
+  .sidebar-collapsed .app-main { margin-left:0; }
+  .sidebar-collapsed .content { max-width:none;font-size:16px; }
+  .sidebar-collapsed .content :is(p,label,button,input,select,summary,.text-link,.mission-guide li,.metric-details dt,.metric-details dd,.friendly-table,.viewer-toolbar button,.viewer-camera button) { font-size:15px; }
+  .sidebar-collapsed .content .primary-metric>span:first-child { font-size:34px; }
+  .sidebar-collapsed .breadcrumb { font-size:14px; }
+}
+@media(max-width:760px) { .sidebar-toggle { display:none; } }
