@@ -1,0 +1,68 @@
+{
+  "browser_export_sha256": "180246ce5495dda8224172380c87900dea21476a82f199af623efbca340ba22e",
+  "provider": "scientific",
+  "samples": 25,
+  "matched_points_and_coordinates": 612,
+  "curves": 10,
+  "products_equal_to_saved_site01": true,
+  "request": {
+    "start_utc": "2026-11-14T00:00:00Z",
+    "end_utc": "2026-11-15T00:00:00Z",
+    "schema_version": "1.0",
+    "site": {
+      "site_id": "custom",
+      "name": "LOLA Site01 example",
+      "latitude_deg": -89.46315760953222,
+      "longitude_deg": -137.50097847854008,
+      "surface_elevation_m": null,
+      "observer_height_m": 2,
+      "description": null,
+      "coordinate_reference": {
+        "body": "MOON",
+        "latitude_type": "planetocentric",
+        "longitude_convention": "east_positive",
+        "frame_id": "MOON_ME_DE440_ME421",
+        "frame_realization": "DE440/ME421",
+        "reference_surface": "MOON_SPHERE_1737400_M",
+        "reference_radius_m": 1737400
+      }
+    },
+    "provider_mode": "scientific",
+    "sample_step_s": 3600,
+    "settings": {
+      "terrain_enabled": true,
+      "power_enabled": true,
+      "communication_enabled": true,
+      "horizon_mode": "terrain",
+      "disk_policy": "center",
+      "correction_mode": "NONE",
+      "sun_clearance_deg": 0,
+      "earth_clearance_deg": 0,
+      "terrain_options": {
+        "dataset_id": "lola-site01-5m-v2020",
+        "coordinate_epoch_utc": "2026-11-14T00:00:00Z",
+        "azimuth_samples": 360,
+        "max_search_radius_m": 2500,
+        "radial_step_m": 5
+      },
+      "power_options": {
+        "panel_area_m2": 2,
+        "panel_efficiency": 0.25,
+        "solar_irradiance_w_m2": 1361,
+        "orientation_mode": "fixed_horizontal",
+        "system_efficiency": 0.9,
+        "derating_factor": 1,
+        "baseline_load_w": 50,
+        "heater_load_w": 0,
+        "battery_capacity_wh": 500,
+        "initial_soc_pct": 100,
+        "minimum_soc_pct": 10,
+        "charging_efficiency": 0.95,
+        "discharging_efficiency": 0.95
+      },
+      "communication_options": {
+        "minimum_earth_clearance_deg": 1
+      }
+    }
+  }
+}

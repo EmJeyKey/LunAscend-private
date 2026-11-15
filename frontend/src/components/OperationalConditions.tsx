@@ -30,20 +30,20 @@ export function SampleTimeline({title,rows,index,onSelect,earth=false}:{title:st
   </section>
 }
 
-export function ModelPowerPlot({power,quantity,index=0}:{power:PowerAnalysis;quantity:'solar_generation_w'|'battery_energy_wh';index?:number}) {
-  const samples=power.cases[0]?.samples||[],solar=quantity==='solar_generation_w',unit=solar?'W':'Wh'
+export function ModelPowerPlot({power,quantity,index=0}:{power:PowerAnalysis;quantity:'solar_generation_w'|'load_w'|'battery_energy_wh';index?:number}) {
+  const samples=power.cases[0]?.samples||[],solar=quantity==='solar_generation_w',load=quantity==='load_w',title=solar?'Estimated solar power':load?'Electrical load':'Modeled stored battery energy',unit=quantity==='battery_energy_wh'?'Wh':'W'
   const numeric=power.cases.flatMap(c=>c.samples.map(s=>s[quantity]).filter((v):v is number=>v!==null))
-  if(!samples.length||!numeric.length)return <div className="model-power-plot"><h3>{solar?'Estimated solar power':'Modeled battery energy'}</h3><p>Insufficient environmental data for this graph. Missing values are not zero.</p></div>
+  if(!samples.length||!numeric.length)return <div className="model-power-plot"><h3>{title}</h3><p>Insufficient environmental data for this graph. Missing values are not zero.</p></div>
   const first=Date.parse(samples[0].time_utc),last=Date.parse(samples.at(-1)!.time_utc),maximum=Math.max(1,...numeric)
   const x=(time:string)=>55+(last===first?.5:(Date.parse(time)-first)/(last-first))*800,y=(v:number)=>160-v/maximum*130
   const selected=samples[Math.max(0,Math.min(index,samples.length-1))]
-  return <figure className={`model-power-plot ${solar?'solar-power-plot':'battery-model-plot'}`}><figcaption><strong>{solar?'Estimated solar power (W)':'Modeled stored battery energy (Wh)'}</strong><span>Dashed = conservative · solid = optimistic</span></figcaption>
-    <div className="sample-timeline-scroll"><svg viewBox="0 0 900 220" role="img" aria-label={`${solar?'Estimated solar power in watts':'Stored battery energy in watt hours'} at returned UTC samples for both modeled cases. Missing values break the graph.`}>
+  return <figure className={`model-power-plot ${solar?'solar-power-plot':load?'electrical-load-plot':'battery-model-plot'}`}><figcaption><strong>{title} ({unit})</strong><span>Dashed = conservative · solid = optimistic</span></figcaption>
+    <div className="sample-timeline-scroll"><svg data-quantity={quantity} data-axis-max={maximum} viewBox="0 0 900 220" role="img" aria-label={`${title} in ${unit} at returned UTC samples for both modeled cases. Missing values break the graph.`}>
       {[0,.5,1].map(f=><g key={f}><line x1="55" x2="855" y1={y(maximum*f)} y2={y(maximum*f)} className="model-plot-grid"/><text x="47" y={y(maximum*f)+4} textAnchor="end">{(maximum*f).toFixed(0)} {unit}</text></g>)}
       {power.cases.map(c=>{
         let drawing=false
         const path=c.samples.map(s=>{const v=s[quantity];if(v===null){drawing=false;return ''}const point=`${drawing?'L':'M'}${x(s.time_utc)},${y(v)}`;drawing=true;return point}).join(' ')
-        return <g key={c.assumption}><path d={path} className={`model-power-path ${c.assumption}`}/>{c.samples.map(s=>s[quantity]===null?null:<circle key={s.time_utc} cx={x(s.time_utc)} cy={y(s[quantity]!)} r="2.5" className={`model-power-point ${c.assumption}`}><title>{`${c.assumption} · ${utcLabel(s.time_utc)} · ${s[quantity]} ${unit}`}</title></circle>)}</g>
+        return <g key={c.assumption}><path d={path} className={`model-power-path ${c.assumption}`}/>{c.samples.map(s=>s[quantity]===null?null:<circle key={s.time_utc} data-graph-series={`${c.assumption}.${quantity}`} data-utc={s.time_utc} data-value={s[quantity]} cx={x(s.time_utc)} cy={y(s[quantity]!)} r="2.5" className={`model-power-point ${c.assumption}`}><title>{`${c.assumption} · ${utcLabel(s.time_utc)} · ${s[quantity]} ${unit}`}</title></circle>)}</g>
       })}
       <line x1={x(selected.time_utc)} x2={x(selected.time_utc)} y1="22" y2="165" className="model-time-cursor"/>
       <text x="55" y="188">{utcLabel(samples[0].time_utc)}</text><text x="855" y="207" textAnchor="end">{utcLabel(samples.at(-1)!.time_utc)}</text>
@@ -52,16 +52,22 @@ export function ModelPowerPlot({power,quantity,index=0}:{power:PowerAnalysis;qua
   </figure>
 }
 
-export function SimpleEngineering({power,index=0,showNumbers=true}:{power:PowerAnalysis;index?:number;showNumbers?:boolean}) {
+export function SimpleEngineering({power,index=0,showNumbers=true,showPlots=true}:{power:PowerAnalysis;index?:number;showNumbers?:boolean;showPlots?:boolean}) {
   return <section className="simple-engineering"><h3>Power and battery</h3><p><strong>{powerOutcome(power)}</strong></p><p>Conservative: conditional sunlight is treated as unavailable. Optimistic: conditional Sun-center clearance can power the configured panels. Neither case guarantees spacecraft survival.</p>
     <p>These are LunAscend calculations under user-defined assumptions: {power.configuration.panel_area_m2} m² panels, {power.configuration.panel_efficiency*100}% panel efficiency, {power.configuration.orientation_mode.replaceAll('_',' ')}, {power.configuration.baseline_load_w} W demand + {power.configuration.heater_load_w} W heater, {power.configuration.battery_capacity_wh} Wh battery, {power.configuration.minimum_soc_pct}% reserve.</p>
     {showNumbers&&<EngineeringNumbers power={power} time={power.cases[0]?.samples[index]?.time_utc}/>}
-    <ModelPowerPlot power={power} quantity="solar_generation_w" index={index}/><p>Estimated solar power depends on the Sun’s position, modeled terrain obstruction and the selected panels, orientation, efficiency, irradiance and electrical losses. Sun elevation is not power.</p>
-    <ModelPowerPlot power={power} quantity="battery_energy_wh" index={index}/><p>Incomplete environmental support can leave full-mission energy totals unavailable even when a known prefix has values. Unknown time is not zero demand or guaranteed survival.</p>
+    {showPlots&&<><ModelPowerPlot power={power} quantity="solar_generation_w" index={index}/><ModelPowerPlot power={power} quantity="load_w" index={index}/><p>Estimated solar power depends on the Sun’s position, modeled terrain obstruction and the selected panels, orientation, efficiency, irradiance and electrical losses. Sun elevation is not power.</p>
+    <ModelPowerPlot power={power} quantity="battery_energy_wh" index={index}/><p>Incomplete environmental support can leave full-mission energy totals unavailable even when a known prefix has values. Unknown time is not zero demand or guaranteed survival.</p></>}
   </section>
 }
 
-export function OperationalConditions({compact=false,showNumbers=true}:{compact?:boolean;showNumbers?:boolean}) {
+export function VisibilityTimelines() {
+  const {analysis,sampleIndex,selectSample}=useMission(),result=analysis.result
+  if(!result?.observations?.length)return null
+  return <><SampleTimeline title="Sunlight availability" rows={conditionSamples(result,'sun')} index={sampleIndex} onSelect={selectSample}/><SampleTimeline title="Earth visibility and direct access" rows={conditionSamples(result,'earth')} index={sampleIndex} onSelect={selectSample} earth/></>
+}
+
+export function OperationalConditions({compact=false,showNumbers=true,showGraphs=true}:{compact?:boolean;showNumbers?:boolean;showGraphs?:boolean}) {
   const {analysis,sampleIndex,selectSample,resultsCleared,options,mission}=useMission(),result=analysis.result
   if(!result)return <section className="panel friendly-empty" aria-live="polite"><h2>{analysis.status==='loading'?'Calculating this mission…':analysis.status==='error'?'Analysis could not be completed':resultsCleared?'Inputs changed — previous results cleared':'No analysis yet.'}</h2><p>{analysis.status==='loading'?'The selected scientific provider is working. No estimated progress percentage is shown.':analysis.status==='error'?analysisProblem(analysis.message,analysis.errors):'Choose a landing location and date, then run an analysis to see sunlight and Earth visibility.'}</p>{analysis.status!=='loading'&&<button className="button primary" type="submit" form="mission-analysis-form">Run analysis</button>}<SourceInfo kind="sunlight" result={null}/></section>
   if(!result.observations?.length)return <section className="panel friendly-empty"><h2>No scientific observations available</h2><p>This result is {result.status}. Missing values do not establish sunlight, Earth access or a successful mission.</p>{result.errors.map((error,i)=><p key={i}>{error.message}</p>)}<SourceInfo kind="sunlight" result={result}/></section>
@@ -74,9 +80,9 @@ export function OperationalConditions({compact=false,showNumbers=true}:{compact?
     <section className="at-this-moment" aria-label="At this moment"><h3>At this moment</h3><time>{time?utcLabel(time):'No returned sample'}</time><dl><div><dt>Sunlight</dt><dd>{sun[at]?.label||'Not calculated'}</dd></div><div><dt>Earth</dt><dd>{earth[at]?.label||'Not calculated'}</dd></div>{result.power?.cases.map(c=>{const sample=c.samples.find(s=>Date.parse(s.time_utc)===Date.parse(time||''));return <div key={c.assumption}><dt>{c.assumption==='conservative'?'Conservative':'Optimistic'} power / battery</dt><dd>{value(sample?.solar_generation_w,'W')} · {value(sample?.battery_energy_wh,'Wh')}{sample?.soc_pct!=null?` · ${sample.soc_pct.toFixed(1)}% charge`:''}</dd></div>})}</dl><p>{sun[at]?.reason} {earth[at]?.reason} Earth visibility indicates possible access, not guaranteed radio communication.</p></section>
     {!!result.observations?.length&&<label className="friendly-time-control">Select a calculated time <output>{time?utcLabel(time):'Unavailable'}</output><input type="range" aria-label="Select calculated mission time" min="0" max={result.observations.length-1} value={at} onChange={e=>selectSample(Number(e.target.value))}/></label>}
     {showNumbers&&<NumericalResults result={result} index={at} includePower={false}/>}
-    <SampleTimeline title="Sunlight availability" rows={sun} index={at} onSelect={selectSample}/><SourceInfo kind="sunlight" result={result}/>
-    <SampleTimeline title={result.communication?'Earth visibility and direct access':'Earth visibility'} rows={earth} index={at} onSelect={selectSample} earth/><p>Earth behind the modeled horizon can obstruct direct communication. A clearance requirement adds an equipment margin; it is not radio signal strength. A link budget, antenna pointing and ground-station coverage are not modeled here.</p><SourceInfo kind="earth" result={result}/>
-    {result.power&&<><SimpleEngineering power={result.power} index={at} showNumbers={showNumbers}/><SourceInfo kind="power" result={result}/><SourceInfo kind="battery" result={result}/></>}
+    {showGraphs&&<SampleTimeline title="Sunlight availability" rows={sun} index={at} onSelect={selectSample}/>}<SourceInfo kind="sunlight" result={result}/>
+    {showGraphs&&<SampleTimeline title={result.communication?'Earth visibility and direct access':'Earth visibility'} rows={earth} index={at} onSelect={selectSample} earth/>}<p>Earth behind the modeled horizon can obstruct direct communication. A clearance requirement adds an equipment margin; it is not radio signal strength. A link budget, antenna pointing and ground-station coverage are not modeled here.</p><SourceInfo kind="earth" result={result}/>
+    {result.power&&<><SimpleEngineering power={result.power} index={at} showNumbers={showNumbers} showPlots={showGraphs}/><SourceInfo kind="power" result={result}/><SourceInfo kind="battery" result={result}/></>}
     {!result.power&&<p>Power and battery were not calculated. {result.provider_mode==='mock'?'Engineering estimates require Scientific SPICE with supported terrain.':result.request.settings.power_enabled?'Power was requested, but environmental support is unavailable.':'Power analysis was not requested. Enable solar-panel and battery settings or use Run Full Analysis; no solar-power curve is invented from Sun elevation.'}</p>}
     <Glossary terms={['Horizon','Angular clearance','Direct-to-Earth','Conservative assumption','Optimistic assumption','Missing data','UTC']}/>
   </section>

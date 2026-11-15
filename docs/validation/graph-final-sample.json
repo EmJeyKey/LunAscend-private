@@ -1,0 +1,20 @@
+{
+  "native": [
+    {
+      "series": "sun_native_elevation_deg",
+      "utc": "2026-11-15T00:00:00Z",
+      "value": 1.3898715913915016
+    },
+    {
+      "series": "earth_native_elevation_deg",
+      "utc": "2026-11-15T00:00:00Z",
+      "value": -3.9317613173335846
+    }
+  ],
+  "powerCursors": [
+    855,
+    855
+  ],
+  "summary": "At this moment2026-11-15 00:00:00 UTCSunlightSun potentially available within modeled coverageEarthEarth center blocked by modeled terrainConservative power / battery0.00 W · 50.00 Wh · 10.0% chargeOptimistic power / battery14.86 W · 50.00 Wh · 10.0% chargeCenter clears the evaluated finite sampled terrain only; farther and unresolved terrain remain unknown. Clearance is an access requirement, not radio signal strength. Earth visibility indicates possible access, not guaranteed radio communication.",
+  "utc": "2026-11-15T00:00:00Z"
+}

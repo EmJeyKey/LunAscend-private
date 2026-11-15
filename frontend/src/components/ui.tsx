@@ -19,7 +19,7 @@ export function PageHeader({ eyebrow, title, description, action }: { eyebrow: s
 
 const sectionExplanations: Record<string, string> = {
   'Lunar site overview': 'View the selected location with illustrative surface artwork. This is not a georeferenced terrain map.',
-  'Sun/Earth elevation': 'Sun and Earth elevations over time, above the geometric horizon.',
+  'Sun/Earth elevation': 'Sun and Earth elevations over time, relative to the geometric horizon.',
   'Scenario comparison': 'Compare calculated conditions across sites and dates.',
   'Terrain horizon': 'Local terrain may obstruct low directions. A verified elevation model is required before calculating this horizon.',
   'Local sky view': 'Use the angular readouts to inspect sky directions. A sky diagram is not yet implemented.',
