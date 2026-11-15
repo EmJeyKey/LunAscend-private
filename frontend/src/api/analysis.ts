@@ -90,6 +90,7 @@ export function parseResult(v: unknown, request: ScenarioRequest): ScenarioResul
     || v.provider_mode !== request.provider_mode || !object(v.request) || v.request.provider_mode !== request.provider_mode
     || !['complete', 'partial', 'failed', 'unavailable'].includes(String(v.status)) || !strings(v.warnings)
     || !Array.isArray(v.errors) || !Array.isArray(v.provenance) || !v.provenance.length) throw invalid()
+  if(v.availability!==undefined&&(!object(v.availability)||!Object.values(v.availability).every(a=>object(a)&&typeof a.code==='string'&&typeof a.reason==='string')))throw invalid()
   // Validate the echoed identity at the presentation boundary, accepting UTC spelling/longitude normalization.
   const echoed = v.request
   if (!object(echoed.settings) || echoed.settings.terrain_enabled !== request.settings.terrain_enabled) throw invalid()

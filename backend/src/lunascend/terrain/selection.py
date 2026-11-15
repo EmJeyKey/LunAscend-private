@@ -25,6 +25,7 @@ def select_terrain(request: TerrainRequest) -> dict:
                 "coverage": "observer_four_pixel_support_only", "checked": checked,
                 "limitations": ["Equal nominal 5 m products: preserve the explicitly selected valid source, then prefer the larger Site01 footprint before bounded windows. No unverified mosaicking.", "Valid observer support does not prove complete rays or global horizon coverage."]}
         except TerrainError as exc:
-            checked.append({"dataset_id": dataset_id, "reason": exc.error.code})
+            checked.append({"dataset_id": dataset_id, "reason": exc.error.code, "message": exc.error.message})
     return {"dataset_id": None, "checked": checked,
+        "reason_code": "outside_dataset_coverage" if any(item["reason"] == "OUTSIDE_COVERAGE" for item in checked) else "dataset_unavailable",
         "reason": "No installed, registered terrain has valid four-pixel support at this location. Geometry can still be calculated with an explicitly assumed surface height."}

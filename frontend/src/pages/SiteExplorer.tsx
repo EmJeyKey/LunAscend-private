@@ -1,9 +1,9 @@
 import {useLocation} from 'react-router'
-import { Crosshair, Info, MapPin } from 'lucide-react'
+import { Crosshair, MapPin } from 'lucide-react'
 import { useEffect, useState, type FormEvent } from 'react'
 import { LunarExplorer } from '../components/LunarExplorer'
 import { ExternalSiteResources } from '../components/ExternalSiteResources'
-import { PageHeader, PanelHeader, StatusBadge, TextLink } from '../components/ui'
+import { PageHeader, PanelHeader, TextLink } from '../components/ui'
 import { useMission } from '../state/MissionContext'
 import { formatCoordinate } from '../lib/time'
 import {MissionSummary} from '../components/MissionSummary'
@@ -35,6 +35,5 @@ export function SiteExplorer() {
     </div>
     <MissionSummary/>
     <ExternalSiteResources latitude={mission.site.latitude} longitude={mission.site.longitude} epoch={mission.startUtc}/>
-    <div className="info-banner"><Info size={19}/><div><strong>Context globe and finite georeferenced terrain.</strong><p>The globe is a reference sphere without global elevation. Local terrain and polar windows use the selected NASA dataset heights and the exact frame bridge; missing data stays unavailable.</p></div><StatusBadge>Finite DEM coverage</StatusBadge></div>
   </>
 }

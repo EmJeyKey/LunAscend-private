@@ -29,7 +29,10 @@ export function conditionSamples(result:ScenarioResult,target:'sun'|'earth'):Hum
   return (result.observations||[]).map(observation=>{
     const time=Date.parse(observation.time_utc),body=terrain.get(time)?.[target],link=target==='earth'?access.get(time):undefined
     const state:ConditionState=result.provider_mode==='mock'?'mock':link?accessStates[link.classification]:body?terrainStates[body.classification]:result.terrain_visibility||result.request.settings.terrain_enabled?'unknown':'not_calculated'
-    return {timeUtc:observation.time_utc,state,label:conditionLabel(state,target,!!link),reason:result.provider_mode==='mock'?'Deterministic demonstration curves; no NASA terrain or ephemeris prediction.':link?'Clearance is an access requirement, not radio signal strength.':body?.reason||'A terrain-aware result is required to judge local obstruction. Geometric elevation alone is insufficient.'}
+    const elevation=observation[`${target}_elevation_deg`].value,name=target==='sun'?'Sun':'Earth'
+    const geometryOnly=result.provider_mode==='scientific'&&!body&&!link&&elevation!==null
+    const label=geometryOnly?`${name} center ${elevation<0?'below':elevation===0?'on':'above'} the geometric horizon (${elevation.toFixed(3)}°); terrain visibility ${result.request.settings.terrain_enabled?'unavailable':'not requested'}`:conditionLabel(state,target,!!link)
+    return {timeUtc:observation.time_utc,state,label,reason:result.provider_mode==='mock'?'Deterministic demonstration curves; no NASA terrain or ephemeris prediction.':link?'Clearance is an access requirement, not radio signal strength.':body?.reason||result.availability?.[`${target}_terrain_visibility`]?.reason||'Geometric center elevation is available; local terrain obstruction and extended-disk visibility are not established. Enable terrain or use Run Full Analysis.'}
   })
 }
 export function powerOutcome(power:PowerAnalysis) {

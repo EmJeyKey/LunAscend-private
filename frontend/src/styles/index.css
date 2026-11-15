@@ -1235,3 +1235,25 @@ body, .app-main { background: var(--bg); }
 .site-chooser>.chosen-site{margin:.65rem 0}.site-chooser>.button{margin-top:.5rem;white-space:normal;text-align:left}
 #moon-viewer{scroll-margin-top:80px}.lunar-explorer>.viewer-stage-wrap{margin-top:.8rem}
 @media(max-width:480px){.site-chooser>h1{font-size:30px}.site-chooser>.button{width:100%}}
+
+/* Explorer action choices wrap naturally within the existing responsive columns. */
+.lunar-explorer .coordinate-actions{display:flex;flex-wrap:wrap;gap:10px}
+.lunar-explorer .coordinate-actions>a,.lunar-explorer .coordinate-actions>button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;max-width:100%;padding:10px 14px;border:1px solid var(--gold);background:var(--secondary-bg,#111923);color:var(--text,#f0eee9);font:600 14px/1.5 var(--font-sans);text-align:center;text-decoration:none;white-space:normal}
+.lunar-explorer .coordinate-actions>:is(a,button):hover{background:#d6ad701a}
+.lunar-explorer .coordinate-actions>:is(a,button):focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.lunar-explorer .viewer-analysis-action{font-size:16px;font-weight:600;min-height:48px;margin-top:20px;white-space:normal;text-align:center}
+.viewer-indicator-guide{padding:14px 0;margin:12px 0;border-block:1px solid var(--border)}
+.viewer-indicator-guide>label{display:flex;align-items:center;gap:8px;color:var(--text,#f0eee9);font-size:14px;font-weight:600}
+.viewer-indicator-key{display:flex;flex-wrap:wrap;gap:18px;margin-top:10px;font-size:13px}
+.viewer-indicator-guide p{font-size:13px;line-height:1.65;margin:8px 0;color:var(--muted)}
+.analysis-run-guide{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px;padding:20px 0;margin:16px 0;border-block:1px solid var(--border)}
+.analysis-run-guide strong{display:block;color:var(--text,#f0eee9);font-size:16px;font-weight:700;margin-bottom:8px}
+.analysis-run-guide p{font-size:14px;line-height:1.7;color:var(--gold);margin:6px 0}
+.analysis-option-status{display:flex;flex-wrap:wrap;gap:8px 16px;padding:0;margin:10px 0;list-style:none;font-size:13px;color:var(--muted)}
+.analysis-option-status b{color:var(--text,#f0eee9)}
+.analysis-run-guide .analysis-hardware-summary,.analysis-run-guide .analysis-run-note{grid-column:1/-1}
+
+.direction-compass{position:absolute;z-index:4;right:12px;top:42px;width:184px;max-width:calc(100% - 24px);padding:10px;background:#080d15eb;border:1px solid #95a3b255;pointer-events:none;font-family:var(--font-sans)}
+.direction-compass strong{display:block;font-size:12px;color:#f0eee9}.direction-compass svg{width:100%;height:120px;display:block}
+.direction-compass span{display:block;font:11px/1.6 var(--font-mono);overflow-wrap:anywhere}.direction-compass small{display:block;color:#95a3b2;font-size:10px;line-height:1.5;margin-top:6px}
+@media(max-width:600px){.direction-compass{width:152px;right:8px;padding:8px}.direction-compass svg{height:88px}}

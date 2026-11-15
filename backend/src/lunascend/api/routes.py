@@ -59,7 +59,8 @@ async def analyze(
 ) -> ScenarioResult:
     if request.provider_mode == "mock" and not http_request.app.state.enable_test_mock:
         return JSONResponse(status_code=422, content=ErrorResponse(errors=(AnalysisError(code="INVALID_REQUEST", message="Mock output is disabled in the production workspace."),)).model_dump(mode="json"))
-    result = await factory(request.provider_mode).analyze(request)
+    from lunascend.providers.availability import describe_products
+    result = describe_products(await factory(request.provider_mode).analyze(request))
     if result.status == "unavailable":
         response.status_code = 503
     elif result.status == "failed":

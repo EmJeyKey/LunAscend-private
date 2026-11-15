@@ -12,6 +12,11 @@ export function fullAnalysisOptions(options:AnalysisOptions):AnalysisOptions {
   if(options.providerMode!=='scientific')throw new Error('Full analysis requires Scientific SPICE. No mock values are substituted.')
   return {...options,terrainEnabled:true,powerEnabled:true,communicationEnabled:true,engineering:{...(options.engineering||initialEngineering)}}
 }
+export function supportedTerrainOptions(options:AnalysisOptions,coverage:{dataset_id:unknown;recommended_radius_m:unknown},full=false):AnalysisOptions {
+  if(typeof coverage.dataset_id!=='string'||typeof coverage.recommended_radius_m!=='number'||!Number.isFinite(coverage.recommended_radius_m)||coverage.recommended_radius_m<1||coverage.recommended_radius_m>50000)throw new Error('Incompatible terrain coverage response.')
+  const selected={...options,coverageNote:undefined,terrainEnabled:true,terrainDatasetId:coverage.dataset_id,terrainRadiusM:String(Math.min(Number(options.terrainRadiusM||coverage.recommended_radius_m),coverage.recommended_radius_m))}
+  return full?fullAnalysisOptions(selected):selected
+}
 export function engineeringSettings(options: AnalysisOptions) {
   const power = !!options.powerEnabled, communication = !!options.communicationEnabled
   if ((power || communication) && (options.providerMode !== 'scientific' || !options.terrainEnabled)) throw new Error('Engineering requires explicit Scientific SPICE and terrain analysis; no mock hardware fallback.')

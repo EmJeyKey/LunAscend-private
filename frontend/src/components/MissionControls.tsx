@@ -10,7 +10,7 @@ import type { ProviderMode } from '../types/analysis'
 import { TerrainOptions } from './TerrainOptions'
 import type { MissionSelection } from '../types/preview'
 import {usePresentation} from '../state/PresentationContext'
-import {fullAnalysisOptions,initialEngineering} from '../lib/engineering'
+import {supportedTerrainOptions,initialEngineering} from '../lib/engineering'
 
 export function MissionControls({ compact = false, onDraftChange }: { compact?: boolean; onDraftChange?: (draft: MissionSelection) => void }) {
   const { mission, updateMission, analysis, options, updateOptions, runAnalysis, invalidate } = useMission()
@@ -44,7 +44,7 @@ export function MissionControls({ compact = false, onDraftChange }: { compact?: 
     if(full&&!options.frameConfirmed){const details=event.currentTarget.querySelector('details');if(details)details.open=true}
     let selection={site,startUtc,durationHours:Number(hours)},settings=options
     coverageJob.current?.abort();const controller=new AbortController();coverageJob.current=controller
-    if(full){
+    if(full||(scientific&&settings.terrainEnabled)){
       try{
         setMessage('Checking installed terrain coverage…')
         if(needsCatalogEpoch(selection,settings)){const resolved=await resolveCatalogEpoch(selection,settings,controller.signal);selection=resolved.selection;settings=resolved.options}
@@ -57,9 +57,8 @@ export function MissionControls({ compact = false, onDraftChange }: { compact?: 
           settings={...settings,terrainEnabled:false,powerEnabled:false,communicationEnabled:false,coverageNote:{siteId:selection.site.id,startUtc,reason:typeof coverage.reason==='string'?coverage.reason:'No installed terrain supports this location.'}}
           setMessage('Geometry requested. No installed terrain supports this coordinate; power, battery and terrain-qualified DTE are unavailable.')
         }else{
-          if(typeof coverage.dataset_id!=='string'||!Number.isFinite(coverage.recommended_radius_m))throw new Error('Incompatible terrain coverage response.')
-          settings=fullAnalysisOptions({...settings,coverageNote:undefined,terrainDatasetId:coverage.dataset_id,terrainRadiusM:String(coverage.recommended_radius_m)})
-          setMessage('Full analysis requested with a verified local DEM. Finite terrain does not establish complete global visibility.')
+          settings=supportedTerrainOptions(settings,coverage,full)
+          setMessage('Verified local DEM selected. Terrain-center visibility requested; finite coverage does not establish global clearance.')
         }
       }catch(error){if(!controller.signal.aborted)setMessage(error instanceof Error?error.message:'Coverage check failed.');return}
     }
@@ -72,11 +71,16 @@ export function MissionControls({ compact = false, onDraftChange }: { compact?: 
       <label className="control-field"><span><CalendarDays size={13}/>START TIME (UTC)</span><input ref={startInput} key={mission.startUtc} name="start_utc" aria-label="Landing date and time in UTC" type="datetime-local" step="0.001" required defaultValue={mission.startUtc.replace(/Z$/, '').replace(/\.000$/, '')} onInput={()=>{setDateVersion(v=>v+1);invalidate()}} onBlur={event=>{const utc=toUtc(event.target.value);if(utc&&Date.parse(utc)!==Date.parse(mission.startUtc))updateMission({...mission,startUtc:utc})}}/></label>
       <label className="control-field period-field"><span><Clock3 size={13}/>DURATION (HOURS)</span><input aria-label="Analysis duration in hours" type="number" min="0.000001" max="8784" step="any" list="analysis-periods" required value={hours} onChange={event => {setHours(event.target.value);const duration=Number(event.target.value);if(Number.isFinite(duration)&&duration>0&&duration<=8784)updateMission({...mission,durationHours:duration})}}/><datalist id="analysis-periods">{durationOptions.map(value => <option key={value} value={value}/>)}</datalist></label>
       <label className="control-field"><span>DATA SOURCE</span><select aria-label="Data source" value={options.providerMode} onChange={event => updateOptions({ ...options, providerMode: event.target.value as ProviderMode, terrainEnabled: event.target.value === 'scientific' && options.terrainEnabled, powerEnabled: event.target.value === 'scientific' && options.powerEnabled, communicationEnabled: event.target.value === 'scientific' && options.communicationEnabled })}><option value="scientific">Scientific SPICE</option></select></label>
-      <button className="button primary" type="submit" disabled={analysis.status === 'loading'}>{analysis.status === 'loading' ? 'Calculating…' : 'Run Analysis'}<ArrowRight size={16}/></button>
+      <button className="button primary" type="submit" disabled={analysis.status === 'loading'}>{analysis.status === 'loading' ? 'Calculating…' : options.terrainEnabled?'Run Analysis':'Run Geometry Only'}<ArrowRight size={16}/></button>
       <button className="button secondary" type="submit" value="full" formNoValidate disabled={!scientific||analysis.status==='loading'}>Run Full Analysis</button>
     </div>
     <p className="mission-setup-help">{scientific?'Scientific analysis needs confirmed lunar coordinates and a known surface height or supported LOLA terrain. Open the settings below, or start with the documented Site01 example.':'Mock mode shows illustrative curves only; it cannot predict a lunar mission.'}</p>
-    {scientific&&<p className="mission-setup-help">Run Analysis uses selected options: terrain {options.terrainEnabled?'on':'off'}, power/battery {options.powerEnabled?'on':'off'}, DTE {options.communicationEnabled?'on':'off'}. Run Full Analysis checks installed terrain first, then requests supported products with the hardware below. Without terrain, only geometry is available and an explicit height assumption is required. Current assumptions: {(options.engineering||initialEngineering).panel_area_m2} m² panels, {(options.engineering||initialEngineering).orientation_mode.replaceAll('_',' ')}, {(options.engineering||initialEngineering).baseline_load_w} W base load, {(options.engineering||initialEngineering).battery_capacity_wh} Wh battery. Coordinate confirmation is still required; coverage is checked by the backend. No opportunity search is started.</p>}
+    {scientific&&<section className="analysis-run-guide" aria-label="Analysis options explained">
+      <div><strong>{options.terrainEnabled?'Run Analysis':'Run Geometry Only'}</strong><p>{options.terrainEnabled?'Checks installed terrain and calculates center visibility with your selected engineering options.':'Sun/Earth positions only. Enable terrain below to request obstruction classifications.'}</p><ul className="analysis-option-status"><li>Terrain: <b>{options.terrainEnabled?'On':'Off'}</b></li><li>Power / battery: <b>{options.powerEnabled?'On':'Off'}</b></li><li>Earth access (DTE): <b>{options.communicationEnabled?'On':'Off'}</b></li></ul></div>
+      <div><strong>Run Full Analysis</strong><p>Checks installed terrain, then requests supported terrain, power, battery and Earth-access results.</p><p>Without terrain: geometry only, with an explicit surface height.</p></div>
+      <div className="analysis-hardware-summary"><strong>Hardware assumptions</strong><p>{(options.engineering||initialEngineering).panel_area_m2} m² panels · {(options.engineering||initialEngineering).orientation_mode.replaceAll('_',' ')} · {(options.engineering||initialEngineering).baseline_load_w} W base load · {(options.engineering||initialEngineering).battery_capacity_wh} Wh battery</p></div>
+      <p className="analysis-run-note">Confirm coordinates in the settings below. Neither action starts an opportunity search.</p>
+    </section>}
     {scientific && <button className="text-link terrain-example" type="button" onClick={() => {
       updateMission({ site: { id: 'custom', name: 'LOLA Site01 example', latitude: -89.46315760953222, longitude: -137.50097847854008, description: 'Documented Site01 DEM pixel-center example, converted to DE440/ME421 at the original landing epoch; not a surveyed or approved landing site.' }, startUtc: '2026-11-14T00:00:00.000Z', durationHours: 24 })
       updateOptions({ ...options, terrainDatasetId: undefined, coordinateEpochUtc: undefined, terrainEnabled: true, observerHeightM: '2', sampleStepS: '3600', frameConfirmed: false })

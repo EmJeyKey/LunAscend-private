@@ -55,3 +55,8 @@ export function rendererLease<T extends {dispose:()=>void}>(factory:()=>Promise<
   void factory().then(value=>{if(cancelled)value.dispose();else{current=value;ready(value)}},error=>{if(!cancelled)failed(error)})
   return ()=>{cancelled=true;current?.dispose();current=null}
 }
+
+// Perspective display sizing only: retain a CSS-pixel radius as the camera zooms.
+export function markerWorldRadius(depth:number,verticalFovDegrees:number,viewportHeight:number,pixelRadius=8) {
+  return 2*Math.max(.001,depth)*Math.tan(verticalFovDegrees*Math.PI/360)*pixelRadius/Math.max(1,viewportHeight)
+}

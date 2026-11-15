@@ -37,6 +37,7 @@ export interface ScenarioResult {
   schema_version: '1.0'; scenario_id: string; request: ScenarioRequest; provider_mode: ProviderMode; model_version: string
   status: 'complete' | 'partial' | 'failed' | 'unavailable'; observations: EphemerisObservation[] | null
   horizon: TerrainHorizon | null; visibility_windows: TerrainWindow[] | null; terrain_visibility?: TerrainVisibility | null; power: PowerAnalysis | null; communication: CommunicationAnalysis | null; resilience: null
+  availability?: Record<string,{code:string;reason:string}>
   provenance: DataProvenance[]; errors: AnalysisError[]; warnings: string[]
 }
 export interface AnalysisOptions {

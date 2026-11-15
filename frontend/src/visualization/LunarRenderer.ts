@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js'
-import {elevationColor,exaggeratedPositions,geographicToScene,sceneToGeographic,surfaceBearing,surfacePose} from '../lib/lunarScene'
+import {elevationColor,exaggeratedPositions,geographicToScene,sceneToGeographic,surfaceBearing,surfacePose,markerWorldRadius} from '../lib/lunarScene'
 import type {DirectionOverlay,RenderStats,SurfaceBearing,TerrainMesh,Vector3} from '../types/visualization'
 import {GlobeImagery,type GlobeImageStatus} from './GlobeImagery'
 import {surfaceFacing,type ApolloPin} from '../lib/apollo'
@@ -120,7 +120,12 @@ export class LunarRenderer implements LunarView {
       const start=performance.now()
       this.globe.updateMatrixWorld(true)
       const camera=this.globe.worldToLocal(this.cameraObject.position.clone()).toArray()
-      this.apollo.children.forEach(pin=>{pin.visible=surfaceFacing(pin.position.toArray(),camera)})
+      this.cameraObject.updateMatrixWorld(true)
+      this.apollo.children.forEach(pin=>{
+        pin.visible=surfaceFacing(pin.position.toArray(),camera)
+        const depth=-pin.getWorldPosition(new THREE.Vector3()).applyMatrix4(this.cameraObject.matrixWorldInverse).z
+        pin.scale.setScalar(markerWorldRadius(depth,this.cameraObject.fov,this.host.clientHeight,pin.userData.pixelRadius as number))
+      })
       this.renderer.render(this.scene,this.cameraObject)
       this.stats={...this.stats,draws:this.stats.draws+1,triangles:this.renderer.info.render.triangles,lastDrawMs:performance.now()-start}
       this.onStats({...this.stats})
@@ -181,9 +186,9 @@ export class LunarRenderer implements LunarView {
   setApollo(pins:ApolloPin[],visible:boolean,selected:string){
     disposeGroup(this.apollo);this.apollo.visible=visible
     for(const pin of pins){
-      const radius=pin.category==='polar-study'?(pin.id===selected?.006:.003):(pin.id===selected?.022:.015)
-      const dot=new THREE.Mesh(new THREE.SphereGeometry(radius,16,12),new THREE.MeshBasicMaterial({color:pin.id===selected?0xffffff:pin.category==='polar-study'?0x7bbfd0:0xf2d38b,depthTest:true}))
-      dot.position.set(...geographicToScene(pin.context_latitude,pin.context_longitude,1.008));dot.userData.apolloId=pin.id
+      const pixelRadius=pin.id===selected?11:8
+      const dot=new THREE.Mesh(new THREE.SphereGeometry(1,16,12),new THREE.MeshBasicMaterial({color:pin.id===selected?0xffffff:pin.category==='polar-study'?0x7bbfd0:0xf2d38b,depthTest:false}))
+      dot.position.set(...geographicToScene(pin.context_latitude,pin.context_longitude,1.008));dot.userData.apolloId=pin.id;dot.userData.pixelRadius=pixelRadius;dot.renderOrder=102
       this.apollo.add(dot)
     }
     this.requestDraw()

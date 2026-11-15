@@ -3,7 +3,7 @@ import {renderToStaticMarkup} from 'react-dom/server'
 import evidence from '../../../docs/validation/step-8-results.json'
 import {parseResult} from '../api/analysis'
 import {buildRequest,initialOptions} from '../lib/analysis'
-import {initialEngineering} from '../lib/engineering'
+import {initialEngineering,supportedTerrainOptions} from '../lib/engineering'
 import {EngineeringPanel} from '../components/EngineeringPanel'
 import {EngineeringComparison} from '../components/EngineeringComparison'
 import type {ScenarioRequest} from '../types/analysis'
@@ -71,5 +71,25 @@ describe('engineering request/result and scientific presentation',()=>{
     expect(html).toContain('Battery 500 Wh')
     expect(html).toContain('14698.80 Wh')
     expect(html).toContain('no universal ranking')
+  })
+})
+
+
+describe('terrain preflight retains explicit analysis scope',()=>{
+  it('selects the verified dataset for normal terrain analysis without enabling unrequested engineering',()=>{
+    const selected=supportedTerrainOptions({...options,powerEnabled:false,communicationEnabled:false},{dataset_id:'pgda-site06-5m-window-v1',recommended_radius_m:100})
+    const payload=buildRequest(mission,selected)
+    expect(payload.settings.terrain_enabled).toBe(true)
+    expect(payload.settings.terrain_options?.dataset_id).toBe('pgda-site06-5m-window-v1')
+    expect(payload.settings.terrain_options?.max_search_radius_m).toBe(100)
+    expect(payload.settings.power_enabled).toBe(false)
+    expect(payload.settings.communication_enabled).toBe(false)
+  })
+  it('enables all supported products only for the explicit Full Analysis action',()=>{
+    const selected=supportedTerrainOptions({...options,powerEnabled:false,communicationEnabled:false},{dataset_id:'pgda-site04-5m-window-v1',recommended_radius_m:100},true)
+    const payload=buildRequest(mission,selected)
+    expect(payload.settings.power_enabled).toBe(true)
+    expect(payload.settings.communication_enabled).toBe(true)
+    expect(()=>supportedTerrainOptions(options,{dataset_id:null,recommended_radius_m:100})).toThrow('coverage response')
   })
 })

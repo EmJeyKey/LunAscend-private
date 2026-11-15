@@ -346,6 +346,13 @@ class TerrainVisibility(Contract):
     assumptions: tuple[Text, ...]
 
 
+class ProductAvailability(Contract):
+    code: Literal["calculated", "geometric_only", "terrain_qualified", "not_requested",
+                  "dataset_not_installed", "dataset_unavailable", "outside_dataset_coverage", "reference_frame_error",
+                  "missing_observer_information", "missing_user_settings", "calculation_failed", "unsupported"]
+    reason: Text
+
+
 class ScenarioResult(Contract):
     schema_version: Literal["1.0"] = "1.0"
     scenario_id: Text
@@ -363,6 +370,7 @@ class ScenarioResult(Contract):
     provenance: tuple[DataProvenance, ...]
     errors: tuple[AnalysisError, ...] = ()
     warnings: tuple[Text, ...] = ()
+    availability: dict[str, ProductAvailability] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def coherent_result(self) -> "ScenarioResult":

@@ -1,11 +1,11 @@
-import {useEffect,useRef,useState} from 'react'
+import {useEffect,useRef,useState,type ReactNode} from 'react'
 import {Link} from 'react-router'
 import {imageLayer,imageResolution,inImageBounds,mapLevel,mapPoint,mapProject,mapScale,mapUnproject,panMap,screenPoint,tileBounds,TilePool,visibleTiles,zoomMap,type MapView} from '../lib/imagery'
 import {environmentColor,loadEnvironment,loadScreening,type ScreeningCriteria,type EnvironmentId,type EnvironmentRaster} from '../lib/environment'
 import type {ApolloPin} from '../lib/apollo'
 
 export interface ImageAnchor {latitude:number;longitude:number;qualification:string}
-export function LunarImageMap({anchor,onAdopt,onTerrain,sites=[],onSite}:{anchor:ImageAnchor;onAdopt:(latitude:number,longitude:number)=>void;onTerrain?:()=>void;sites?:ApolloPin[];onSite?:(site:ApolloPin)=>void}) {
+export function LunarImageMap({anchor,onAdopt,onTerrain,sites=[],onSite,directionOverlay}:{directionOverlay?:ReactNode;anchor:ImageAnchor;onAdopt:(latitude:number,longitude:number)=>void;onTerrain?:()=>void;sites?:ApolloPin[];onSite?:(site:ApolloPin)=>void}) {
   const [environment,setEnvironment]=useState<EnvironmentId|'none'>('none'),[environmentMode,setEnvironmentMode]=useState('long_term')
   const [raster,setRaster]=useState<EnvironmentRaster|null>(null),[environmentError,setEnvironmentError]=useState(''),[regions,setRegions]=useState(false)
   const [criteria,setCriteria]=useState<ScreeningCriteria>({minimum_solar_fraction:.5,minimum_earth_fraction:.5,exclude_permanent_shadow:true,require_mission_engineering:true,maximum_slope_deg:null}),[screeningRun,setScreeningRun]=useState(0)
@@ -104,7 +104,8 @@ export function LunarImageMap({anchor,onAdopt,onTerrain,sites=[],onSite}:{anchor
     <label><input type="checkbox" checked={regions} onChange={e=>setRegions(e.target.checked)}/>NASA Artemis candidate regions</label>{regions&&<><p>October 2024 assessment · no priority order. Verified boundaries are not installed; no polygons inferred.</p><ul>{['Peak near Cabeus B','Haworth','Malapert Massif','Mons Mouton Plateau','Mons Mouton','Nobile Rim 1','Nobile Rim 2','de Gerlache Rim 2','Slater Plain'].map(name=><li key={name}>{name}</li>)}</ul><a href="https://www.nasa.gov/news-release/nasa-provides-update-on-artemis-iii-moon-landing-regions/" target="_blank" rel="noopener noreferrer">NASA assessment · 28 October 2024</a></>}</details>
     <div className="viewer-toolbar" aria-label="Photographic map modes"><button aria-pressed={mode==='global'} onClick={()=>fit('global')}>Global map</button><button aria-pressed={mode==='south'} onClick={()=>fit('south')}>South polar imagery</button><button aria-pressed={mode==='local'} onClick={()=>fit('local')}>Local site imagery</button></div>
     <div className="image-map-canvas" ref={container}>
-      {sites.map(site=>{const p=mapProject(layer,site.latitude,site.longitude);if(!inImageBounds(layer,...p))return null;const [x,y]=screenPoint(view,size.width,size.height,...p);if(x<0||x>size.width||y<0||y>size.height)return null;return <button key={site.id} aria-label={`Select ${site.name} map marker`} title={site.name} onClick={()=>onSite?.(site)} style={{position:'absolute',zIndex:2,left:x,top:y,transform:'translate(-50%,-50%)',width:18,height:18,padding:0,borderRadius:'50%',background:site.category==='polar-study'?'#7bbfd0':'#f2d38b',border:'2px solid #080d15'}}/>})}
+      {directionOverlay}
+      {sites.map(site=>{const p=mapProject(layer,site.latitude,site.longitude);if(!inImageBounds(layer,...p))return null;const [x,y]=screenPoint(view,size.width,size.height,...p);if(x<0||x>size.width||y<0||y>size.height)return null;return <button key={site.id} aria-label={`Select ${site.name} map marker`} title={site.name} onClick={()=>onSite?.(site)} style={{position:'absolute',zIndex:2,left:x,top:y,transform:'translate(-50%,-50%)',width:22,height:22,padding:0,borderRadius:'50%',background:site.category==='polar-study'?'#7bbfd0':'#f2d38b',border:'2px solid #080d15'}}/>})}
       <canvas ref={canvas} tabIndex={0} role="img" aria-label="Interactive photographic lunar map. Drag to pan, wheel or pinch to zoom, click to inspect cartographic coordinates. Arrow keys pan; plus and minus zoom."
         onKeyDown={e=>{if(['+','=','-'].includes(e.key)){e.preventDefault();zoom(e.key==='-'?1.5:1/1.5)}else if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();setView(v=>panMap(v,e.key==='ArrowLeft'?80:e.key==='ArrowRight'?-80:0,e.key==='ArrowUp'?80:e.key==='ArrowDown'?-80:0))}}}
         onPointerDown={e=>{if(e.button!==0)return;e.currentTarget.setPointerCapture(e.pointerId);pointers.current.set(e.pointerId,[e.clientX,e.clientY]);moved.current=false}}

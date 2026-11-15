@@ -321,3 +321,7 @@ Unit tests alone are not scientific validation. Horizons and SPICE may share und
 ## Risks and unresolved decisions
 
 Step 2 confirms the minimal Windows x64 backend stack and tool pins; heavy scientific dependencies remain untested. Step 3 must choose matched kernels, frame realization, reference surface, Horizons comparison configuration and physical time support. Step 8 must resolve DEM datum/frame registration, actual driver coverage, missing far-field terrain, ray resolution and product permissions. Thin polar visibility windows may be missed by coarse sampling; numerical convergence needs measurement. Disk treatment and observer height can materially alter outcomes. Scientific uncertainty is not equivalent to UI precision. Step 13 must verify event/submission rules, privacy-compatible hosting and migration; no hosting is selected or authorized now.
+
+## Sun/Earth availability integration repair
+
+The existing analyze API adds optional typed `availability` metadata describing returned products and omissions; it does not alter numerical engines. Both explicit terrain-enabled UI actions preflight actual installed coverage; geometry-only remains explicit, and only Full Analysis enables all engineering options. Geometric center elevations and terrain classifications remain separate. See docs/SUN_EARTH_DATA_AUDIT.md for executed five-location evidence and limitations.

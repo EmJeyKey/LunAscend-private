@@ -20,7 +20,7 @@ import type {Opportunity} from '../types/resilience'
 import {sourceCatalog} from '../lib/resources'
 
 const current=vi.hoisted(()=>({result:null as unknown,status:'idle',message:'',index:0,cleared:false,select:vi.fn()}))
-vi.mock('../state/MissionContext',()=>({useMission:()=>({analysis:{result:current.result,status:current.status,message:current.message},sampleIndex:current.index,resultsCleared:current.cleared,selectSample:current.select})}))
+vi.mock('../state/MissionContext',()=>({useMission:()=>({analysis:{result:current.result,status:current.status,message:current.message},sampleIndex:current.index,resultsCleared:current.cleared,selectSample:current.select,options:initialOptions,mission:{site:{id:'test'},startUtc:'2026-11-14T00:00:00Z'}})}))
 const actual=()=>parseResult(structuredClone(evidence.result),evidence.result.request as ScenarioRequest)
 const render=(node:ReactNode,mode:PresentationMode='simple')=>renderToStaticMarkup(<MemoryRouter><PresentationProvider initialMode={mode}>{node}</PresentationProvider></MemoryRouter>)
 beforeEach(()=>{current.result=null;current.status='idle';current.message='';current.index=0;current.cleared=false})
@@ -40,6 +40,11 @@ describe('plain-language statuses preserve authoritative scientific meaning',()=
   it('does not infer terrain visibility from positive geometric Sun/Earth elevations',()=>{
     const result=parseResult(structuredClone(geometry),geometry.request as ScenarioRequest)
     expect(conditionSamples(result,'sun').every(s=>s.state==='not_calculated')).toBe(true)
+    result.observations![0].sun_elevation_deg.value=-2
+    expect(conditionSamples(result,'sun')[0].label).toContain('below the geometric horizon (-2.000°)')
+    expect(conditionSamples(result,'sun')[0].label).toContain('terrain visibility not requested')
+    result.observations![0].sun_elevation_deg.value=0
+    expect(conditionSamples(result,'sun')[0].label).toContain('on the geometric horizon (0.000°)')
     expect(conditionSamples(result,'earth').every(s=>s.state==='not_calculated')).toBe(true)
   })
   it('distinguishes unknown terrain, required clearance and possible access without interpolating missing timestamps',()=>{
