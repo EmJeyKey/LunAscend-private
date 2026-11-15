@@ -1,11 +1,9 @@
-import {createContext,useContext,useMemo,useState,type PropsWithChildren} from 'react'
+import type {PropsWithChildren} from 'react'
 
 export type PresentationMode='simple'|'advanced'
-const PresentationContext=createContext<{mode:PresentationMode;setMode:(mode:PresentationMode)=>void}>({mode:'simple',setMode:()=>{}})
-
-export function PresentationProvider({children,initialMode='simple'}:PropsWithChildren<{initialMode?:PresentationMode}>) {
-  const [mode,setMode]=useState<PresentationMode>(initialMode)
-  const value=useMemo(()=>({mode,setMode}),[mode])
-  return <PresentationContext.Provider value={value}>{children}</PresentationContext.Provider>
+// One workspace. Keep the small compatibility hook while existing viewers use
+// `advanced` to expose supported controls; there is no alternate user mode.
+export function PresentationProvider({children}:PropsWithChildren<{initialMode?:PresentationMode}>) {
+  return children
 }
-export function usePresentation(){const context=useContext(PresentationContext);return {...context,advanced:context.mode==='advanced'}}
+export function usePresentation(){return {mode:'unified' as const,advanced:true}}

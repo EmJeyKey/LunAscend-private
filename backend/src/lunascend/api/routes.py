@@ -2,7 +2,9 @@
 
 from typing import Annotated, Callable, Literal
 
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Response, Request
+from fastapi.responses import JSONResponse
+from lunascend.contracts import AnalysisError
 
 from lunascend import __version__
 from lunascend.contracts import ErrorResponse, ScenarioRequest, ScenarioResult
@@ -24,9 +26,9 @@ class ApplicationInfo(Contract):
     api_version: str = "1.0"
     capabilities: tuple[str, ...] = ("contract_validation", "provider_dispatch")
     implemented_analysis_providers: tuple[str, ...] = ("mock", "scientific")
-    selectable_provider_modes: tuple[ProviderMode, ...] = ("mock", "scientific")
+    selectable_provider_modes: tuple[ProviderMode, ...] = ("scientific",)
     scientific_calculations_available: bool = False
-    mock_analysis_available: bool = True
+    mock_analysis_available: bool = False
 
 
 def provider_factory() -> Callable[[ProviderMode], AnalysisProvider]:
@@ -39,11 +41,12 @@ def health() -> Health:
 
 
 @router.get("/api/v1/info")
-def info() -> ApplicationInfo:
+def info(http_request: Request) -> ApplicationInfo:
     from lunascend.providers.scientific import scientific_available
     available = scientific_available()
     return ApplicationInfo(scientific_calculations_available=available,
-                           capabilities=("contract_validation", "provider_dispatch", "geometric_ephemeris", "illustrative_mock"))
+                           mock_analysis_available=http_request.app.state.enable_test_mock,
+                           capabilities=("contract_validation", "provider_dispatch", "geometric_ephemeris"))
 
 
 @router.post("/api/v1/scenarios/analyze", response_model=ScenarioResult,
@@ -51,8 +54,11 @@ def info() -> ApplicationInfo:
 async def analyze(
     request: ScenarioRequest,
     response: Response,
+    http_request: Request,
     factory: Annotated[Callable[[ProviderMode], AnalysisProvider], Depends(provider_factory)],
 ) -> ScenarioResult:
+    if request.provider_mode == "mock" and not http_request.app.state.enable_test_mock:
+        return JSONResponse(status_code=422, content=ErrorResponse(errors=(AnalysisError(code="INVALID_REQUEST", message="Mock output is disabled in the production workspace."),)).model_dump(mode="json"))
     result = await factory(request.provider_mode).analyze(request)
     if result.status == "unavailable":
         response.status_code = 503

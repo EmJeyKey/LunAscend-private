@@ -41,3 +41,7 @@ export async function loadApollo(epoch:string,signal:AbortSignal):Promise<Apollo
 export function surfaceFacing(point:readonly number[],camera:readonly number[]) {
   return point.reduce((sum,v,i)=>sum+v*(camera[i]-v),0)>0
 }
+
+export function catalogIdentity(pin:ApolloPin){
+ return {category:pin.category||'apollo-historical',native:{latitude:pin.latitude,longitude:pin.longitude,frame:'MOON_ME_DE421' as const,source:pin.source||apolloCatalog.source,datasetId:pin.dataset_id,quality:pin.quality}}
+}

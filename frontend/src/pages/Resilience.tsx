@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { PageHeader } from '../components/ui'
-import { MissionControls } from '../components/MissionControls'
+import {MissionSummary} from '../components/MissionSummary'
 import {SourceInfo} from '../components/SourceInfo'
 import {ScientificDetails} from '../components/PresentationControls'
 import {opportunityExplanation,conditionSamples} from '../lib/humanize'
@@ -9,19 +9,18 @@ import {NumericalResults} from '../components/NumericalResults'
 import { BatteryPlot } from '../components/EngineeringPanel'
 import { useMission } from '../state/MissionContext'
 import { buildRequest } from '../lib/analysis'
-import { classLabels, comparisonInput, defaultConstraints, opportunitySummary, sortOpportunities, utcInput } from '../lib/resilience'
+import { classLabels, comparisonInput, opportunitySummary, sortOpportunities, utcInput } from '../lib/resilience'
 import { engineeringNumber as number, outcomeLabels } from '../lib/engineering'
 import { requestOpportunities } from '../api/resilience'
 import type { Opportunity, OpportunityResponse, MissionConstraints } from '../types/resilience'
 import type { AnalysisOptions } from '../types/analysis'
-import type { MissionSelection } from '../types/preview'
 
 export function Resilience() {
-  const {mission,options,analysis,comparisonStore,comparison} = useMission()
-  const [baselineDraft,setBaselineDraft]=useState<MissionSelection>(mission)
+  const {mission,options,analysis,comparisonStore,comparison,requirements:rules,setRequirements:setRules} = useMission()
+  const baselineDraft=mission
   const [delay,setDelay]=useState(24),[units,setUnits]=useState('hours'),[alternate,setAlternate]=useState('')
   const [first,setFirst]=useState(mission.startUtc.slice(0,16)),[last,setLast]=useState(new Date(Date.parse(mission.startUtc)+3*86400000).toISOString().slice(0,16))
-  const [step,setStep]=useState(24),[sites,setSites]=useState(''),[rules,setRules]=useState(defaultConstraints)
+  const [step,setStep]=useState(24),[sites,setSites]=useState('')
   const [data,setData]=useState<OpportunityResponse|null>(null),[selected,setSelected]=useState(''),[message,setMessage]=useState(''),[busy,setBusy]=useState(false)
   const [filter,setFilter]=useState('all'),[sort,setSort]=useState('date'),[descending,setDescending]=useState(false)
   const run=useRef<{version:number;controller:AbortController|null}>({version:0,controller:null})
@@ -30,7 +29,7 @@ export function Resilience() {
   useEffect(()=>{run.current.version++;run.current.controller?.abort();setBusy(false);setData(null);setMessage('')},[baselineDraft,options])
   useEffect(()=>()=>{run.current.version++;run.current.controller?.abort()},[])
   useEffect(()=>{if (Number.isFinite(Date.parse(baselineDraft.startUtc))) {setFirst(baselineDraft.startUtc.slice(0,16));setLast(new Date(Date.parse(baselineDraft.startUtc)+3*86400000).toISOString().slice(0,16))}},[baselineDraft.startUtc])
-  const change=(key: keyof MissionConstraints,value: number|boolean|null)=>{cancel();setData(null);setRules(old=>({...old,[key]:value}))}
+  const change=(key: keyof MissionConstraints,value: number|boolean|null)=>{cancel();setData(null);setRules({...rules,[key]:value})}
   const execute=async (delayed:boolean)=>{
     cancel();setData(null);setMessage('')
     try {
@@ -63,8 +62,8 @@ export function Resilience() {
   }
   const field=(key:keyof MissionConstraints,label:string,unit:string)=> <label key={key}>{label} / {unit}<input type="number" min="0" step="any" value={rules[key]===null?'':String(rules[key])} onChange={e=>change(key,e.target.value===''?null:Number(e.target.value))}/></label>
   return <><PageHeader eyebrow="RESILIENCE / SCIENTIFIC WHAT IF" title="What If the Mission Is Delayed?" description="Your landing is delayed. What changes? Recalculate the conditions, compare consequences and explore alternatives under the same hardware assumptions."/>
-    <ol className="mission-guide"><li>Original landing plan</li><li>Choose a delay</li><li>Recalculate conditions</li><li>Compare consequences</li><li>Explore alternatives</li></ol>
-    <section className="panel resilience-section"><h2>Original Mission</h2><p>Choose the original location, landing time and mission length. Enable terrain, power/battery and Earth-access analysis in its settings. Changing only the landing date keeps every hardware assumption.</p><MissionControls onDraftChange={setBaselineDraft}/>{analysis?.result && <p>Current baseline analysis: {analysis.result.power ? outcomeLabels[analysis.result.power.outcome] : analysis.result.status}. Conditional DTE access: {number(analysis.result.communication?.earth_visibility_duration_s.value)} s. Run the delay/search calculation to inspect original-versus-alternative evidence.</p>}<p className="mono">{baselineDraft.site.name} · {baselineDraft.startUtc} · {baselineDraft.durationHours} h · {options.providerMode==='mock'?'MOCK / NOT LUNAR PREDICTIONS · excluded from opportunity search':'Scientific SPICE / explicit LOLA coverage required'}</p></section>
+    <Link className="text-link" to="/analysis#mission-assessment">Return to mission assessment →</Link><ol className="mission-guide"><li>Original landing plan</li><li>Choose a delay</li><li>Recalculate conditions</li><li>Compare consequences</li><li>Explore alternatives</li></ol>
+    <section className="panel resilience-section"><h2>Original Mission</h2><p>Uses the current mission and hardware. Edit them on Analysis; a delay keeps the same physical location.</p><MissionSummary/>{analysis?.result && <p>Current baseline analysis: {analysis.result.power ? outcomeLabels[analysis.result.power.outcome] : analysis.result.status}. Conditional DTE access: {number(analysis.result.communication?.earth_visibility_duration_s.value)} s. Run the delay/search calculation to inspect original-versus-alternative evidence.</p>}<p className="mono">{baselineDraft.site.name} · {baselineDraft.startUtc} · {baselineDraft.durationHours} h · {options.providerMode==='mock'?'MOCK / NOT LUNAR PREDICTIONS · excluded from opportunity search':'Scientific SPICE / explicit LOLA coverage required'}</p></section>
     <section className="panel resilience-section"><h2>What If the Landing Is Delayed?</h2><p>Each date is recalculated for the same physical observer. The existing exact frame conversion keeps the location fixed; no old environmental result is relabeled with a new date.</p>
       <div className="atlas-actions">{[1,3,5,7].map(d=><button key={d} className="button secondary" onClick={()=>{cancel();setData(null);setDelay(d);setUnits('days');setAlternate('')}}>Delay by {d} day{d===1?'':'s'}</button>)}<button className="button secondary" onClick={()=>{cancel();setData(null);setDelay(0);setAlternate('')}}>Restore original date</button></div>
       <div className="resilience-controls"><label>Custom landing shift<input type="number" value={delay} onChange={e=>{cancel();setData(null);setDelay(Number(e.target.value));setAlternate('')}}/></label><label>Shift units<select value={units} onChange={e=>{cancel();setData(null);setUnits(e.target.value)}}><option>hours</option><option>days</option></select></label><label>Alternative landing UTC<input type="datetime-local" step="1" value={alternate} onInput={e=>{cancel();setData(null);setAlternate(e.currentTarget.value)}}/></label></div>

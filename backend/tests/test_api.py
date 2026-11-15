@@ -28,7 +28,7 @@ def test_info_is_honest(client):
     info = response.json()
     assert info["implemented_analysis_providers"] == ["mock", "scientific"]
     assert not info["scientific_calculations_available"]
-    assert info["mock_analysis_available"]
+    assert not info["mock_analysis_available"]
 
 
 @pytest.mark.parametrize("mode", ["scientific"])
@@ -99,3 +99,9 @@ def test_docs_and_openapi(client):
     schema = client.get("/openapi.json").json()
     assert "ScenarioRequest" in schema["components"]["schemas"]
     assert "503" in schema["paths"]["/api/v1/scenarios/analyze"]["post"]["responses"]
+
+
+def test_production_rejects_mock(client, request_data):
+    response = client.post("/api/v1/scenarios/analyze", json=request_data | {"provider_mode":"mock"})
+    assert response.status_code == 422
+    assert "disabled" in response.json()["errors"][0]["message"]

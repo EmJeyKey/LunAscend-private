@@ -1,6 +1,6 @@
 import {useEffect,useRef,useState} from 'react'
 import {Link} from 'react-router'
-import {apolloCatalog,loadApollo,loadPolarSites,type ApolloPin} from '../lib/apollo'
+import {apolloCatalog,catalogIdentity,loadApollo,loadPolarSites,type ApolloPin} from '../lib/apollo'
 import {useMission} from '../state/MissionContext'
 import terrainCatalog from '../../../data/manifests/apollo-terrain/catalog.json'
 export function ApolloSitePanel({site,onClose}:{site:ApolloPin;onClose:()=>void}) {
@@ -20,7 +20,7 @@ export function ApolloSitePanel({site,onClose}:{site:ApolloPin;onClose:()=>void}
       const pin=(await (polar?loadPolarSites:loadApollo)(epoch,controller.signal)).find(p=>p.id===site.id)
       if(!pin)throw new Error('Selected site is unavailable in the verified registry.')
       if(controller.signal.aborted)return
-      const selection={...mission,startUtc:epoch,site:{id:site.id,name:site.name,latitude:pin.context_latitude,longitude:pin.context_longitude,description:site.point_kind||'NASA DE421 LM coordinates transformed exactly at this epoch. Explicit hypothetical surface height; local terrain unavailable.'}}
+      const selection={...mission,startUtc:epoch,site:{...catalogIdentity(pin),id:site.id,name:site.name,latitude:pin.context_latitude,longitude:pin.context_longitude,description:site.point_kind||'NASA DE421 LM coordinates transformed exactly at this epoch. Explicit hypothetical surface height; local terrain unavailable.'}}
       const settings={...options,providerMode:'scientific' as const,frameConfirmed:true,coordinateEpochUtc:epoch,surfaceElevationM:terrain?'':height,terrainDatasetId:site.dataset_id||undefined,terrainRadiusM:terrain?'100':options.terrainRadiusM,terrainRadialStepM:'5',observerHeightM:terrain?options.observerHeightM:'0',terrainEnabled:terrain,powerEnabled:false,communicationEnabled:terrain}
       if(compare){const id=comparisonStore.add(selection,settings);setMessage(id?'Location added. Run it in Comparison.':'Comparison is full. Remove a scenario first.')}
       else {runAnalysis(selection,settings);setMessage(terrain?'Geometry, finite local terrain and conditional DTE requested. Distant terrain remains unknown.':'Geometric analysis requested. Terrain visibility and DTE engineering remain unknown.')}

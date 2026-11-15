@@ -14,7 +14,7 @@ import {LunarImageMap,type ImageAnchor} from './LunarImageMap'
 import {requestImageAnchor} from '../api/imagery'
 import type {GlobeImageStatus} from '../visualization/GlobeImagery'
 import type {LunarView,Pick} from '../visualization/LunarRenderer'
-import {loadApollo,loadPolarSites,type ApolloPin} from '../lib/apollo'
+import {catalogIdentity,loadApollo,loadPolarSites,type ApolloPin} from '../lib/apollo'
 import {ApolloSitePanel} from './ApolloSitePanel'
 
 const number=(v:number|null|undefined,places=3)=>v==null?'Unavailable':v.toFixed(places)
@@ -91,7 +91,7 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
   const selectCatalogPin=(pin:ApolloPin)=>{
     setApolloSelected(pin.id)
     api?.focusCoordinate?.(pin.context_latitude,pin.context_longitude)
-    updateMission({...mission,startUtc:currentTime,site:{id:pin.id,name:pin.name,latitude:pin.context_latitude,longitude:pin.context_longitude,description:pin.point_kind||'NASA Lunar Module location · exact DE421 to DE440 conversion.'}})
+    updateMission({...mission,startUtc:currentTime,site:{...catalogIdentity(pin),id:pin.id,name:pin.name,latitude:pin.context_latitude,longitude:pin.context_longitude,description:pin.point_kind||'NASA Lunar Module location · exact DE421 to DE440 conversion.'}})
     updateOptions({...options,providerMode:'scientific',frameConfirmed:false,coordinateEpochUtc:currentTime,terrainDatasetId:pin.dataset_id||undefined,terrainEnabled:!!pin.dataset_id,surfaceElevationM:'',powerEnabled:false,communicationEnabled:false,terrainRadiusM:pin.dataset_id?'100':options.terrainRadiusM})
   }
   const adoptGlobeCoordinate=()=>{
@@ -162,7 +162,7 @@ export function LunarExplorer({compact=false}:{compact?:boolean}) {
   const reconciled=result?.terrain_visibility?.observer_geometry?.[sampleIndex]
   const latitude=typeof reconciled?.latitude_deg_de440==='number'?reconciled.latitude_deg_de440:site.latitude
   const longitude=typeof reconciled?.longitude_deg_de440==='number'?reconciled.longitude_deg_de440:site.longitude
-  useEffect(()=>{api?.setMarker(latitude,longitude)},[api,latitude,longitude])
+  useEffect(()=>{api?.setMarker(latitude,longitude);api?.focusCoordinate?.(latitude,longitude)},[api,latitude,longitude])
   const overlays=useMemo<DirectionOverlay>(()=>{
     if(mode==='globe')return {origin:geographicToScene(latitude,longitude,1.014),sun:observation&&(!result?.terrain_visibility||reconciled)?globalDirection(latitude,longitude,observation.sun_azimuth_deg.value,observation.sun_elevation_deg.value):null,earth:observation&&(!result?.terrain_visibility||reconciled)?globalDirection(latitude,longitude,observation.earth_azimuth_deg.value,observation.earth_elevation_deg.value):null}
     return {origin:mesh?.observer_scene_m||[0,0,0],sun:mesh&&native?localDirection(native.sun.azimuth_deg,native.sun.elevation_deg):null,earth:mesh&&native?localDirection(native.earth.azimuth_deg,native.earth.elevation_deg):null,surfaceSun:native?.sun.classification==='conditional_clearance',surfaceEarth:native?.earth.classification==='conditional_clearance'}

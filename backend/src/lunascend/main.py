@@ -5,6 +5,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from lunascend import __version__
+from lunascend.api.assessment import router as assessment_router
 from lunascend.api.routes import router
 from lunascend.api.terrain import router as terrain_router
 from lunascend.api.resilience import router as resilience_router
@@ -13,9 +14,11 @@ from lunascend.api.exploration import router as exploration_router
 from lunascend.contracts import AnalysisError, ErrorResponse
 
 
-def create_app() -> FastAPI:
+def create_app(*, enable_test_mock: bool = False) -> FastAPI:
     app = FastAPI(title="LunAscend", version=__version__)
+    app.state.enable_test_mock = enable_test_mock
     app.include_router(router)
+    app.include_router(assessment_router)
     app.include_router(terrain_router)
     app.include_router(resilience_router)
     app.include_router(imagery_router)

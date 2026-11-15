@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, useSyncExternalStore, type PropsWithChildren } from 'react'
-import { initialStartUtc, previewSites } from '../data/preview'
+import {defaultConstraints} from '../lib/resilience'
+import type {MissionConstraints} from '../types/resilience'
 import type { MissionSelection, PreviewScenario } from '../types/preview'
 import type { AnalysisOptions } from '../types/analysis'
 import { AnalysisRunner, emptyAnalysis } from '../api/analysis'
@@ -8,6 +9,12 @@ import { ComparisonStore, type ComparisonState } from './ComparisonStore'
 import {needsCatalogEpoch,resolveCatalogEpoch} from '../lib/apollo'
 
 interface MissionContextValue {
+  requirements: MissionConstraints
+  setRequirements: (value: MissionConstraints) => void
+  requirePower: boolean
+  setRequirePower: (value: boolean) => void
+  requireCommunication: boolean
+  setRequireCommunication: (value: boolean) => void
   mission: MissionSelection
   updateMission: (value: MissionSelection) => void
   alternatives: PreviewScenario[]
@@ -30,7 +37,10 @@ interface MissionContextValue {
 const MissionContext = createContext<MissionContextValue | null>(null)
 
 export function MissionProvider({ children }: PropsWithChildren) {
-  const [mission, setMission] = useState<MissionSelection>({ site: previewSites[0], startUtc: initialStartUtc, durationHours: 48 })
+  const [mission, setMission] = useState<MissionSelection>({site:{id:'custom',name:'LOLA Site01 example',latitude:-89.46315760953222,longitude:-137.50097847854008,description:'Documented DEM pixel-center example; not an approved landing site.'},startUtc:'2026-11-14T00:00:00.000Z',durationHours:24})
+  const [requirements,setRequirements]=useState(defaultConstraints)
+  const [requirePower,setRequirePower]=useState(true)
+  const [requireCommunication,setRequireCommunication]=useState(false)
   const [analysis, setAnalysis] = useState(emptyAnalysis)
   const [options, setOptions] = useState(initialOptions)
   const [sampleIndex, setSampleIndex] = useState(0)
@@ -56,10 +66,7 @@ export function MissionProvider({ children }: PropsWithChildren) {
     }else apply(selection,requestedOptions)
   }
   useEffect(() => () => {catalogJob.current?.abort();runner.clear()}, [runner])
-  const [comparisonStore] = useState(() => new ComparisonStore([
-    { selection: mission, options: initialOptions, name: 'Baseline' },
-    { selection: { ...mission, site: previewSites[1] }, options: initialOptions, name: 'Alternative' },
-  ]))
+  const [comparisonStore] = useState(() => new ComparisonStore([]))
   const comparison = useSyncExternalStore(comparisonStore.subscribe, comparisonStore.getSnapshot, comparisonStore.getSnapshot)
   useEffect(() => () => comparisonStore.dispose(), [comparisonStore])
   const alternatives: PreviewScenario[] = comparison.scenarios.filter(s => s.id !== comparison.baselineId).map(s => ({ ...s.selection, id: s.id }))
@@ -73,7 +80,7 @@ export function MissionProvider({ children }: PropsWithChildren) {
     if (!scenario) return
     invalidate(); setResultsCleared(false); setMission(structuredClone(scenario.selection)); setOptions({ ...scenario.options }); setAnalysis(scenario.analysis)
   }
-  return <MissionContext.Provider value={{ mission, updateMission, alternatives, saveAlternative, removeAlternative, analysis, options, updateOptions, runAnalysis, invalidate, sampleIndex, resultsCleared, selectSample, observation: observationAt(series, sampleIndex), comparison, comparisonStore, inspectScenario }}>{children}</MissionContext.Provider>
+  return <MissionContext.Provider value={{ requirements,setRequirements,requirePower,setRequirePower,requireCommunication,setRequireCommunication,mission, updateMission, alternatives, saveAlternative, removeAlternative, analysis, options, updateOptions, runAnalysis, invalidate, sampleIndex, resultsCleared, selectSample, observation: observationAt(series, sampleIndex), comparison, comparisonStore, inspectScenario }}>{children}</MissionContext.Provider>
 }
 
 export function useMission() {

@@ -13,8 +13,8 @@ import type {OpportunityRequest} from '../types/resilience'
 const request=report.request as OpportunityRequest
 const options={...initialOptions,frameConfirmed:true,terrainEnabled:true,powerEnabled:true,communicationEnabled:true,observerHeightM:'2',terrainRadiusM:'2500',terrainAzimuthSamples:'360',terrainRadialStepM:'5',engineering:{...initialEngineering,orientation_mode:'ideal_sun_tracking'}}
 const input=comparisonInput(request.baseline,options)
-vi.mock('../state/MissionContext',()=>({useMission:()=>({mission:input.selection,options,comparison:{scenarios:[]},comparisonStore:{}})}))
-vi.mock('../components/MissionControls',()=>({MissionControls:()=> <p>Existing shared scientific mission controls</p>}))
+vi.mock('../state/MissionContext',()=>({useMission:()=>({mission:input.selection,analysis:{status:'idle',result:null,message:''},options,requirements:request.constraints,setRequirements:vi.fn(),comparison:{scenarios:[]},comparisonStore:{}})}))
+
 
 describe('bounded resilience boundary and workflow',()=>{
   it('accepts the executed NASA-derived multi-site/date search with partial failure',()=>{
@@ -82,7 +82,7 @@ describe('bounded resilience boundary and workflow',()=>{
   })
   it('renders compact real controls, explicit requirements, delay choices and unknown warnings',()=>{
     const html=renderToStaticMarkup(<MemoryRouter><Resilience/></MemoryRouter>)
-    for(const phrase of ['Original Mission','Existing shared scientific mission controls','Delay by 1 day','Delay by 3 days','Delay by 5 days','Delay by 7 days','Restore original date','Alternative landing UTC','Find better landing opportunities','Maximum unmet electrical demand','Require conservative','optimistic-only','never guarantee']) expect(html).toContain(phrase)
+    for(const phrase of ['Original Mission','Current mission','Delay by 1 day','Delay by 3 days','Delay by 5 days','Delay by 7 days','Restore original date','Alternative landing UTC','Find better landing opportunities','Maximum unmet electrical demand','Require conservative','optimistic-only','never guarantee']) expect(html).toContain(phrase)
     expect(html).not.toContain('timestamps only')
     expect(Object.keys(classLabels)).toHaveLength(4)
   })

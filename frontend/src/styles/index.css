@@ -1214,3 +1214,15 @@ body, .app-main { background: var(--bg); }
 .screening-fails_modeled_requirement>th:first-child { border-left-color:#d36660; }
 .opportunity-guide { padding-left:24px;line-height:1.9;margin:20px 0; }
 #opportunity-finder { scroll-margin-top:85px; }
+
+/* Step 13: one connected workspace; no presentation-mode-dependent layout. */
+.catalog-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.65rem;max-height:24rem;overflow:auto;margin:1rem 0}
+.catalog-options .site-option{display:flex;align-items:flex-start;flex-direction:column;gap:.4rem;width:100%;min-width:0;padding:.8rem;text-align:left}
+.catalog-options .site-option[aria-pressed=true]{border-color:var(--gold,#d6ad70);background:#d6ad7012}
+.site-chooser>label{display:block;max-width:34rem}.site-chooser input{width:100%}
+.mission-summary{margin:1.25rem 0}.mission-summary .mono{overflow-wrap:anywhere}
+.assessment-verdict{font-size:1.2rem;font-weight:700;color:#f0eee9;line-height:1.5}
+.assessment-explanation{padding:1rem 0;border-top:1px solid #d6ad7055}.assessment-explanation>summary{font-family:Marcellus,Georgia,serif;font-size:1.4rem;color:#f0eee9}
+.raw-mission-record{max-height:24rem;overflow:auto;font-size:.85rem;white-space:pre-wrap;overflow-wrap:anywhere}
+#mission-assessment,#mission-requirements,#all-mission-data,#mission-configuration{scroll-margin-top:5rem}
+@media(max-width:650px){.catalog-options{grid-template-columns:minmax(0,1fr)}.mission-summary h2{overflow-wrap:anywhere}}

@@ -103,7 +103,7 @@ def test_mock_rejects_unimplemented_engineering(mock_request, setting):
     assert result == analyze(request)
     assert result.status == "failed" and result.errors[0].code == "INVALID_REQUEST"
     assert result.observations is result.power is result.communication is result.horizon is None
-    with TestClient(create_app()) as client:
+    with TestClient(create_app(enable_test_mock=True)) as client:
         response = client.post("/api/v1/scenarios/analyze", json=request.model_dump(mode="json"))
         assert response.status_code == 422
 
@@ -118,7 +118,7 @@ def test_mock_api_has_no_scientific_or_network_dependency(mock_request, monkeypa
         return original_import(name, *args, **kwargs)
 
     monkeypatch.setattr(builtins, "__import__", guarded_import)
-    with TestClient(create_app()) as client:
+    with TestClient(create_app(enable_test_mock=True)) as client:
         response = client.post("/api/v1/scenarios/analyze", json=mock_request.model_dump(mode="json"))
         assert response.status_code == 200
         assert ScenarioResult.model_validate(response.json()) == analyze(mock_request)
@@ -138,7 +138,7 @@ def test_explicit_selection_and_no_fallback(mock_request, monkeypatch, tmp_path)
         raise AssertionError("Scientific failures must not call mock")
 
     monkeypatch.setattr(MockAnalysisProvider, "analyze", forbidden_mock)
-    with TestClient(create_app()) as client:
+    with TestClient(create_app(enable_test_mock=True)) as client:
         response = client.post("/api/v1/scenarios/analyze", json=request.model_dump(mode="json"))
         assert response.status_code == 503
         result = ScenarioResult.model_validate(response.json())

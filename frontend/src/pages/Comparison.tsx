@@ -1,3 +1,4 @@
+import {Link} from 'react-router'
 import { useMission } from '../state/MissionContext'
 import type { CSSProperties } from 'react'
 import { PageHeader } from '../components/ui'
@@ -14,7 +15,7 @@ export function Comparison() {
   const { scenarios, baselineId } = comparison
   const mixed = new Set(scenarios.map(s => s.options.providerMode)).size > 1
   return <><PageHeader eyebrow="LOCATIONS / DATES / ASSUMPTIONS" title="Compare Mission Options" description="Compare up to three landing plans and see which modeled conditions change. Each option keeps its own location, date and assumptions."/>
-    <div className="comparison-toolbar"><button className="button primary" disabled={scenarios.length >= 3} onClick={saveAlternative}>Add current site & date</button><button className="button primary" disabled={scenarios.length < 2 || scenarios.every(s => s.analysis.status === 'loading')} onClick={() => { void store.runAll() }}>Run comparison</button><span>{scenarios.length} / 3 scenarios - unchanged results reused</span></div>
+    <Link className="text-link" to="/resilience">Test a mission delay →</Link><div className="comparison-toolbar"><button className="button primary" disabled={scenarios.length >= 3} onClick={saveAlternative}>Add current site & date</button><button className="button primary" disabled={scenarios.length < 2 || scenarios.every(s => s.analysis.status === 'loading')} onClick={() => { void store.runAll() }}>Run comparison</button><span>{scenarios.length} / 3 scenarios - unchanged results reused</span></div>
     {mixed && <p className="comparison-mixed" role="alert">MIXED PROVIDERS - mock and scientific results are not a scientifically meaningful comparison. Cross-provider differences are withheld.</p>}
     {scenarios.some(s => s.options.providerMode === 'mock') && <p className="mock-warning">MOCK DATA - NOT LUNAR PREDICTIONS. Mock summaries and charts are illustrative.</p>}
     <p className="section-explanation">Choose a baseline, edit each site and UTC date independently, then run comparison. Duplicate a baseline to inspect a landing-date delay. Explorer saves enter this same workspace.</p>

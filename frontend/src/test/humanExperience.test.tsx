@@ -106,12 +106,12 @@ describe('quantitative engineering presentation uses returned electrical values'
 })
 
 describe('shared presentation, empty states, provenance and comparisons',()=>{
-  it('defaults to Simple view and opens original technical content in Advanced view without changing data',()=>{
+  it('has one unified workspace with expandable scientific details',()=>{
     const node=<><PresentationControls/><ScientificDetails><p>Original measurements preserved</p></ScientificDetails></>
-    const simple=render(node),advanced=render(node,'advanced')
-    expect(simple).toContain('aria-pressed="true">Simple view')
+    const simple=render(node),legacy=render(node,'advanced')
+    expect(simple).not.toContain('Simple view');expect(simple).not.toContain('Advanced view')
     expect(simple).toContain('Original measurements preserved');expect(simple).not.toMatch(/class="scientific-details" open/)
-    expect(advanced).toContain('aria-pressed="true">Advanced view');expect(advanced).toMatch(/class="scientific-details" open/)
+    expect(legacy).toBe(simple)
   })
   it.each([
     ['idle','',false,'No analysis yet.'],['loading','',false,'Calculating this mission'],['error','Failed to fetch',false,'scientific analysis service is currently unavailable'],['idle','',true,'previous results cleared'],['error','MISSING_DATA: NASA terrain absent',false,'not have enough terrain data'],

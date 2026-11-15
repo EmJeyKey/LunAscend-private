@@ -62,3 +62,15 @@ async def terrain_mesh(request: MeshRequest):
 @router.post('/api/v1/terrain/inspect',response_model=TerrainInspection)
 async def terrain_inspection(request: InspectionRequest):
     return await visualization_product(request)
+
+
+@router.post('/api/v1/terrain/coverage')
+async def terrain_coverage(request: TerrainRequest):
+    try:
+        from lunascend.terrain.selection import select_terrain
+        return await asyncio.to_thread(select_terrain, request)
+    except ImportError:
+        error = AnalysisError(code="PROVIDER_UNAVAILABLE", message="Terrain coverage requires the locked terrain/science extras.")
+    except TerrainError as exc:
+        error = exc.error
+    return JSONResponse(status_code=503, content=ErrorResponse(errors=(error,)).model_dump(mode="json"))
