@@ -28,6 +28,15 @@ Every step requires user review before the next. Step 1 creates a specification,
 
 Six Apollo and thirteen verified polar study markers share selection and numerical analysis. Small per-region native DEM windows and source-pixel quality samples are pinned. Date edits reconcile fixed native catalog points; original Site01 and prior engines remain intact. Apollo terrain ingestion and pre-1972 historical calculations remain unsupported. See docs/STEP_12_1_APOLLO_AND_RIDGE_SCIENTIFIC_DATA.md for per-site status, executed checks and recovery point. No later milestone is authorized.
 
+## Step 13 - Unified mission workflow
+
+One mission context and view, real site entry, linked Explorer/Analysis/comparison/delay
+workflow, actual-pixel terrain selection, complete numerical report and deterministic
+requirement assessment. Existing equations and datasets preserved. Researched global
+terrain/thermal/geology products are not represented as installed. See
+`docs/STEP_13_UNIFIED_WORKFLOW_AND_NASA_COVERAGE.md` for executed evidence,
+limitations and final local recovery point. Stop after Step 13.
+
 ## Delivery priorities
 
 Preserve essential site/date selection, validated geometry, terrain visibility and rapid comparisons before advanced engineering or 3D polish. The numbered sequence is the requested plan; schedule pressure may justify a team-approved scope revision, never silent skipping of validation. Do not treat future link budgets or multi-objective ranking as required first implementations. Keep hosting undecided until needs, cost and privacy are known.

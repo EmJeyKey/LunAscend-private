@@ -249,8 +249,14 @@ export class LunarRenderer implements LunarView {
     const local=this.mode!=='globe',extent=this.mesh?.request.half_extent_m||1000
     const position=local?this.mesh?.observer_scene_m||[0,0,0]:geographicToScene(latitude,longitude,1.014)
     const radius=local?extent*.012:.014
-    const point=new THREE.Mesh(new THREE.SphereGeometry(radius,16,12),new THREE.MeshBasicMaterial({color:0xf2d38b,depthTest:false}))
-    point.position.set(...position as Vector3);point.renderOrder=5;this.marker.add(point);this.requestDraw()
+    const point=new THREE.Mesh(new THREE.SphereGeometry(radius,16,12),new THREE.MeshBasicMaterial({color:0xf2d38b,depthTest:!local,transparent:true,depthWrite:false}))
+    point.position.set(...position as Vector3);point.renderOrder=100;this.marker.add(point)
+    if(!local){
+      const normal=new THREE.Vector3(...geographicToScene(latitude,longitude,1)).normalize()
+      const ring=new THREE.Mesh(new THREE.RingGeometry(.018,.025,32),new THREE.MeshBasicMaterial({color:0xf0eee9,side:THREE.DoubleSide,depthTest:true,transparent:true,depthWrite:false}))
+      ring.position.copy(normal.clone().multiplyScalar(1.017));ring.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),normal);ring.renderOrder=101;this.marker.add(ring)
+    }
+    this.requestDraw()
     if(changed&&this.mode==='globe')this.camera('reset')
   }
   setDirections(overlay:DirectionOverlay){

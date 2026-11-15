@@ -7,6 +7,8 @@ from .models import ScenarioRequest, ScenarioResult, LunarSite
 
 
 class MissionConstraints(Contract):
+    require_power: bool = True
+    require_communication: bool = True
     minimum_sun_clearance_fraction: Annotated[Number, Field(ge=0, le=1)] | None = None
     maximum_slope_deg: Annotated[Number, Field(ge=0, le=90)] | None = None
     maximum_unmet_load_wh: NonNegative = 0.0
@@ -35,9 +37,9 @@ class OpportunityRequest(Contract):
         r = self.baseline
         if r.provider_mode != "scientific" or not r.settings.terrain_enabled:
             raise ValueError("Opportunity evaluation requires explicit scientific terrain data; mock candidates are excluded")
-        if not r.settings.power_enabled or not r.settings.communication_enabled:
+        if self.constraints.require_power and not r.settings.power_enabled or self.constraints.require_communication and not r.settings.communication_enabled:
             raise ValueError("Enable both power and DTE with explicit hardware settings before evaluating resilience")
-        if r.settings.power_options is None or r.settings.communication_options is None:
+        if r.settings.power_enabled and r.settings.power_options is None or r.settings.communication_enabled and r.settings.communication_options is None:
             raise ValueError("Power and DTE require explicit configuration; no default hardware is inferred")
         if not r.settings.terrain_options or r.settings.terrain_options.coordinate_epoch_utc != r.start_utc:
             raise ValueError("Site coordinates must be declared at the baseline start epoch")

@@ -5,7 +5,6 @@ import { useMission } from '../state/MissionContext'
 import type { ComparisonScenario } from '../state/ComparisonStore'
 import type { AnalysisOptions, ProviderMode } from '../types/analysis'
 import { TerrainOptions } from './TerrainOptions'
-import { previewSites } from '../data/preview'
 import { toUtc, formatCoordinate } from '../lib/time'
 import { ResultProvenance } from './AnalysisProvenance'
 import { StatusBadge } from './ui'
@@ -15,7 +14,7 @@ export function ComparisonScenarioPanel({ scenario }: { scenario: ComparisonScen
   const { id, selection, options, analysis } = scenario
   const editSelection = (patch: Partial<typeof selection>) => store.edit(id, { selection: { ...selection, ...patch } })
   const editOptions = (patch: Partial<AnalysisOptions>) => store.edit(id, { options: { ...options, ...patch } })
-  const editSite = (patch: Partial<typeof selection.site>) => editSelection({ site: { ...selection.site, ...patch } })
+  const editSite = (patch: Partial<typeof selection.site>) => {editSelection({site:{...selection.site,...patch,id:"custom",native:undefined,category:"user-selected"}});editOptions({frameConfirmed:false,coordinateEpochUtc:undefined})}
   const setUtc = (value: string) => editSelection({ startUtc: toUtc(value) || '' })
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -28,7 +27,8 @@ export function ComparisonScenarioPanel({ scenario }: { scenario: ComparisonScen
     <div className="comparison-scenario-heading"><label className="baseline-choice"><input type="radio" name="baseline-scenario" aria-label={`Use ${scenario.name || id} as baseline`} checked={comparison.baselineId === id} onChange={() => store.setBaseline(id)}/>Baseline</label><StatusBadge tone={options.providerMode === 'mock' ? 'gold' : 'cyan'}>{options.providerMode === 'mock' ? 'MOCK' : 'SPICE'} · {analysis.status}</StatusBadge></div>
     <form onSubmit={submit} onInvalid={event => { const details = (event.target as HTMLElement).closest('details'); if (details) details.open = true }}>
       <label>Scenario name<input aria-label={`Scenario name ${id}`} value={scenario.name} maxLength={100} required onChange={event => store.edit(id, { name: event.target.value })}/></label>
-      <label>Landing site<select aria-label={`Landing site ${id}`} value={selection.site.id} onChange={event => { const site = previewSites.find(s => s.id === event.target.value); editSelection({ site: site || { ...selection.site, id: 'custom' } }) }}>{previewSites.map(site => <option key={site.id} value={site.id}>{site.name}</option>)}<option value="custom">Custom coordinates</option></select></label>
+      <label>Landing site<select aria-label={`Landing site ${id}`} value={selection.site.id} onChange={()=>{editSelection({site:{...selection.site,id:'custom',native:undefined,category:'user-selected'}});editOptions({frameConfirmed:false,coordinateEpochUtc:undefined})}}>{selection.site.id!=='custom'&&<option value={selection.site.id}>{selection.site.name}</option>}<option value="custom">Custom coordinates</option></select></label>
+
       <p className="comparison-coordinate">{Number.isFinite(selection.site.latitude) ? formatCoordinate(selection.site.latitude, true) : 'Latitude required'} / {Number.isFinite(selection.site.longitude) ? formatCoordinate(selection.site.longitude, false) : 'Longitude required'}</p>
       <label>Landing time / UTC<input name="comparison_utc" aria-label={`Landing UTC ${id}`} type="datetime-local" step="0.001" required defaultValue={selection.startUtc.replace(/Z$/, '')} onInput={event => setUtc(event.currentTarget.value)} onBlur={event => setUtc(event.currentTarget.value)}/></label>
       <div className="comparison-fields"><label>Duration / hours<input aria-label={`Duration hours ${id}`} type="number" min="0.000001" max="8784" step="any" required value={numberValue(selection.durationHours)} onChange={event => editSelection({ durationHours: event.target.value === '' ? NaN : Number(event.target.value) })}/></label><label>Sample step / s<input aria-label={`Sample step seconds ${id}`} type="number" min="0.001" step="any" required value={options.sampleStepS} onChange={event => editOptions({ sampleStepS: event.target.value })}/></label></div>

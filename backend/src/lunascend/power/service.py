@@ -49,7 +49,8 @@ def attach_engineering(environment: ScenarioResult, request: ScenarioRequest) ->
 
 def analyze_engineering(request: ScenarioRequest, configuration: KernelConfiguration | None = None) -> ScenarioResult:
     from lunascend.visibility.engine import analyze_visibility
-    environment = analyze_visibility(environmental_request(request),configuration)
+    from .environment_cache import environment as cached_environment
+    environment = cached_environment(environmental_request(request),configuration or KernelConfiguration.from_environment(),analyze_visibility)
     return attach_engineering(environment,request)
 
 

@@ -1,0 +1,294 @@
+{
+  "assessment": "Final mission assessment\n\nDOES NOT MEET REQUIREMENTS\n\nLOLA Site01 example \u00b7 2026-11-14T00:00:00Z. Only selected mandatory requirements are assessed. This is not landing safety certification or guaranteed survival.\n\nMandatory requirements \u00b7 known failure takes priority over unknown evidence\nRequirement\tCalculated\tThreshold\tOutcome\nconservative unmet load\t772.500 Wh\t0 Wh\tRequirement failed\nEvidence\n\nconservative minimum soc\t10.000 %\t10 %\tRequirement met\nEvidence\n\nconservative model pass\t0.000 boolean\t1 boolean\tRequirement failed\nEvidence\nSun direction\n\n1.502 degrees above the ideal horizon; local terrain clearance 6.114 degrees, conditional_clearance\n\nThe Sun center clears the sampled local skyline. Unresolved or more distant terrain could still obstruct it.\n\nTry next: Compare another date or supported location; recalculate with the same hardware.\n\nMeaning, confidence and sources\nEarth direction\n\n5.036 degrees below the ideal horizon; local terrain clearance -6.017 degrees, modeled_obstruction\n\nThe selected Earth center is blocked by the modeled terrain at this sample. Earth visibility does not establish a radio link.\n\nTry next: Compare another date or supported location; recalculate with the same hardware.\n\nMeaning, confidence and sources\nConservative electricity\n\nSelected sample: 0.00 W generation, 50.00 W load. Generation is below the configured load; the battery must cover the difference. Total: 0.00 Wh generated versus 1200.00 Wh demanded.\n\nA temporary power shortfall need not fail the mission; inspect the full battery and unmet-demand result.\n\nTry next: Test panel area, orientation or reduced demand, then recalculate.\n\nMeaning, confidence and sources\nConservative battery\n\nMinimum 50.00 Wh (10.00%); final 50.00 Wh; unmet demand 772.50 Wh.\n\nUnmet demand means some configured equipment energy cannot be supplied. The model stops discharge at reserve; it does not simulate energy below reserve.\n\nTry next: Test more usable storage, lower demand, more generation or another date.\n\nMeaning, confidence and sources\nOptimistic electricity\n\nSelected sample: 16.05 W generation, 50.00 W load. Generation is below the configured load; the battery must cover the difference. Total: 371.36 Wh generated versus 1200.00 Wh demanded.\n\nA temporary power shortfall need not fail the mission; inspect the full battery and unmet-demand result.\n\nTry next: Test panel area, orientation or reduced demand, then recalculate.\n\nMeaning, confidence and sources\nOptimistic battery\n\nMinimum 50.00 Wh (10.00%); final 50.00 Wh; unmet demand 401.14 Wh.\n\nUnmet demand means some configured equipment energy cannot be supplied. The model stops discharge at reserve; it does not simulate energy below reserve.\n\nTry next: Test more usable storage, lower demand, more generation or another date.\n\nMeaning, confidence and sources\nDirect-to-Earth access\n\nConditional access 0.0 s; longest supported interruption 86400.0 s; unknown 0.0 s; required clearance 1.0 degrees.\n\nCommunication is not a mandatory requirement in this assessment.\n\nTry next: Compare another date/site or revise the explicit access requirement and recalculate.\n\nMeaning, confidence and sources\nAdd calculated mission to comparison\nCompare alternatives \u2192\nTest a delay \u2192",
+  "fields": [
+    {
+      "field": "observations.2026-11-14T00:00:00Z.sun_azimuth_deg.value",
+      "text": "264.110\u00b0",
+      "value": "264.10982697915534"
+    },
+    {
+      "field": "observations.2026-11-14T00:00:00Z.earth_azimuth_deg.value",
+      "text": "136.244\u00b0",
+      "value": "136.24396007706338"
+    },
+    {
+      "field": "observations.2026-11-14T00:00:00Z.sun_elevation_deg.value",
+      "text": "1.502\u00b0",
+      "value": "1.501602764526588"
+    },
+    {
+      "field": "observations.2026-11-14T00:00:00Z.earth_elevation_deg.value",
+      "text": "-5.036\u00b0",
+      "value": "-5.036238914765133"
+    },
+    {
+      "field": "terrain_visibility.observations.2026-11-14T00:00:00Z.sun.horizon_elevation_deg",
+      "text": "-4.613\u00b0",
+      "value": "-4.612548157097288"
+    },
+    {
+      "field": "terrain_visibility.observations.2026-11-14T00:00:00Z.earth.horizon_elevation_deg",
+      "text": "0.980\u00b0",
+      "value": "0.9803744697915846"
+    },
+    {
+      "field": "terrain_visibility.observations.2026-11-14T00:00:00Z.sun.clearance_deg",
+      "text": "6.114\u00b0",
+      "value": "6.114150921623877"
+    },
+    {
+      "field": "terrain_visibility.observations.2026-11-14T00:00:00Z.earth.clearance_deg",
+      "text": "-6.017\u00b0",
+      "value": "-6.016613384556714"
+    },
+    {
+      "field": "request.site.latitude_deg",
+      "text": "-89.4631576 \u00b0 N",
+      "value": "-89.46315760953222"
+    },
+    {
+      "field": "request.site.longitude_deg",
+      "text": "-137.5009785 \u00b0 E",
+      "value": "-137.50097847854008"
+    },
+    {
+      "field": "terrain_visibility.native_latitude_deg",
+      "text": "-89.4631578 \u00b0 N",
+      "value": "-89.46315775697228"
+    },
+    {
+      "field": "terrain_visibility.native_longitude_deg",
+      "text": "-137.5019849 \u00b0 E",
+      "value": "-137.50198490762355"
+    },
+    {
+      "field": "terrain_visibility.surface_elevation_m",
+      "text": "1944.767 m",
+      "value": "1944.7670898436575"
+    },
+    {
+      "field": "terrain_visibility.observer_height_m",
+      "text": "2.000 m",
+      "value": "2"
+    },
+    {
+      "field": "power.cases.conservative.samples.2026-11-14T00:00:00Z.solar_generation_w",
+      "text": "0.00 W",
+      "value": "0"
+    },
+    {
+      "field": "power.cases.optimistic.samples.2026-11-14T00:00:00Z.solar_generation_w",
+      "text": "16.05 W",
+      "value": "16.049198495217368"
+    },
+    {
+      "field": "power.cases.conservative.samples.2026-11-14T00:00:00Z.load_w",
+      "text": "50.00 W",
+      "value": "50"
+    },
+    {
+      "field": "power.cases.optimistic.samples.2026-11-14T00:00:00Z.load_w",
+      "text": "50.00 W",
+      "value": "50"
+    },
+    {
+      "field": "power.cases.conservative.samples.2026-11-14T00:00:00Z.battery_energy_wh",
+      "text": "500.00 Wh",
+      "value": "500"
+    },
+    {
+      "field": "power.cases.optimistic.samples.2026-11-14T00:00:00Z.battery_energy_wh",
+      "text": "500.00 Wh",
+      "value": "500"
+    },
+    {
+      "field": "power.cases.conservative.samples.2026-11-14T00:00:00Z.soc_pct",
+      "text": "100.00 %",
+      "value": "100"
+    },
+    {
+      "field": "power.cases.optimistic.samples.2026-11-14T00:00:00Z.soc_pct",
+      "text": "100.00 %",
+      "value": "100"
+    },
+    {
+      "field": "power.cases.conservative.totals.solar_generated_wh",
+      "text": "0.00 Wh",
+      "value": "0"
+    },
+    {
+      "field": "power.cases.optimistic.totals.solar_generated_wh",
+      "text": "371.36 Wh",
+      "value": "371.3641257110819"
+    },
+    {
+      "field": "power.cases.conservative.totals.electrical_demand_wh",
+      "text": "1200.00 Wh",
+      "value": "1200"
+    },
+    {
+      "field": "power.cases.optimistic.totals.electrical_demand_wh",
+      "text": "1200.00 Wh",
+      "value": "1200"
+    },
+    {
+      "field": "power.cases.conservative.totals.minimum_battery_energy_wh",
+      "text": "50.00 Wh",
+      "value": "50"
+    },
+    {
+      "field": "power.cases.optimistic.totals.minimum_battery_energy_wh",
+      "text": "50.00 Wh",
+      "value": "50"
+    },
+    {
+      "field": "power.cases.conservative.totals.minimum_soc_pct",
+      "text": "10.00 %",
+      "value": "10"
+    },
+    {
+      "field": "power.cases.optimistic.totals.minimum_soc_pct",
+      "text": "10.00 %",
+      "value": "10"
+    },
+    {
+      "field": "power.cases.conservative.totals.final_battery_energy_wh",
+      "text": "50.00 Wh",
+      "value": "50"
+    },
+    {
+      "field": "power.cases.optimistic.totals.final_battery_energy_wh",
+      "text": "50.00 Wh",
+      "value": "50"
+    },
+    {
+      "field": "power.cases.conservative.totals.unmet_load_wh",
+      "text": "772.50 Wh",
+      "value": "772.5000000000001"
+    },
+    {
+      "field": "power.cases.optimistic.totals.unmet_load_wh",
+      "text": "401.14 Wh",
+      "value": "401.1358742889181"
+    },
+    {
+      "field": "communication.access_samples.2026-11-14T00:00:00Z.earth_clearance_deg",
+      "text": "-6.017\u00b0",
+      "value": "-6.016613384556714"
+    },
+    {
+      "field": "communication.configuration.minimum_earth_clearance_deg",
+      "text": "1.000\u00b0",
+      "value": "1"
+    },
+    {
+      "field": "communication.earth_visibility_duration_s.value",
+      "text": "0.000 s",
+      "value": "0"
+    },
+    {
+      "field": "communication.longest_interruption_s.value",
+      "text": "86400.000 s",
+      "value": "86400"
+    },
+    {
+      "field": "communication.unknown_duration_s",
+      "text": "0.000 s",
+      "value": "0"
+    },
+    {
+      "field": "power.cases.conservative.totals.direct_solar_to_load_wh",
+      "text": "0.00 Wh",
+      "value": "0"
+    },
+    {
+      "field": "power.cases.optimistic.totals.direct_solar_to_load_wh",
+      "text": "371.36 Wh",
+      "value": "371.3641257110819"
+    },
+    {
+      "field": "power.cases.conservative.totals.battery_charged_wh",
+      "text": "0.00 Wh",
+      "value": "0"
+    },
+    {
+      "field": "power.cases.optimistic.totals.battery_charged_wh",
+      "text": "0.00 Wh",
+      "value": "0"
+    },
+    {
+      "field": "power.cases.conservative.totals.battery_discharged_wh",
+      "text": "450.00 Wh",
+      "value": "449.99999999999994"
+    },
+    {
+      "field": "power.cases.optimistic.totals.battery_discharged_wh",
+      "text": "450.00 Wh",
+      "value": "450"
+    },
+    {
+      "field": "power.cases.conservative.totals.charging_loss_wh",
+      "text": "0.00 Wh",
+      "value": "0"
+    },
+    {
+      "field": "power.cases.optimistic.totals.charging_loss_wh",
+      "text": "0.00 Wh",
+      "value": "0"
+    },
+    {
+      "field": "power.cases.conservative.totals.discharging_loss_wh",
+      "text": "22.50 Wh",
+      "value": "22.500000000000025"
+    },
+    {
+      "field": "power.cases.optimistic.totals.discharging_loss_wh",
+      "text": "22.50 Wh",
+      "value": "22.500000000000018"
+    },
+    {
+      "field": "power.cases.conservative.totals.curtailed_surplus_wh",
+      "text": "0.00 Wh",
+      "value": "0"
+    },
+    {
+      "field": "power.cases.optimistic.totals.curtailed_surplus_wh",
+      "text": "0.00 Wh",
+      "value": "0"
+    },
+    {
+      "field": "power.cases.conservative.totals.energy_balance_residual_wh",
+      "text": "0.00 Wh",
+      "value": "8.881784197001252e-14"
+    },
+    {
+      "field": "power.cases.optimistic.totals.energy_balance_residual_wh",
+      "text": "-0.00 Wh",
+      "value": "-1.7763568394002505e-14"
+    },
+    {
+      "field": "power.cases.conservative.unknown_duration_s",
+      "text": "0.000 s",
+      "value": "0"
+    },
+    {
+      "field": "power.cases.optimistic.unknown_duration_s",
+      "text": "0.000 s",
+      "value": "0"
+    }
+  ],
+  "executed_utc": "2026-11-15T05:07:15.797522+00:00",
+  "matched_fields": 55,
+  "export_verified": true,
+  "observations": 25,
+  "browser_checks": [
+    "Apollo 15 selection/focus/25-sample geometry/insufficient power evidence/comparison transfer",
+    "Nobile pgda-site06 DEM and 5947.434 m elevation/25-sample numerical report/independent comparison",
+    "One-day Nobile delay: same native coordinates/hardware, updated engineering, conservative failure preserved",
+    "Return to original Nobile assessment without replacing active mission",
+    "Both marker-category toggles, selected pin, plus/minus accessible labels",
+    "Dashboard 30 px heading, 121 px list, input-driven scroll transition",
+    "Mobile Resilience body: client width=382, scroll width=382; viewport reset",
+    "Site01 original example: 25 samples and field-by-field JSON export match"
+  ]
+}

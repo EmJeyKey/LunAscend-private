@@ -1,3 +1,4 @@
+import {useLocation} from 'react-router'
 import { Crosshair, Info, MapPin } from 'lucide-react'
 import { useEffect, useState, type FormEvent } from 'react'
 import { LunarExplorer } from '../components/LunarExplorer'
@@ -9,6 +10,8 @@ import {MissionSummary} from '../components/MissionSummary'
 import {SiteChooser} from '../components/SiteChooser'
 
 export function SiteExplorer() {
+  const {hash}=useLocation()
+  useEffect(()=>{if(hash!=='#moon-viewer')return;const frame=requestAnimationFrame(()=>document.getElementById('moon-viewer')?.scrollIntoView({block:'start'}));return()=>cancelAnimationFrame(frame)},[hash])
   const { mission, updateMission, alternatives, saveAlternative, analysis, options } = useMission()
   const [latitude, setLatitude] = useState(String(mission.site.latitude))
   const [longitude, setLongitude] = useState(String(mission.site.longitude))

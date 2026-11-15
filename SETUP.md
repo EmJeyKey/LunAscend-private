@@ -2,6 +2,15 @@
 
 ## Current status
 
+Step 13 adds no dependency or installation requirement. The unified workspace uses
+existing local science/terrain resources. Production mock requests are rejected.
+`/api/v1/terrain/coverage` checks installed DEM pixels; `/api/v1/scenarios/assess`
+interprets a returned result without recalculating science. From the project root,
+`backend/.venv/Scripts/python.exe scripts/verify_step13.py` reproduces four bounded
+real API examples with both local servers running. No automatic remote downloads.
+See docs/STEP_13_UNIFIED_WORKFLOW_AND_NASA_COVERAGE.md.
+
+
 Step 12.1 bundles thirteen small native polar DEM windows (263,037 bytes total)
 under `data/fixtures/polar-sites`, plus hash/projection manifests and saved
 source-pixel quality values. No dependency changes. Original Site01 and kernels

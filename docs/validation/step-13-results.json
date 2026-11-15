@@ -1,0 +1,1728 @@
+{
+  "executed_utc": "2026-11-15T00:10:16.058615+00:00",
+  "scope": "Fresh local scientific and deterministic interpretation checks, not new external validation.",
+  "examples": [
+    {
+      "label": "Site01 November 14",
+      "request": {
+        "start_utc": "2026-11-14T00:00:00Z",
+        "end_utc": "2026-11-15T00:00:00Z",
+        "schema_version": "1.0",
+        "site": {
+          "site_id": "custom",
+          "name": "LOLA Site01 example",
+          "latitude_deg": -89.46315760953222,
+          "longitude_deg": -137.50097847854008,
+          "surface_elevation_m": null,
+          "observer_height_m": 2.0,
+          "description": null,
+          "coordinate_reference": {
+            "body": "MOON",
+            "latitude_type": "planetocentric",
+            "longitude_convention": "east_positive",
+            "frame_id": "MOON_ME_DE440_ME421",
+            "frame_realization": "DE440/ME421",
+            "reference_surface": "MOON_SPHERE_1737400_M",
+            "reference_radius_m": 1737400.0
+          }
+        },
+        "provider_mode": "scientific",
+        "sample_step_s": 3600.0,
+        "settings": {
+          "terrain_enabled": true,
+          "power_enabled": true,
+          "communication_enabled": true,
+          "horizon_mode": "terrain",
+          "disk_policy": "center",
+          "correction_mode": "NONE",
+          "sun_clearance_deg": 0.0,
+          "earth_clearance_deg": 0.0,
+          "terrain_options": {
+            "dataset_id": "lola-site01-5m-v2020",
+            "coordinate_epoch_utc": "2026-11-14T00:00:00Z",
+            "azimuth_samples": 360,
+            "max_search_radius_m": 2500.0,
+            "radial_step_m": 5.0
+          },
+          "power_options": {
+            "panel_area_m2": 2.0,
+            "panel_efficiency": 0.25,
+            "solar_irradiance_w_m2": 1361.0,
+            "orientation_mode": "fixed_horizontal",
+            "system_efficiency": 0.9,
+            "derating_factor": 1.0,
+            "baseline_load_w": 50.0,
+            "heater_load_w": 0.0,
+            "battery_capacity_wh": 500.0,
+            "initial_soc_pct": 100.0,
+            "minimum_soc_pct": 10.0,
+            "charging_efficiency": 0.95,
+            "discharging_efficiency": 0.95
+          },
+          "communication_options": {
+            "minimum_earth_clearance_deg": 1.0
+          }
+        }
+      },
+      "samples": 25,
+      "first_geometry": {
+        "status": "calculated",
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "assumptions": [],
+        "time_utc": "2026-11-14T00:00:00Z",
+        "reference_frame": "MOON_ME_DE440_ME421",
+        "correction_mode": "NONE",
+        "sun_azimuth_deg": {
+          "value": 264.10982697915534,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "sun_elevation_deg": {
+          "value": 1.501602764526588,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "earth_azimuth_deg": {
+          "value": 136.24396007706338,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "earth_elevation_deg": {
+          "value": -5.036238914765133,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        }
+      },
+      "first_terrain": {
+        "time_utc": "2026-11-14T00:00:00Z",
+        "reference_frame": "MOON_ME_DE421",
+        "sun": {
+          "azimuth_deg": 264.11083058462435,
+          "elevation_deg": 1.5016027645265886,
+          "horizon_elevation_deg": -4.612548157097288,
+          "clearance_deg": 6.114150921623877,
+          "classification": "conditional_clearance",
+          "coverage": "sampled_radius",
+          "reason": "Center clears the evaluated finite sampled terrain only; farther and unresolved terrain remain unknown."
+        },
+        "earth": {
+          "azimuth_deg": 136.2449636825324,
+          "elevation_deg": -5.036238914765129,
+          "horizon_elevation_deg": 0.9803744697915846,
+          "clearance_deg": -6.016613384556714,
+          "classification": "modeled_obstruction",
+          "coverage": "sampled_radius",
+          "reason": "Center below the known circular-linear modeled obstruction; unresolved terrain cannot certify physical accuracy."
+        },
+        "status": "partial"
+      },
+      "cases": [
+        {
+          "assumption": "conservative",
+          "totals": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "passes_configured_model": false,
+          "unknown_duration_s": 0.0
+        },
+        {
+          "assumption": "optimistic",
+          "totals": {
+            "solar_generated_wh": 371.3641257110819,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 371.3641257110819,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.0,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000018,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 401.1358742889181,
+            "energy_balance_residual_wh": -1.7763568394002505e-14
+          },
+          "passes_configured_model": false,
+          "unknown_duration_s": 0.0
+        }
+      ],
+      "dte": {
+        "access_s": 0.0,
+        "unknown_s": 0.0
+      },
+      "assessment": {
+        "model_version": "mission-assessment-v1",
+        "classification": "does_not_meet_requirements",
+        "constraints": [
+          {
+            "constraint_id": "conservative_unmet_load",
+            "threshold": 0.0,
+            "actual": 772.5000000000001,
+            "units": "Wh",
+            "status": "fail",
+            "explanation": "Unmet load must not exceed the threshold, with the existing battery model's 1e-8 Wh arithmetic tolerance (not physical uncertainty).",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ],
+            "limitations": [
+              "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+              "Passing tested requirements does not guarantee mission survival or establish an RF link."
+            ]
+          },
+          {
+            "constraint_id": "conservative_minimum_soc",
+            "threshold": 10.0,
+            "actual": 10.0,
+            "units": "%",
+            "status": "pass",
+            "explanation": "conservative_minimum_soc: actual must be at least the threshold; missing evidence is indeterminate.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ],
+            "limitations": [
+              "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+              "Passing tested requirements does not guarantee mission survival or establish an RF link."
+            ]
+          },
+          {
+            "constraint_id": "conservative_model_pass",
+            "threshold": 1.0,
+            "actual": 0.0,
+            "units": "boolean",
+            "status": "fail",
+            "explanation": "The explicitly required conservative power-model pass additionally requires no unmet demand beyond the existing 1e-8 Wh arithmetic tolerance.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ],
+            "limitations": [
+              "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+              "Passing tested requirements does not guarantee mission survival or establish an RF link."
+            ]
+          }
+        ],
+        "interpretations": [
+          {
+            "topic": "Sun direction",
+            "meaning": "Elevation is the angle above the ideal horizon; terrain clearance subtracts the modeled skyline.",
+            "finding": "1.502 degrees above the ideal horizon; local terrain clearance 6.114 degrees, conditional_clearance",
+            "consequence": "Modeled obstruction limits direct sunlight.",
+            "next_action": "Compare another date or supported location; recalculate with the same hardware.",
+            "limitation": "Body centers only. Finite DEM horizons cannot prove globally unobstructed views; geometric elevation alone is insufficient.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Earth direction",
+            "meaning": "Elevation is the angle above the ideal horizon; terrain clearance subtracts the modeled skyline.",
+            "finding": "-5.036 degrees above the ideal horizon; local terrain clearance -6.017 degrees, modeled_obstruction",
+            "consequence": "A blocked Earth center limits modeled direct-to-Earth access; a clear center does not establish a radio link.",
+            "next_action": "Compare another date or supported location; recalculate with the same hardware.",
+            "limitation": "Body centers only. Finite DEM horizons cannot prove globally unobstructed views; geometric elevation alone is insufficient.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Conservative electricity",
+            "meaning": "Watts measure the present rate; watt-hours measure energy over time.",
+            "finding": "Selected sample: 0.00 W generation, 50.00 W load. Generation is below the configured load; the battery must cover the difference. Total: 0.00 Wh generated versus 1200.00 Wh demanded.",
+            "consequence": "A temporary power shortfall need not fail the mission; inspect the full battery and unmet-demand result.",
+            "next_action": "Test panel area, orientation or reduced demand, then recalculate.",
+            "limitation": "Configured efficiency, sample timing and illumination assumptions apply; no thermal or degradation model.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Conservative battery",
+            "meaning": "Stored watt-hours supply equipment when generation is too small.",
+            "finding": "Minimum 50.00 Wh (10.00%); final 50.00 Wh; unmet demand 772.50 Wh.",
+            "consequence": "Unmet demand means some configured equipment energy cannot be supplied. The model stops discharge at reserve; it does not simulate energy below reserve.",
+            "next_action": "Test more usable storage, lower demand, more generation or another date.",
+            "limitation": "Optimistic-only success is conditional, never guaranteed mission survival. Battery charging/discharging losses are included.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Optimistic electricity",
+            "meaning": "Watts measure the present rate; watt-hours measure energy over time.",
+            "finding": "Selected sample: 16.05 W generation, 50.00 W load. Generation is below the configured load; the battery must cover the difference. Total: 371.36 Wh generated versus 1200.00 Wh demanded.",
+            "consequence": "A temporary power shortfall need not fail the mission; inspect the full battery and unmet-demand result.",
+            "next_action": "Test panel area, orientation or reduced demand, then recalculate.",
+            "limitation": "Configured efficiency, sample timing and illumination assumptions apply; no thermal or degradation model.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Optimistic battery",
+            "meaning": "Stored watt-hours supply equipment when generation is too small.",
+            "finding": "Minimum 50.00 Wh (10.00%); final 50.00 Wh; unmet demand 401.14 Wh.",
+            "consequence": "Unmet demand means some configured equipment energy cannot be supplied. The model stops discharge at reserve; it does not simulate energy below reserve.",
+            "next_action": "Test more usable storage, lower demand, more generation or another date.",
+            "limitation": "Optimistic-only success is conditional, never guaranteed mission survival. Battery charging/discharging losses are included.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Direct-to-Earth access",
+            "meaning": "This is Earth-center terrain clearance, not radio signal strength.",
+            "finding": "Conditional access 0.0 s; longest supported interruption 86400.0 s; unknown 0.0 s; required clearance 1.0 degrees.",
+            "consequence": "Communication is not a mandatory requirement in this assessment.",
+            "next_action": "Compare another date/site or revise the explicit access requirement and recalculate.",
+            "limitation": "No antenna, RF link budget, relay or guaranteed contact is modeled.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+          "Passing tested requirements does not guarantee mission survival or establish an RF link."
+        ]
+      }
+    },
+    {
+      "label": "Site01 November 15 (same native observer)",
+      "request": {
+        "start_utc": "2026-11-15T00:00:00Z",
+        "end_utc": "2026-11-16T00:00:00Z",
+        "schema_version": "1.0",
+        "site": {
+          "site_id": "custom",
+          "name": "LOLA Site01 example",
+          "latitude_deg": -89.46315760953222,
+          "longitude_deg": -137.50097847854008,
+          "surface_elevation_m": null,
+          "observer_height_m": 2.0,
+          "description": null,
+          "coordinate_reference": {
+            "body": "MOON",
+            "latitude_type": "planetocentric",
+            "longitude_convention": "east_positive",
+            "frame_id": "MOON_ME_DE440_ME421",
+            "frame_realization": "DE440/ME421",
+            "reference_surface": "MOON_SPHERE_1737400_M",
+            "reference_radius_m": 1737400.0
+          }
+        },
+        "provider_mode": "scientific",
+        "sample_step_s": 3600.0,
+        "settings": {
+          "terrain_enabled": true,
+          "power_enabled": true,
+          "communication_enabled": true,
+          "horizon_mode": "terrain",
+          "disk_policy": "center",
+          "correction_mode": "NONE",
+          "sun_clearance_deg": 0.0,
+          "earth_clearance_deg": 0.0,
+          "terrain_options": {
+            "dataset_id": "lola-site01-5m-v2020",
+            "coordinate_epoch_utc": "2026-11-15T00:00:00Z",
+            "azimuth_samples": 360,
+            "max_search_radius_m": 2500.0,
+            "radial_step_m": 5.0
+          },
+          "power_options": {
+            "panel_area_m2": 2.0,
+            "panel_efficiency": 0.25,
+            "solar_irradiance_w_m2": 1361.0,
+            "orientation_mode": "fixed_horizontal",
+            "system_efficiency": 0.9,
+            "derating_factor": 1.0,
+            "baseline_load_w": 50.0,
+            "heater_load_w": 0.0,
+            "battery_capacity_wh": 500.0,
+            "initial_soc_pct": 100.0,
+            "minimum_soc_pct": 10.0,
+            "charging_efficiency": 0.95,
+            "discharging_efficiency": 0.95
+          },
+          "communication_options": {
+            "minimum_earth_clearance_deg": 1.0
+          }
+        }
+      },
+      "samples": 25,
+      "first_geometry": {
+        "status": "calculated",
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "assumptions": [],
+        "time_utc": "2026-11-15T00:00:00Z",
+        "reference_frame": "MOON_ME_DE440_ME421",
+        "correction_mode": "NONE",
+        "sun_azimuth_deg": {
+          "value": 251.92482851960366,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "sun_elevation_deg": {
+          "value": 1.3898710548156006,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "earth_azimuth_deg": {
+          "value": 134.85786380378758,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "earth_elevation_deg": {
+          "value": -3.9317613149632473,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        }
+      },
+      "first_terrain": {
+        "time_utc": "2026-11-15T00:00:00Z",
+        "reference_frame": "MOON_ME_DE421",
+        "sun": {
+          "azimuth_deg": 251.9257866982777,
+          "elevation_deg": 1.3898710548155988,
+          "horizon_elevation_deg": -4.194711837177324,
+          "clearance_deg": 5.584582891992922,
+          "classification": "conditional_clearance",
+          "coverage": "sampled_radius",
+          "reason": "Center clears the evaluated finite sampled terrain only; farther and unresolved terrain remain unknown."
+        },
+        "earth": {
+          "azimuth_deg": 134.85882198246162,
+          "elevation_deg": -3.931761314963252,
+          "horizon_elevation_deg": 0.931974686835966,
+          "clearance_deg": -4.863736001799218,
+          "classification": "modeled_obstruction",
+          "coverage": "sampled_radius",
+          "reason": "Center below the known circular-linear modeled obstruction; unresolved terrain cannot certify physical accuracy."
+        },
+        "status": "partial"
+      },
+      "cases": [
+        {
+          "assumption": "conservative",
+          "totals": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "passes_configured_model": false,
+          "unknown_duration_s": 0.0
+        },
+        {
+          "assumption": "optimistic",
+          "totals": {
+            "solar_generated_wh": 343.414493884845,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 343.414493884845,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.00000000000006,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.50000000000003,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 429.085506115155,
+            "energy_balance_residual_wh": -2.842170943040401e-14
+          },
+          "passes_configured_model": false,
+          "unknown_duration_s": 0.0
+        }
+      ],
+      "dte": {
+        "access_s": 0.0,
+        "unknown_s": 0.0
+      },
+      "assessment": {
+        "model_version": "mission-assessment-v1",
+        "classification": "does_not_meet_requirements",
+        "constraints": [
+          {
+            "constraint_id": "conservative_unmet_load",
+            "threshold": 0.0,
+            "actual": 772.5000000000001,
+            "units": "Wh",
+            "status": "fail",
+            "explanation": "Unmet load must not exceed the threshold, with the existing battery model's 1e-8 Wh arithmetic tolerance (not physical uncertainty).",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ],
+            "limitations": [
+              "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+              "Passing tested requirements does not guarantee mission survival or establish an RF link."
+            ]
+          },
+          {
+            "constraint_id": "conservative_minimum_soc",
+            "threshold": 10.0,
+            "actual": 10.0,
+            "units": "%",
+            "status": "pass",
+            "explanation": "conservative_minimum_soc: actual must be at least the threshold; missing evidence is indeterminate.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ],
+            "limitations": [
+              "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+              "Passing tested requirements does not guarantee mission survival or establish an RF link."
+            ]
+          },
+          {
+            "constraint_id": "conservative_model_pass",
+            "threshold": 1.0,
+            "actual": 0.0,
+            "units": "boolean",
+            "status": "fail",
+            "explanation": "The explicitly required conservative power-model pass additionally requires no unmet demand beyond the existing 1e-8 Wh arithmetic tolerance.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ],
+            "limitations": [
+              "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+              "Passing tested requirements does not guarantee mission survival or establish an RF link."
+            ]
+          }
+        ],
+        "interpretations": [
+          {
+            "topic": "Sun direction",
+            "meaning": "Elevation is the angle above the ideal horizon; terrain clearance subtracts the modeled skyline.",
+            "finding": "1.390 degrees above the ideal horizon; local terrain clearance 5.585 degrees, conditional_clearance",
+            "consequence": "Modeled obstruction limits direct sunlight.",
+            "next_action": "Compare another date or supported location; recalculate with the same hardware.",
+            "limitation": "Body centers only. Finite DEM horizons cannot prove globally unobstructed views; geometric elevation alone is insufficient.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Earth direction",
+            "meaning": "Elevation is the angle above the ideal horizon; terrain clearance subtracts the modeled skyline.",
+            "finding": "-3.932 degrees above the ideal horizon; local terrain clearance -4.864 degrees, modeled_obstruction",
+            "consequence": "A blocked Earth center limits modeled direct-to-Earth access; a clear center does not establish a radio link.",
+            "next_action": "Compare another date or supported location; recalculate with the same hardware.",
+            "limitation": "Body centers only. Finite DEM horizons cannot prove globally unobstructed views; geometric elevation alone is insufficient.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Conservative electricity",
+            "meaning": "Watts measure the present rate; watt-hours measure energy over time.",
+            "finding": "Selected sample: 0.00 W generation, 50.00 W load. Generation is below the configured load; the battery must cover the difference. Total: 0.00 Wh generated versus 1200.00 Wh demanded.",
+            "consequence": "A temporary power shortfall need not fail the mission; inspect the full battery and unmet-demand result.",
+            "next_action": "Test panel area, orientation or reduced demand, then recalculate.",
+            "limitation": "Configured efficiency, sample timing and illumination assumptions apply; no thermal or degradation model.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Conservative battery",
+            "meaning": "Stored watt-hours supply equipment when generation is too small.",
+            "finding": "Minimum 50.00 Wh (10.00%); final 50.00 Wh; unmet demand 772.50 Wh.",
+            "consequence": "Unmet demand means some configured equipment energy cannot be supplied. The model stops discharge at reserve; it does not simulate energy below reserve.",
+            "next_action": "Test more usable storage, lower demand, more generation or another date.",
+            "limitation": "Optimistic-only success is conditional, never guaranteed mission survival. Battery charging/discharging losses are included.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Optimistic electricity",
+            "meaning": "Watts measure the present rate; watt-hours measure energy over time.",
+            "finding": "Selected sample: 14.86 W generation, 50.00 W load. Generation is below the configured load; the battery must cover the difference. Total: 343.41 Wh generated versus 1200.00 Wh demanded.",
+            "consequence": "A temporary power shortfall need not fail the mission; inspect the full battery and unmet-demand result.",
+            "next_action": "Test panel area, orientation or reduced demand, then recalculate.",
+            "limitation": "Configured efficiency, sample timing and illumination assumptions apply; no thermal or degradation model.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Optimistic battery",
+            "meaning": "Stored watt-hours supply equipment when generation is too small.",
+            "finding": "Minimum 50.00 Wh (10.00%); final 50.00 Wh; unmet demand 429.09 Wh.",
+            "consequence": "Unmet demand means some configured equipment energy cannot be supplied. The model stops discharge at reserve; it does not simulate energy below reserve.",
+            "next_action": "Test more usable storage, lower demand, more generation or another date.",
+            "limitation": "Optimistic-only success is conditional, never guaranteed mission survival. Battery charging/discharging losses are included.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Direct-to-Earth access",
+            "meaning": "This is Earth-center terrain clearance, not radio signal strength.",
+            "finding": "Conditional access 0.0 s; longest supported interruption 86400.0 s; unknown 0.0 s; required clearance 1.0 degrees.",
+            "consequence": "Communication is not a mandatory requirement in this assessment.",
+            "next_action": "Compare another date/site or revise the explicit access requirement and recalculate.",
+            "limitation": "No antenna, RF link budget, relay or guaranteed contact is modeled.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+          "Passing tested requirements does not guarantee mission survival or establish an RF link."
+        ]
+      }
+    },
+    {
+      "label": "Apollo 15",
+      "request": {
+        "start_utc": "2026-11-14T00:00:00Z",
+        "end_utc": "2026-11-15T00:00:00Z",
+        "schema_version": "1.0",
+        "site": {
+          "site_id": "apollo-15",
+          "name": "Apollo 15",
+          "latitude_deg": 26.1323957856872,
+          "longitude_deg": 3.6333065050272526,
+          "surface_elevation_m": 0.0,
+          "observer_height_m": 0.0,
+          "description": null,
+          "coordinate_reference": {
+            "body": "MOON",
+            "latitude_type": "planetocentric",
+            "longitude_convention": "east_positive",
+            "frame_id": "MOON_ME_DE440_ME421",
+            "frame_realization": "DE440/ME421",
+            "reference_surface": "MOON_SPHERE_1737400_M",
+            "reference_radius_m": 1737400.0
+          }
+        },
+        "provider_mode": "scientific",
+        "sample_step_s": 3600.0,
+        "settings": {
+          "terrain_enabled": false,
+          "power_enabled": false,
+          "communication_enabled": false,
+          "horizon_mode": "geometric_approximation",
+          "disk_policy": "center",
+          "correction_mode": "NONE",
+          "sun_clearance_deg": 0.0,
+          "earth_clearance_deg": 0.0,
+          "terrain_options": null,
+          "power_options": null,
+          "communication_options": null
+        }
+      },
+      "samples": 25,
+      "first_geometry": {
+        "status": "calculated",
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "assumptions": [],
+        "time_utc": "2026-11-14T00:00:00Z",
+        "reference_frame": "MOON_ME_DE440_ME421",
+        "correction_mode": "NONE",
+        "sun_azimuth_deg": {
+          "value": 75.59665242354981,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "sun_elevation_deg": {
+          "value": -30.041654143528365,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "earth_azimuth_deg": {
+          "value": 192.9075293782516,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "earth_elevation_deg": {
+          "value": 67.6851745053229,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        }
+      },
+      "first_terrain": null,
+      "cases": [],
+      "dte": null,
+      "assessment": {
+        "model_version": "mission-assessment-v1",
+        "classification": "insufficient_data",
+        "constraints": [
+          {
+            "constraint_id": "conservative_unmet_load",
+            "threshold": 0.0,
+            "actual": null,
+            "units": "Wh",
+            "status": "indeterminate",
+            "explanation": "Unmet load must not exceed the threshold, with the existing battery model's 1e-8 Wh arithmetic tolerance (not physical uncertainty).",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf"
+            ],
+            "limitations": [
+              "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+              "Passing tested requirements does not guarantee mission survival or establish an RF link."
+            ]
+          },
+          {
+            "constraint_id": "conservative_minimum_soc",
+            "threshold": 10.0,
+            "actual": null,
+            "units": "%",
+            "status": "indeterminate",
+            "explanation": "conservative_minimum_soc: actual must be at least the threshold; missing evidence is indeterminate.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf"
+            ],
+            "limitations": [
+              "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+              "Passing tested requirements does not guarantee mission survival or establish an RF link."
+            ]
+          },
+          {
+            "constraint_id": "conservative_model_pass",
+            "threshold": 1.0,
+            "actual": null,
+            "units": "boolean",
+            "status": "indeterminate",
+            "explanation": "The explicitly required conservative power-model pass additionally requires no unmet demand beyond the existing 1e-8 Wh arithmetic tolerance.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf"
+            ],
+            "limitations": [
+              "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+              "Passing tested requirements does not guarantee mission survival or establish an RF link."
+            ]
+          }
+        ],
+        "interpretations": [
+          {
+            "topic": "Sun direction",
+            "meaning": "Elevation is the angle above the ideal horizon; terrain clearance subtracts the modeled skyline.",
+            "finding": "-30.042 degrees above the ideal horizon; terrain clearance unavailable",
+            "consequence": "Modeled obstruction limits direct sunlight.",
+            "next_action": "Compare another date or supported location; recalculate with the same hardware.",
+            "limitation": "Body centers only. Finite DEM horizons cannot prove globally unobstructed views; geometric elevation alone is insufficient.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf"
+            ]
+          },
+          {
+            "topic": "Earth direction",
+            "meaning": "Elevation is the angle above the ideal horizon; terrain clearance subtracts the modeled skyline.",
+            "finding": "67.685 degrees above the ideal horizon; terrain clearance unavailable",
+            "consequence": "A blocked Earth center limits modeled direct-to-Earth access; a clear center does not establish a radio link.",
+            "next_action": "Compare another date or supported location; recalculate with the same hardware.",
+            "limitation": "Body centers only. Finite DEM horizons cannot prove globally unobstructed views; geometric elevation alone is insufficient.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf"
+            ]
+          },
+          {
+            "topic": "Power and battery",
+            "meaning": "Hardware settings and terrain-supported illumination are required.",
+            "finding": "Power analysis was not calculated.",
+            "consequence": "Energy sufficiency is unknown",
+            "next_action": "Configure panels, battery and load, then request power analysis at a supported site.",
+            "limitation": "No fabricated zero or assumed survival.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf"
+            ]
+          },
+          {
+            "topic": "Direct-to-Earth access",
+            "meaning": "This is Earth-center terrain clearance, not radio signal strength.",
+            "finding": "DTE engineering was not calculated.",
+            "consequence": "Communication is not a mandatory requirement in this assessment.",
+            "next_action": "Compare another date/site or revise the explicit access requirement and recalculate.",
+            "limitation": "No antenna, RF link budget, relay or guaranteed contact is modeled.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+          "Passing tested requirements does not guarantee mission survival or establish an RF link."
+        ]
+      },
+      "coverage": {
+        "dataset_id": null,
+        "checked": [
+          {
+            "dataset_id": "lola-site01-5m-v2020",
+            "reason": "OUTSIDE_COVERAGE"
+          },
+          {
+            "dataset_id": "pgda-site01-5m-window-v1",
+            "reason": "OUTSIDE_COVERAGE"
+          },
+          {
+            "dataset_id": "pgda-site04-5m-window-v1",
+            "reason": "OUTSIDE_COVERAGE"
+          },
+          {
+            "dataset_id": "pgda-site06-5m-window-v1",
+            "reason": "OUTSIDE_COVERAGE"
+          },
+          {
+            "dataset_id": "pgda-site07-5m-window-v1",
+            "reason": "OUTSIDE_COVERAGE"
+          },
+          {
+            "dataset_id": "pgda-site11-5m-window-v1",
+            "reason": "OUTSIDE_COVERAGE"
+          },
+          {
+            "dataset_id": "pgda-site20-5m-window-v1",
+            "reason": "OUTSIDE_COVERAGE"
+          },
+          {
+            "dataset_id": "pgda-site23-5m-window-v1",
+            "reason": "OUTSIDE_COVERAGE"
+          },
+          {
+            "dataset_id": "pgda-site42-5m-window-v1",
+            "reason": "OUTSIDE_COVERAGE"
+          },
+          {
+            "dataset_id": "pgda-dm1-5m-window-v1",
+            "reason": "OUTSIDE_COVERAGE"
+          },
+          {
+            "dataset_id": "pgda-dm2-5m-window-v1",
+            "reason": "OUTSIDE_COVERAGE"
+          },
+          {
+            "dataset_id": "pgda-sl3-5m-window-v1",
+            "reason": "OUTSIDE_COVERAGE"
+          },
+          {
+            "dataset_id": "pgda-haworth-5m-window-v1",
+            "reason": "OUTSIDE_COVERAGE"
+          },
+          {
+            "dataset_id": "pgda-shoemaker-5m-window-v1",
+            "reason": "OUTSIDE_COVERAGE"
+          }
+        ],
+        "reason": "No installed, registered terrain has valid four-pixel support at this location. Geometry can still be calculated with an explicitly assumed surface height."
+      }
+    },
+    {
+      "label": "Nobile Rim 1",
+      "request": {
+        "start_utc": "2026-11-14T00:00:00Z",
+        "end_utc": "2026-11-15T00:00:00Z",
+        "schema_version": "1.0",
+        "site": {
+          "site_id": "pgda-site06",
+          "name": "Nobile Rim 1",
+          "latitude_deg": -85.43808432372636,
+          "longitude_deg": 37.36510410102379,
+          "surface_elevation_m": null,
+          "observer_height_m": 0.0,
+          "description": null,
+          "coordinate_reference": {
+            "body": "MOON",
+            "latitude_type": "planetocentric",
+            "longitude_convention": "east_positive",
+            "frame_id": "MOON_ME_DE440_ME421",
+            "frame_realization": "DE440/ME421",
+            "reference_surface": "MOON_SPHERE_1737400_M",
+            "reference_radius_m": 1737400.0
+          }
+        },
+        "provider_mode": "scientific",
+        "sample_step_s": 3600.0,
+        "settings": {
+          "terrain_enabled": true,
+          "power_enabled": true,
+          "communication_enabled": true,
+          "horizon_mode": "terrain",
+          "disk_policy": "center",
+          "correction_mode": "NONE",
+          "sun_clearance_deg": 0.0,
+          "earth_clearance_deg": 0.0,
+          "terrain_options": {
+            "dataset_id": "pgda-site06-5m-window-v1",
+            "coordinate_epoch_utc": "2026-11-14T00:00:00Z",
+            "azimuth_samples": 360,
+            "max_search_radius_m": 100.0,
+            "radial_step_m": 5.0
+          },
+          "power_options": {
+            "panel_area_m2": 2.0,
+            "panel_efficiency": 0.25,
+            "solar_irradiance_w_m2": 1361.0,
+            "orientation_mode": "fixed_horizontal",
+            "system_efficiency": 0.9,
+            "derating_factor": 1.0,
+            "baseline_load_w": 50.0,
+            "heater_load_w": 0.0,
+            "battery_capacity_wh": 500.0,
+            "initial_soc_pct": 100.0,
+            "minimum_soc_pct": 10.0,
+            "charging_efficiency": 0.95,
+            "discharging_efficiency": 0.95
+          },
+          "communication_options": {
+            "minimum_earth_clearance_deg": 1.0
+          }
+        }
+      },
+      "samples": 25,
+      "first_geometry": {
+        "status": "calculated",
+        "provenance_ids": [
+          "geometry-model",
+          "kernel:naif0012.tls",
+          "kernel:pck00011.tpc",
+          "kernel:de440s.bsp",
+          "kernel:moon_pa_de440_200625.bpc",
+          "kernel:moon_de440_250416.tf"
+        ],
+        "assumptions": [],
+        "time_utc": "2026-11-14T00:00:00Z",
+        "reference_frame": "MOON_ME_DE440_ME421",
+        "correction_mode": "NONE",
+        "sun_azimuth_deg": {
+          "value": 89.38424210734257,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "sun_elevation_deg": {
+          "value": 1.6107067324907254,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "earth_azimuth_deg": {
+          "value": 321.5377646173393,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        },
+        "earth_elevation_deg": {
+          "value": -1.0802794364064998,
+          "status": "available",
+          "reason": null,
+          "provenance_ids": [
+            "geometry-model",
+            "kernel:naif0012.tls",
+            "kernel:pck00011.tpc",
+            "kernel:de440s.bsp",
+            "kernel:moon_pa_de440_200625.bpc",
+            "kernel:moon_de440_250416.tf"
+          ],
+          "validation": "unvalidated",
+          "validation_report_id": null
+        }
+      },
+      "first_terrain": {
+        "time_utc": "2026-11-14T00:00:00Z",
+        "reference_frame": "MOON_ME_DE421",
+        "sun": {
+          "azimuth_deg": 89.38412418908509,
+          "elevation_deg": 1.6107067324907252,
+          "horizon_elevation_deg": -10.15708918657449,
+          "clearance_deg": 11.767795919065215,
+          "classification": "conditional_clearance",
+          "coverage": "sampled_radius",
+          "reason": "Center clears the evaluated finite sampled terrain only; farther and unresolved terrain remain unknown."
+        },
+        "earth": {
+          "azimuth_deg": 321.53764669908185,
+          "elevation_deg": -1.0802794364064985,
+          "horizon_elevation_deg": -1.6357550738155793,
+          "clearance_deg": 0.5554756374090808,
+          "classification": "conditional_clearance",
+          "coverage": "sampled_radius",
+          "reason": "Center clears the evaluated finite sampled terrain only; farther and unresolved terrain remain unknown."
+        },
+        "status": "partial"
+      },
+      "cases": [
+        {
+          "assumption": "conservative",
+          "totals": {
+            "solar_generated_wh": 0.0,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 0.0,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 449.99999999999994,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.500000000000025,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 772.5000000000001,
+            "energy_balance_residual_wh": 8.881784197001252e-14
+          },
+          "passes_configured_model": false,
+          "unknown_duration_s": 0.0
+        },
+        {
+          "assumption": "optimistic",
+          "totals": {
+            "solar_generated_wh": 531.7160250665553,
+            "electrical_demand_wh": 1200.0,
+            "direct_solar_to_load_wh": 531.7160250665553,
+            "battery_charged_wh": 0.0,
+            "battery_discharged_wh": 450.0,
+            "charging_loss_wh": 0.0,
+            "discharging_loss_wh": 22.50000000000002,
+            "curtailed_surplus_wh": 0.0,
+            "final_battery_energy_wh": 50.0,
+            "minimum_battery_energy_wh": 50.0,
+            "minimum_soc_pct": 10.0,
+            "unmet_load_wh": 240.78397493344477,
+            "energy_balance_residual_wh": -2.1316282072803006e-14
+          },
+          "passes_configured_model": false,
+          "unknown_duration_s": 0.0
+        }
+      ],
+      "dte": {
+        "access_s": 28800.0,
+        "unknown_s": 0.0
+      },
+      "assessment": {
+        "model_version": "mission-assessment-v1",
+        "classification": "does_not_meet_requirements",
+        "constraints": [
+          {
+            "constraint_id": "conservative_unmet_load",
+            "threshold": 0.0,
+            "actual": 772.5000000000001,
+            "units": "Wh",
+            "status": "fail",
+            "explanation": "Unmet load must not exceed the threshold, with the existing battery model's 1e-8 Wh arithmetic tolerance (not physical uncertainty).",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ],
+            "limitations": [
+              "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+              "Passing tested requirements does not guarantee mission survival or establish an RF link."
+            ]
+          },
+          {
+            "constraint_id": "conservative_minimum_soc",
+            "threshold": 10.0,
+            "actual": 10.0,
+            "units": "%",
+            "status": "pass",
+            "explanation": "conservative_minimum_soc: actual must be at least the threshold; missing evidence is indeterminate.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ],
+            "limitations": [
+              "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+              "Passing tested requirements does not guarantee mission survival or establish an RF link."
+            ]
+          },
+          {
+            "constraint_id": "conservative_model_pass",
+            "threshold": 1.0,
+            "actual": 0.0,
+            "units": "boolean",
+            "status": "fail",
+            "explanation": "The explicitly required conservative power-model pass additionally requires no unmet demand beyond the existing 1e-8 Wh arithmetic tolerance.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ],
+            "limitations": [
+              "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+              "Passing tested requirements does not guarantee mission survival or establish an RF link."
+            ]
+          }
+        ],
+        "interpretations": [
+          {
+            "topic": "Sun direction",
+            "meaning": "Elevation is the angle above the ideal horizon; terrain clearance subtracts the modeled skyline.",
+            "finding": "1.611 degrees above the ideal horizon; local terrain clearance 11.768 degrees, conditional_clearance",
+            "consequence": "Modeled obstruction limits direct sunlight.",
+            "next_action": "Compare another date or supported location; recalculate with the same hardware.",
+            "limitation": "Body centers only. Finite DEM horizons cannot prove globally unobstructed views; geometric elevation alone is insufficient.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Earth direction",
+            "meaning": "Elevation is the angle above the ideal horizon; terrain clearance subtracts the modeled skyline.",
+            "finding": "-1.080 degrees above the ideal horizon; local terrain clearance 0.555 degrees, conditional_clearance",
+            "consequence": "A blocked Earth center limits modeled direct-to-Earth access; a clear center does not establish a radio link.",
+            "next_action": "Compare another date or supported location; recalculate with the same hardware.",
+            "limitation": "Body centers only. Finite DEM horizons cannot prove globally unobstructed views; geometric elevation alone is insufficient.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Conservative electricity",
+            "meaning": "Watts measure the present rate; watt-hours measure energy over time.",
+            "finding": "Selected sample: 0.00 W generation, 50.00 W load. Generation is below the configured load; the battery must cover the difference. Total: 0.00 Wh generated versus 1200.00 Wh demanded.",
+            "consequence": "A temporary power shortfall need not fail the mission; inspect the full battery and unmet-demand result.",
+            "next_action": "Test panel area, orientation or reduced demand, then recalculate.",
+            "limitation": "Configured efficiency, sample timing and illumination assumptions apply; no thermal or degradation model.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Conservative battery",
+            "meaning": "Stored watt-hours supply equipment when generation is too small.",
+            "finding": "Minimum 50.00 Wh (10.00%); final 50.00 Wh; unmet demand 772.50 Wh.",
+            "consequence": "Unmet demand means some configured equipment energy cannot be supplied. The model stops discharge at reserve; it does not simulate energy below reserve.",
+            "next_action": "Test more usable storage, lower demand, more generation or another date.",
+            "limitation": "Optimistic-only success is conditional, never guaranteed mission survival. Battery charging/discharging losses are included.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Optimistic electricity",
+            "meaning": "Watts measure the present rate; watt-hours measure energy over time.",
+            "finding": "Selected sample: 17.22 W generation, 50.00 W load. Generation is below the configured load; the battery must cover the difference. Total: 531.72 Wh generated versus 1200.00 Wh demanded.",
+            "consequence": "A temporary power shortfall need not fail the mission; inspect the full battery and unmet-demand result.",
+            "next_action": "Test panel area, orientation or reduced demand, then recalculate.",
+            "limitation": "Configured efficiency, sample timing and illumination assumptions apply; no thermal or degradation model.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Optimistic battery",
+            "meaning": "Stored watt-hours supply equipment when generation is too small.",
+            "finding": "Minimum 50.00 Wh (10.00%); final 50.00 Wh; unmet demand 240.78 Wh.",
+            "consequence": "Unmet demand means some configured equipment energy cannot be supplied. The model stops discharge at reserve; it does not simulate energy below reserve.",
+            "next_action": "Test more usable storage, lower demand, more generation or another date.",
+            "limitation": "Optimistic-only success is conditional, never guaranteed mission survival. Battery charging/discharging losses are included.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          },
+          {
+            "topic": "Direct-to-Earth access",
+            "meaning": "This is Earth-center terrain clearance, not radio signal strength.",
+            "finding": "Conditional access 28800.0 s; longest supported interruption 57600.0 s; unknown 0.0 s; required clearance 1.0 degrees.",
+            "consequence": "Communication is not a mandatory requirement in this assessment.",
+            "next_action": "Compare another date/site or revise the explicit access requirement and recalculate.",
+            "limitation": "No antenna, RF link budget, relay or guaranteed contact is modeled.",
+            "provenance_ids": [
+              "geometry-model",
+              "kernel:naif0012.tls",
+              "kernel:pck00011.tpc",
+              "kernel:de440s.bsp",
+              "kernel:moon_pa_de440_200625.bpc",
+              "kernel:moon_de440_250416.tf",
+              "terrain-dem",
+              "visibility-frame",
+              "visibility-model",
+              "power-model",
+              "dte-model"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite sampled terrain; center-only geometry; unvalidated conditional engineering estimates.",
+          "Passing tested requirements does not guarantee mission survival or establish an RF link."
+        ]
+      },
+      "coverage": {
+        "dataset_id": "pgda-site06-5m-window-v1",
+        "surface_elevation_m": 5947.434082031292,
+        "pixel_resolution_m": 5.0,
+        "reference_frame": "MOON_ME_DE421",
+        "vertical_reference": "Height in meters above 1737400 m sphere",
+        "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site06/Site06_final_adj_5mpp_surf.tif",
+        "sha256": "c1a2089f4cf23f4665c80bd166b09c0a521783d9323b5a32145217e4d5d353df",
+        "recommended_radius_m": 100,
+        "coverage": "observer_four_pixel_support_only",
+        "checked": [],
+        "limitations": [
+          "Equal nominal 5 m products: preserve the explicitly selected valid source, then prefer the larger Site01 footprint before bounded windows. No unverified mosaicking.",
+          "Valid observer support does not prove complete rays or global horizon coverage."
+        ]
+      }
+    }
+  ],
+  "global_coordinate_10N_10E": {
+    "dataset_id": null,
+    "checked": [
+      {
+        "dataset_id": "lola-site01-5m-v2020",
+        "reason": "OUTSIDE_COVERAGE"
+      },
+      {
+        "dataset_id": "pgda-site01-5m-window-v1",
+        "reason": "OUTSIDE_COVERAGE"
+      },
+      {
+        "dataset_id": "pgda-site04-5m-window-v1",
+        "reason": "OUTSIDE_COVERAGE"
+      },
+      {
+        "dataset_id": "pgda-site06-5m-window-v1",
+        "reason": "OUTSIDE_COVERAGE"
+      },
+      {
+        "dataset_id": "pgda-site07-5m-window-v1",
+        "reason": "OUTSIDE_COVERAGE"
+      },
+      {
+        "dataset_id": "pgda-site11-5m-window-v1",
+        "reason": "OUTSIDE_COVERAGE"
+      },
+      {
+        "dataset_id": "pgda-site20-5m-window-v1",
+        "reason": "OUTSIDE_COVERAGE"
+      },
+      {
+        "dataset_id": "pgda-site23-5m-window-v1",
+        "reason": "OUTSIDE_COVERAGE"
+      },
+      {
+        "dataset_id": "pgda-site42-5m-window-v1",
+        "reason": "OUTSIDE_COVERAGE"
+      },
+      {
+        "dataset_id": "pgda-dm1-5m-window-v1",
+        "reason": "OUTSIDE_COVERAGE"
+      },
+      {
+        "dataset_id": "pgda-dm2-5m-window-v1",
+        "reason": "OUTSIDE_COVERAGE"
+      },
+      {
+        "dataset_id": "pgda-sl3-5m-window-v1",
+        "reason": "OUTSIDE_COVERAGE"
+      },
+      {
+        "dataset_id": "pgda-haworth-5m-window-v1",
+        "reason": "OUTSIDE_COVERAGE"
+      },
+      {
+        "dataset_id": "pgda-shoemaker-5m-window-v1",
+        "reason": "OUTSIDE_COVERAGE"
+      }
+    ],
+    "reason": "No installed, registered terrain has valid four-pixel support at this location. Geometry can still be calculated with an explicitly assumed surface height."
+  }
+}

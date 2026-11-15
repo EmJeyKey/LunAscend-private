@@ -1,4 +1,11 @@
-# LunAscend architecture — Step 12 bounded exploration
+# LunAscend architecture — Step 13 unified mission workflow
+
+Step 13 keeps one shared React mission and expandable technical view. Analysis
+owns the comprehensive record and deterministic Python requirement assessment.
+The coverage adapter verifies actual installed DEM pixels; it never substitutes
+Site01 outside support. A two-entry, source-verified environment cache composes
+hardware changes with existing equations. Production mock selection is disabled;
+old generators remain test-only. See docs/STEP_13_UNIFIED_WORKFLOW_AND_NASA_COVERAGE.md.
 
 Step 12.1 extends manifest-backed site/dataset selection, not scientific equations.
 The unified registry references six native Apollo points, thirteen source-pixel

@@ -1226,3 +1226,12 @@ body, .app-main { background: var(--bg); }
 .raw-mission-record{max-height:24rem;overflow:auto;font-size:.85rem;white-space:pre-wrap;overflow-wrap:anywhere}
 #mission-assessment,#mission-requirements,#all-mission-data,#mission-configuration{scroll-margin-top:5rem}
 @media(max-width:650px){.catalog-options{grid-template-columns:minmax(0,1fr)}.mission-summary h2{overflow-wrap:anywhere}}
+
+/* Requested site-entry refinements are scoped to this component on every screen. */
+.site-chooser>h1{font-family:Marcellus,Georgia,serif;font-size:30px;font-weight:700;line-height:1.25;color:#f0eee9;margin:0 0 .65rem}
+.site-chooser>p:first-of-type,.site-chooser .custom-site-link{color:#f2dbaa}
+.site-chooser>.catalog-options{height:121px;max-height:121px;overscroll-behavior:contain}
+.site-chooser .site-search{margin:1rem 0 .5rem}.site-chooser>.atlas-actions{margin:.75rem 0}
+.site-chooser>.chosen-site{margin:.65rem 0}.site-chooser>.button{margin-top:.5rem;white-space:normal;text-align:left}
+#moon-viewer{scroll-margin-top:80px}.lunar-explorer>.viewer-stage-wrap{margin-top:.8rem}
+@media(max-width:480px){.site-chooser>h1{font-size:30px}.site-chooser>.button{width:100%}}

@@ -15,7 +15,14 @@ import {fullAnalysisOptions,initialEngineering} from '../lib/engineering'
 export function MissionControls({ compact = false, onDraftChange }: { compact?: boolean; onDraftChange?: (draft: MissionSelection) => void }) {
   const { mission, updateMission, analysis, options, updateOptions, runAnalysis, invalidate } = useMission()
   const {advanced}=usePresentation()
-  const [site, setSite] = useState(mission.site)
+  const [site, setDraftSite] = useState(mission.site)
+  const editSite=(value:MissionSelection['site'])=>{
+    setDraftSite(value)
+    if(value.name.trim()&&Number.isFinite(value.latitude)&&Number.isFinite(value.longitude)&&Math.abs(value.latitude)<=90&&value.longitude>=-180&&value.longitude<180){
+      updateMission({...mission,site:value})
+      if(value.latitude!==mission.site.latitude||value.longitude!==mission.site.longitude)updateOptions({...options,frameConfirmed:false,coordinateEpochUtc:undefined})
+    }
+  }
   const [hours, setHours] = useState(String(mission.durationHours))
   const [message, setMessage] = useState('')
   const coverageJob=useRef<AbortController|null>(null)
@@ -23,7 +30,7 @@ export function MissionControls({ compact = false, onDraftChange }: { compact?: 
   useEffect(()=>()=>coverageJob.current?.abort(),[])
   const startInput = useRef<HTMLInputElement>(null)
   const [dateVersion, setDateVersion] = useState(0)
-  useEffect(() => { setSite(mission.site); setHours(String(mission.durationHours)) }, [mission])
+  useEffect(() => { setDraftSite(mission.site); setHours(String(mission.durationHours)) }, [mission])
   // Optional consumer of the existing form draft: resilience must never calculate
   // an older committed site/date while edited inputs are visible in this form.
   useEffect(() => { onDraftChange?.({site,startUtc:toUtc(startInput.current?.value || '') || '',durationHours:Number(hours)}) }, [site,hours,mission,dateVersion,onDraftChange])
@@ -47,11 +54,11 @@ export function MissionControls({ compact = false, onDraftChange }: { compact?: 
         if(controller.signal.aborted)return
         if(coverage.dataset_id===null){
           if(!settings.surfaceElevationM.trim())throw new Error('No installed terrain at this location. Enter an explicit surface-height assumption and confirm the frame to calculate geometry. Power, battery and terrain-qualified DTE remain unavailable.')
-          settings={...settings,terrainEnabled:false,powerEnabled:false,communicationEnabled:false}
+          settings={...settings,terrainEnabled:false,powerEnabled:false,communicationEnabled:false,coverageNote:{siteId:selection.site.id,startUtc,reason:typeof coverage.reason==='string'?coverage.reason:'No installed terrain supports this location.'}}
           setMessage('Geometry requested. No installed terrain supports this coordinate; power, battery and terrain-qualified DTE are unavailable.')
         }else{
           if(typeof coverage.dataset_id!=='string'||!Number.isFinite(coverage.recommended_radius_m))throw new Error('Incompatible terrain coverage response.')
-          settings=fullAnalysisOptions({...settings,terrainDatasetId:coverage.dataset_id,terrainRadiusM:String(coverage.recommended_radius_m)})
+          settings=fullAnalysisOptions({...settings,coverageNote:undefined,terrainDatasetId:coverage.dataset_id,terrainRadiusM:String(coverage.recommended_radius_m)})
           setMessage('Full analysis requested with a verified local DEM. Finite terrain does not establish complete global visibility.')
         }
       }catch(error){if(!controller.signal.aborted)setMessage(error instanceof Error?error.message:'Coverage check failed.');return}
@@ -62,8 +69,8 @@ export function MissionControls({ compact = false, onDraftChange }: { compact?: 
     <header className="section-introduction"><h2>Plan this mission</h2><p>Set location, landing time and duration. All times are UTC.</p></header>
     <div className="mission-controls">
       <label className="control-field"><span><MapPin size={13}/>LANDING SITE</span><strong>{site.name}</strong><Link to="/">Choose another NASA site</Link></label>
-      <label className="control-field"><span><CalendarDays size={13}/>START TIME (UTC)</span><input ref={startInput} key={mission.startUtc} name="start_utc" aria-label="Landing date and time in UTC" type="datetime-local" step="0.001" required defaultValue={mission.startUtc.replace(/Z$/, '').replace(/\.000$/, '')} onInput={()=>{setDateVersion(v=>v+1);invalidate()}}/></label>
-      <label className="control-field period-field"><span><Clock3 size={13}/>DURATION (HOURS)</span><input aria-label="Analysis duration in hours" type="number" min="0.000001" max="8784" step="any" list="analysis-periods" required value={hours} onChange={event => setHours(event.target.value)}/><datalist id="analysis-periods">{durationOptions.map(value => <option key={value} value={value}/>)}</datalist></label>
+      <label className="control-field"><span><CalendarDays size={13}/>START TIME (UTC)</span><input ref={startInput} key={mission.startUtc} name="start_utc" aria-label="Landing date and time in UTC" type="datetime-local" step="0.001" required defaultValue={mission.startUtc.replace(/Z$/, '').replace(/\.000$/, '')} onInput={()=>{setDateVersion(v=>v+1);invalidate()}} onBlur={event=>{const utc=toUtc(event.target.value);if(utc&&Date.parse(utc)!==Date.parse(mission.startUtc))updateMission({...mission,startUtc:utc})}}/></label>
+      <label className="control-field period-field"><span><Clock3 size={13}/>DURATION (HOURS)</span><input aria-label="Analysis duration in hours" type="number" min="0.000001" max="8784" step="any" list="analysis-periods" required value={hours} onChange={event => {setHours(event.target.value);const duration=Number(event.target.value);if(Number.isFinite(duration)&&duration>0&&duration<=8784)updateMission({...mission,durationHours:duration})}}/><datalist id="analysis-periods">{durationOptions.map(value => <option key={value} value={value}/>)}</datalist></label>
       <label className="control-field"><span>DATA SOURCE</span><select aria-label="Data source" value={options.providerMode} onChange={event => updateOptions({ ...options, providerMode: event.target.value as ProviderMode, terrainEnabled: event.target.value === 'scientific' && options.terrainEnabled, powerEnabled: event.target.value === 'scientific' && options.powerEnabled, communicationEnabled: event.target.value === 'scientific' && options.communicationEnabled })}><option value="scientific">Scientific SPICE</option></select></label>
       <button className="button primary" type="submit" disabled={analysis.status === 'loading'}>{analysis.status === 'loading' ? 'Calculating…' : 'Run Analysis'}<ArrowRight size={16}/></button>
       <button className="button secondary" type="submit" value="full" formNoValidate disabled={!scientific||analysis.status==='loading'}>Run Full Analysis</button>
@@ -75,9 +82,9 @@ export function MissionControls({ compact = false, onDraftChange }: { compact?: 
       updateOptions({ ...options, terrainDatasetId: undefined, coordinateEpochUtc: undefined, terrainEnabled: true, observerHeightM: '2', sampleStepS: '3600', frameConfirmed: false })
     }}>Load Site01 example · confirm frame before analysis</button>}
     <details className="analysis-settings" open={advanced&&!compact?analysis.status!=='success':undefined}><summary>Location, terrain & power settings</summary><div className="analysis-input-grid">
-      <label>Site name<input aria-label="Site name" maxLength={500} required value={site.name} onChange={event => setSite({ ...site, name: event.target.value })}/></label>
-      <label>Latitude / ° N<input aria-label="Latitude in degrees" type="number" min="-90" max="90" step="any" required value={Number.isNaN(site.latitude) ? '' : site.latitude} onChange={event => setSite({ ...site, id: 'custom', latitude: event.target.value === '' ? NaN : Number(event.target.value) })}/></label>
-      <label>Longitude / ° E<input aria-label="Longitude in degrees" type="number" min="-180" max="179.999999999" step="any" required value={Number.isNaN(site.longitude) ? '' : site.longitude} onChange={event => setSite({ ...site, id: 'custom', longitude: event.target.value === '' ? NaN : Number(event.target.value) })}/></label>
+      <label>Site name<input aria-label="Site name" maxLength={500} required value={site.name} onChange={event => editSite({ ...site, name: event.target.value })}/></label>
+      <label>Latitude / ° N<input aria-label="Latitude in degrees" type="number" min="-90" max="90" step="any" required value={Number.isNaN(site.latitude) ? '' : site.latitude} onChange={event => editSite({ ...site, id: 'custom', native:undefined, category:'user-selected', latitude: event.target.value === '' ? NaN : Number(event.target.value) })}/></label>
+      <label>Longitude / ° E<input aria-label="Longitude in degrees" type="number" min="-180" max="179.999999999" step="any" required value={Number.isNaN(site.longitude) ? '' : site.longitude} onChange={event => editSite({ ...site, id: 'custom', native:undefined, category:'user-selected', longitude: event.target.value === '' ? NaN : Number(event.target.value) })}/></label>
       <label>Surface elevation / m<input aria-label="Surface elevation in meters" type="number" step="any" placeholder={options.terrainEnabled ? 'Derived from LOLA DEM' : 'Explicit height above sphere'} disabled={options.terrainEnabled} required={scientific && !options.terrainEnabled} value={options.terrainEnabled ? '' : options.surfaceElevationM} onChange={event => updateOptions({ ...options, surfaceElevationM: event.target.value })}/></label>
       <label>Observer height / m<input aria-label="Observer height in meters" type="number" min="0" step="any" required value={options.observerHeightM} onChange={event => updateOptions({ ...options, observerHeightM: event.target.value })}/></label>
       <label>Sample step / s<input aria-label="Sample step in seconds" type="number" min="0.001" step="any" required value={options.sampleStepS} onChange={event => updateOptions({ ...options, sampleStepS: event.target.value })}/></label>

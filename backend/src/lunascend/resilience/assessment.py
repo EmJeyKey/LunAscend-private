@@ -7,7 +7,9 @@ def assess(request: AssessmentRequest) -> MissionAssessment:
     result = request.result
     if result is None:
         return MissionAssessment(classification="analysis_not_run", limitations=LIMITS)
-    rows, _ = evaluate(result, request.requirements, None)
+    from lunascend.contracts.resilience import MissionConstraints
+    effective = MissionConstraints(**{**request.requirements.model_dump(),"require_power":request.require_power,"require_communication":request.require_communication})
+    rows, _ = evaluate(result, effective, None)
     def applies(row):
         key = row.constraint_id
         if key.startswith(("conservative_", "optimistic_")):
@@ -16,6 +18,19 @@ def assess(request: AssessmentRequest) -> MissionAssessment:
             return request.require_communication
         return True
     rows = tuple(row for row in rows if applies(row))
+    # Known shortages in a supported prefix can fail a mandatory threshold even
+    # when later unknown time correctly withholds full-mission totals.
+    if request.require_power and result.power:
+        mode = "conservative" if request.requirements.require_conservative_pass or not request.requirements.allow_optimistic_only else "optimistic"
+        case = next((c for c in result.power.cases if c.assumption == mode), None)
+        if case and case.totals.unmet_load_wh is None:
+            known_unmet = sum(i.unmet_load_wh for i in case.potential_depletion_intervals)
+            if known_unmet > request.requirements.maximum_unmet_load_wh + 1e-8:
+                from lunascend.contracts.resilience import ConstraintResult
+                rows = (*rows, ConstraintResult(constraint_id=mode+"_known_prefix_unmet_load", actual=known_unmet,
+                    threshold=request.requirements.maximum_unmet_load_wh, units="Wh", status="fail",
+                    explanation="Already-recorded unmet demand exceeds the limit before missing later evidence. This is a known-prefix lower bound, not a full-mission total.",
+                    provenance_ids=tuple(p.id for p in result.provenance), limitations=LIMITS))
     states = {row.status for row in rows}
     if "fail" in states:
         classification = "does_not_meet_requirements"
@@ -36,12 +51,20 @@ def assess(request: AssessmentRequest) -> MissionAssessment:
     terrain = result.terrain_visibility
     for body in ("sun", "earth"):
         angle = getattr(obs, body+"_elevation_deg").value if obs else None
-        value = f"{angle:.3f} degrees above the ideal horizon" if angle is not None else "Unavailable"
+        value = f"{abs(angle):.3f} degrees {'below' if angle < 0 else 'above'} the ideal horizon" if angle is not None else "Unavailable"
         row = terrain.observations[index] if terrain and index < len(terrain.observations) else None
         t = getattr(row, body) if row else None
         clearance = f"; local terrain clearance {t.clearance_deg:.3f} degrees, {t.classification}" if t and t.clearance_deg is not None else "; terrain clearance unavailable"
+        if t and t.classification == 'modeled_obstruction':
+            consequence = f"The selected {body.title()} center is blocked by the modeled terrain at this sample."
+        elif t and t.classification == 'conditional_clearance':
+            consequence = f"The {body.title()} center clears the sampled local skyline. Unresolved or more distant terrain could still obstruct it."
+        else:
+            consequence = "Local terrain visibility is unknown; the geometric angle alone cannot establish access."
+        if body == 'earth':
+            consequence += " Earth visibility does not establish a radio link."
         explain(body.title()+" direction", "Elevation is the angle above the ideal horizon; terrain clearance subtracts the modeled skyline.", value+clearance,
-            "Modeled obstruction limits direct sunlight." if body=="sun" else "A blocked Earth center limits modeled direct-to-Earth access; a clear center does not establish a radio link.",
+            consequence,
             "Compare another date or supported location; recalculate with the same hardware.",
             "Body centers only. Finite DEM horizons cannot prove globally unobstructed views; geometric elevation alone is insufficient.")
     p = result.power

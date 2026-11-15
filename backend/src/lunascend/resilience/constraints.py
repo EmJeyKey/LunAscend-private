@@ -88,9 +88,11 @@ def evaluate(result: ScenarioResult | None, rules: MissionConstraints, distance_
             'Sample-supported Sun-center clearance within the finite terrain model, not disk illumination or guaranteed sunlight. Unknown intervals cannot pass.')
     if rules.maximum_slope_deg is not None:
         check('maximum_terrain_slope',None,rules.maximum_slope_deg,'deg',reason='No verified slope-at-scale product is installed; this mandatory criterion remains indeterminate. Slope alone cannot establish landing safety.')
+    rows = [r for r in rows if (rules.require_power or not r.constraint_id.startswith(('conservative_', 'optimistic_')))
+        and (rules.require_communication or r.constraint_id not in ('maximum_dte_interruption','minimum_conditional_dte_access','required_dte_margin'))]
     statuses = {r.status for r in rows}
     if "fail" in statuses: classification = "fails_modeled_requirement"
-    elif "indeterminate" in statuses: classification = "insufficient_evidence"
-    elif mode == "optimistic": classification = "conditionally_promising"
+    elif "indeterminate" in statuses or not rows: classification = "insufficient_evidence"
+    elif mode == "optimistic" and rules.require_power: classification = "conditionally_promising"
     else: classification = "meets_tested_requirements"
     return tuple(rows),classification

@@ -1,0 +1,91 @@
+{
+  "version": "step13-source-audit-v1",
+  "review_date": "2026-11-15",
+  "scope": "Research/install audit; numerical source identities remain in the referenced manifests, not duplicated here.",
+  "sources": [
+    {
+      "name": "SPICE",
+      "url": "https://naif.jpl.nasa.gov/",
+      "status": "active numerical engine",
+      "manifest": "data/manifests/spice-kernels.json",
+      "coverage_and_limits": "Supported UTC kernel intersection; geometric directions for confirmed lunar coordinates."
+    },
+    {
+      "name": "JPL Horizons",
+      "url": "https://ssd.jpl.nasa.gov/horizons/",
+      "status": "saved comparison evidence",
+      "manifest": "data/manifests/source-registry.json",
+      "coverage_and_limits": "36 preserved comparisons; shared JPL heritage, not independent observational validation."
+    },
+    {
+      "name": "Global LOLA / ODE",
+      "url": "https://ode.rsl.wustl.edu/moon/",
+      "status": "catalog research; not a global installed DEM",
+      "manifest": null,
+      "coverage_and_limits": "Global products require verified frame, scaling, masks, resolution and bounded local ingestion."
+    },
+    {
+      "name": "SLDEM2015",
+      "url": "https://pgda.gsfc.nasa.gov/products/54",
+      "status": "researched; not installed",
+      "manifest": null,
+      "coverage_and_limits": "Product latitude support is 60 S to 60 N. Large tiles were not ingested; cite Barker et al. (2015) if used."
+    },
+    {
+      "name": "PGDA regional south-polar terrain",
+      "url": "https://pgda.gsfc.nasa.gov/products/90",
+      "status": "researched; not installed",
+      "manifest": null,
+      "coverage_and_limits": "Published DE421 south-polar COG DEM, slope, effective-resolution and error products. No new regional raster installed."
+    },
+    {
+      "name": "PGDA 87\u201390 S terrain",
+      "url": "https://pgda.gsfc.nasa.gov/products/81",
+      "status": "researched; not installed",
+      "manifest": null,
+      "coverage_and_limits": "Large 5 m south-polar DEM; no claim of local installation or globally complete horizon."
+    },
+    {
+      "name": "PGDA high-resolution study sites",
+      "url": "https://pgda.gsfc.nasa.gov/products/78",
+      "status": "installed bounded numerical terrain",
+      "manifest": "data/manifests/polar-sites/registry.json",
+      "coverage_and_limits": "Original Site01 plus thirteen 325 m native 5 m windows; actual four-neighbor support required. Quality samples are context, not propagated uncertainty."
+    },
+    {
+      "name": "PGDA polar illumination and Earth visibility",
+      "url": "https://pgda.gsfc.nasa.gov/products/69",
+      "status": "installed bounded long-term context",
+      "manifest": "data/manifests/polar-screening.json",
+      "coverage_and_limits": "Three 3.9 km windows near Site01, 60 m pixels; approximately 18.6-year any-disk model, not mission-date sunlight or center-only DTE."
+    },
+    {
+      "name": "LROC imagery and Apollo stereo terrain",
+      "url": "https://pds.lroc.im-ldi.com/data",
+      "status": "imagery integrated; Apollo terrain metadata only",
+      "manifest": "data/manifests/apollo-terrain/catalog.json",
+      "coverage_and_limits": "Optical context does not measure terrain heights. Apollo stereo frame/vertical registration remains unverified locally."
+    },
+    {
+      "name": "NASA Moon Trek",
+      "url": "https://trek.nasa.gov/moon/",
+      "status": "imagery tile service and external reference; not a numerical engine",
+      "manifest": "data/manifests/lunar-imagery.json",
+      "coverage_and_limits": "The existing 2D maps and 3D context globe use official WMTS photographic tiles. No Moon Trek-derived terrain, illumination or engineering values enter local calculations. Uncached images need the service; local scientific analysis does not."
+    },
+    {
+      "name": "Diviner",
+      "url": "https://www.diviner.ucla.edu/data",
+      "status": "researched; not integrated",
+      "manifest": null,
+      "coverage_and_limits": "Official archive describes RDR 3.1 and global/polar thermal maps. No temperature, heater sizing or thermal survival calculation installed."
+    },
+    {
+      "name": "USGS lunar geology",
+      "url": "https://astrogeology.usgs.gov/",
+      "status": "reference only; current retrieval blocked (HTTP 403)",
+      "manifest": null,
+      "coverage_and_limits": "No geological map or hazard inference integrated. Product-specific registration and attribution remain required."
+    }
+  ]
+}

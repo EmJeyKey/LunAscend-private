@@ -40,6 +40,7 @@ export interface ScenarioResult {
   provenance: DataProvenance[]; errors: AnalysisError[]; warnings: string[]
 }
 export interface AnalysisOptions {
+  coverageNote?: {siteId:string;startUtc:string;reason:string}
   coordinateEpochUtc?: string
   providerMode: ProviderMode; surfaceElevationM: string; observerHeightM: string; sampleStepS: string; frameConfirmed: boolean
   terrainEnabled?: boolean; terrainRadiusM?: string; terrainAzimuthSamples?: string; terrainRadialStepM?: string; terrainDatasetId?: string

@@ -76,3 +76,48 @@ def test_serialized_result_roundtrip_checks_computed_durations():
     assert AssessmentRequest.model_validate({'result':data}).result==evidence()
     data['visibility_windows'][0]['duration_s']+=1
     with pytest.raises(ValueError): AssessmentRequest.model_validate({'result':data})
+
+
+def test_known_prefix_shortage_fails_even_with_unknown_final_interval():
+    from lunascend.power.engine import analyze_power
+    from lunascend.contracts.models import TerrainVisibility
+    original=evidence()
+    terrain=original.terrain_visibility.model_dump(exclude_computed_fields=True)
+    terrain['observations'][-1]['sun']['classification']='indeterminate'
+    power=analyze_power(TerrainVisibility.model_validate(terrain),original.power.configuration,
+        original.request.start_utc,original.request.end_utc,original.request.sample_step_s)
+    assert power.cases[0].totals.unmet_load_wh is None
+    assert power.cases[0].potential_depletion_intervals
+    data=original.model_dump(exclude_computed_fields=True);data['power']=power
+    report=assess(AssessmentRequest(result=ScenarioResult.model_validate(data)))
+    assert report.classification=='does_not_meet_requirements'
+    assert any(r.constraint_id=='conservative_known_prefix_unmet_load' and r.status=='fail' for r in report.constraints)
+
+
+def test_hardware_only_edits_reuse_environment_but_verify_source_identity(monkeypatch):
+    from lunascend.power import environment_cache as cache
+    from lunascend.power.service import environmental_request
+    from lunascend.ephemeris.kernels import KernelConfiguration
+    from datetime import timedelta
+    cache._cache.clear();checks=[];calls=[]
+    identity=['pinned-v1']
+    monkeypatch.setattr(cache,'source_identity',lambda *args:checks.append(True) or identity[0])
+    def calculate(*args):calls.append(args);return evidence()
+    configuration=KernelConfiguration.from_environment()
+    first=evidence().request
+    data=first.model_dump();data['settings']['power_options']['battery_capacity_wh']=1000.
+    second=ScenarioRequest.model_validate(data)
+    cache.environment(environmental_request(first),configuration,calculate)
+    cache.environment(environmental_request(second),configuration,calculate)
+    assert len(calls)==1 and len(checks)==2
+    identity[0]='pinned-v2'
+    cache.environment(environmental_request(second),configuration,calculate)
+    assert len(calls)==2
+    cache._cache.clear()
+
+
+def test_resilience_uses_the_same_optional_communication_requirement():
+    from lunascend.resilience.constraints import evaluate
+    rows,status=evaluate(evidence(),MissionConstraints(require_communication=False,require_conservative_pass=False,allow_optimistic_only=True),None)
+    assert all('dte' not in r.constraint_id for r in rows)
+    assert status=='conditionally_promising'
