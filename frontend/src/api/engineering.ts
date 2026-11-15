@@ -1,12 +1,10 @@
 import type { ScenarioRequest } from '../types/analysis'
-
 const object = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v)
 const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v)
 const nonnegative = (v: unknown): v is number => finite(v) && v >= 0
 const utc = (v: unknown): v is string => typeof v === 'string' && /(Z|\+00:00)$/.test(v) && Number.isFinite(Date.parse(v))
 const strings = (v: unknown): v is string[] => Array.isArray(v) && v.every(x => typeof x === 'string')
 const matching = (a: unknown, b: unknown) => object(a) && object(b) && Object.entries(b).every(([k,v]) => a[k] === v)
-
 export function engineeringProducts(v: Record<string, unknown>, request: ScenarioRequest, sources: Set<string>): boolean {
   const s = request.settings, power = v.power, communication = v.communication
   if (!object(v.request) || !object(v.request.settings)) return false
@@ -17,7 +15,8 @@ export function engineeringProducts(v: Record<string, unknown>, request: Scenari
   const span = (Date.parse(request.end_utc) - Date.parse(request.start_utc)) / 1000
   const product = (p: Record<string, unknown>) => strings(p.assumptions) && strings(p.provenance_ids) && p.provenance_ids.every(id => sources.has(id)) && ['partial', 'calculated'].includes(String(p.status))
   const coverage = (p: Record<string, unknown>) => nonnegative(p.coverage_fraction) && p.coverage_fraction <= 1 && nonnegative(p.covered_duration_s) && nonnegative(p.unknown_duration_s) && Math.abs(p.covered_duration_s + p.unknown_duration_s - span) < .002 && Math.abs(p.coverage_fraction - p.covered_duration_s / span) < 1e-9 && nonnegative(p.max_sample_step_s) && p.max_sample_step_s > 0
-  if (s.power_enabled) {
+  const failedProduct=(module:string)=>v.status==='partial'&&object(v.terrain_visibility)&&Array.isArray(v.errors)&&v.errors.some(e=>object(e)&&e.module===module&&e.code==='CALCULATION_FAILED')
+  if (s.power_enabled && !(power===null&&failedProduct('power'))) {
     if (!object(power) || !product(power) || !matching(power.configuration, s.power_options) || !s.power_options || !Array.isArray(power.cases) || power.cases.length !== 2) return false
     const config = s.power_options
     for (let i = 0; i < 2; i++) {
@@ -50,7 +49,7 @@ export function engineeringProducts(v: Record<string, unknown>, request: Scenari
     const expected = a.status === 'unavailable' && b.status === 'unavailable' ? 'unavailable' : a.passes_configured_model === null || b.passes_configured_model === null ? 'indeterminate' : a.passes_configured_model && b.passes_configured_model ? 'pass_both' : b.passes_configured_model ? 'pass_optimistic_only' : 'fail_both'
     if (power.outcome !== expected) return false
   } else if (power !== null) return false
-  if (s.communication_enabled) {
+  if (s.communication_enabled && !(communication===null&&failedProduct('communication'))) {
     if (!object(communication) || !product(communication) || !coverage(communication) || !matching(communication.configuration, s.communication_options) || !s.communication_options || !Array.isArray(communication.access_samples) || !Array.isArray(communication.windows) || !object(communication.link_budget_db) || communication.link_budget_db.value !== null || communication.link_availability !== 'not_modeled') return false
     const labels = ['modeled_obstruction', 'below_clearance_requirement', 'conditional_access', 'indeterminate', 'unavailable']
     const observations = v.observations

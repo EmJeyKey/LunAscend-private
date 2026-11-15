@@ -1,0 +1,52 @@
+{
+  "executed_utc": "2026-11-15T11:16:03.826141+00:00",
+  "locations": [
+    {
+      "location": "Site01 original observer",
+      "samples": 25,
+      "products_match_previous_audit": true,
+      "terrain": "lola-site01-5m-v2020",
+      "sun_elevation_deg": 1.501602764526588,
+      "earth_elevation_deg": -5.036238914765133
+    },
+    {
+      "location": "Shackleton Rim",
+      "samples": 25,
+      "products_match_previous_audit": true,
+      "terrain": "pgda-site04-5m-window-v1",
+      "sun_elevation_deg": 1.6677370319228588,
+      "earth_elevation_deg": -4.878271875767237
+    },
+    {
+      "location": "Nobile Rim 1",
+      "samples": 25,
+      "products_match_previous_audit": true,
+      "terrain": "pgda-site06-5m-window-v1",
+      "sun_elevation_deg": 1.6107067317156345,
+      "earth_elevation_deg": -1.0802797188705757
+    },
+    {
+      "location": "Apollo 15",
+      "samples": 25,
+      "products_match_previous_audit": true,
+      "terrain": null,
+      "sun_elevation_deg": -30.04165414419959,
+      "earth_elevation_deg": 67.68517439761882
+    },
+    {
+      "location": "Outside installed terrain (10N 10E)",
+      "samples": 25,
+      "products_match_previous_audit": true,
+      "terrain": null,
+      "sun_elevation_deg": -26.479486067341423,
+      "earth_elevation_deg": 77.48575521275276
+    }
+  ],
+  "browser_comparison": {
+    "first_utc": "2026-11-14T00:00:00Z",
+    "second_utc": "2026-11-15T00:00:00Z",
+    "first_solar_wh": 371.3641257110819,
+    "second_solar_wh": 343.414493884845,
+    "independent_results": true
+  }
+}

@@ -325,3 +325,12 @@ Step 2 confirms the minimal Windows x64 backend stack and tool pins; heavy scien
 ## Sun/Earth availability integration repair
 
 The existing analyze API adds optional typed `availability` metadata describing returned products and omissions; it does not alter numerical engines. Both explicit terrain-enabled UI actions preflight actual installed coverage; geometry-only remains explicit, and only Full Analysis enables all engineering options. Geometric center elevations and terrain classifications remain separate. See docs/SUN_EARTH_DATA_AUDIT.md for executed five-location evidence and limitations.
+
+## Final pre-recording presentation
+
+The same mission results now feed four beginner cards and expandable professional
+sections. Complete analysis preflights installed coverage and requests supported
+engineering products. Per-product engineering failures preserve independent
+returned results with explicit module errors; the frontend requires that partial
+error evidence before accepting an absent requested product. No equations changed.
+See docs/FINAL_DEMO_READINESS.md for executed browser evidence and recording limits.

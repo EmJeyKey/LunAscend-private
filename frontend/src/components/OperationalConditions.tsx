@@ -4,10 +4,8 @@ import type {PowerAnalysis} from '../types/engineering'
 import {SourceInfo} from './SourceInfo'
 import {Glossary} from './PresentationControls'
 import {EngineeringNumbers,NumericalResults} from './NumericalResults'
-
 const value=(v:number|null|undefined,unit:string)=>v==null?'Unavailable':`${v.toFixed(2)} ${unit}`
 const utcLabel=(time:string)=>time.replace('T',' ').replace(/(?:\.000)?Z$/,' UTC')
-
 export function SampleTimeline({title,rows,index,onSelect,earth=false}:{title:string;rows:HumanSample[];index:number;onSelect:(index:number)=>void;earth?:boolean}) {
   if(!rows.length)return <section className="sample-timeline"><h3>{title}</h3><p>No returned time samples are available.</p></section>
   const first=Date.parse(rows[0].timeUtc),last=Date.parse(rows.at(-1)!.timeUtc),active=Math.max(0,Math.min(index,rows.length-1))
@@ -29,15 +27,14 @@ export function SampleTimeline({title,rows,index,onSelect,earth=false}:{title:st
     <p className="sampling-note">Each mark is one calculated time, not a continuous visibility window. Gaps and transitions between samples are not inferred. Center-only geometry and finite terrain coverage do not establish complete visibility.</p>
   </section>
 }
-
 export function ModelPowerPlot({power,quantity,index=0}:{power:PowerAnalysis;quantity:'solar_generation_w'|'load_w'|'battery_energy_wh';index?:number}) {
   const samples=power.cases[0]?.samples||[],solar=quantity==='solar_generation_w',load=quantity==='load_w',title=solar?'Estimated solar power':load?'Electrical load':'Modeled stored battery energy',unit=quantity==='battery_energy_wh'?'Wh':'W'
   const numeric=power.cases.flatMap(c=>c.samples.map(s=>s[quantity]).filter((v):v is number=>v!==null))
   if(!samples.length||!numeric.length)return <div className="model-power-plot"><h3>{title}</h3><p>Insufficient environmental data for this graph. Missing values are not zero.</p></div>
-  const first=Date.parse(samples[0].time_utc),last=Date.parse(samples.at(-1)!.time_utc),maximum=Math.max(1,...numeric)
+  const first=Date.parse(samples[0].time_utc),last=Date.parse(samples.at(-1)!.time_utc),maximum=Math.max(1,...numeric,...(solar?samples.map(s=>s.load_w):[]))
   const x=(time:string)=>55+(last===first?.5:(Date.parse(time)-first)/(last-first))*800,y=(v:number)=>160-v/maximum*130
   const selected=samples[Math.max(0,Math.min(index,samples.length-1))]
-  return <figure className={`model-power-plot ${solar?'solar-power-plot':load?'electrical-load-plot':'battery-model-plot'}`}><figcaption><strong>{title} ({unit})</strong><span>Dashed = conservative · solid = optimistic</span></figcaption>
+  return <figure className={`model-power-plot ${solar?'solar-power-plot':load?'electrical-load-plot':'battery-model-plot'}`}><figcaption><strong>{title} ({unit})</strong><span>{solar?'Cyan = electrical load. ':''}Dashed = conservative · solid = optimistic</span></figcaption>
     <div className="sample-timeline-scroll"><svg data-quantity={quantity} data-axis-max={maximum} viewBox="0 0 900 220" role="img" aria-label={`${title} in ${unit} at returned UTC samples for both modeled cases. Missing values break the graph.`}>
       {[0,.5,1].map(f=><g key={f}><line x1="55" x2="855" y1={y(maximum*f)} y2={y(maximum*f)} className="model-plot-grid"/><text x="47" y={y(maximum*f)+4} textAnchor="end">{(maximum*f).toFixed(0)} {unit}</text></g>)}
       {power.cases.map(c=>{
@@ -45,13 +42,13 @@ export function ModelPowerPlot({power,quantity,index=0}:{power:PowerAnalysis;qua
         const path=c.samples.map(s=>{const v=s[quantity];if(v===null){drawing=false;return ''}const point=`${drawing?'L':'M'}${x(s.time_utc)},${y(v)}`;drawing=true;return point}).join(' ')
         return <g key={c.assumption}><path d={path} className={`model-power-path ${c.assumption}`}/>{c.samples.map(s=>s[quantity]===null?null:<circle key={s.time_utc} data-graph-series={`${c.assumption}.${quantity}`} data-utc={s.time_utc} data-value={s[quantity]} cx={x(s.time_utc)} cy={y(s[quantity]!)} r="2.5" className={`model-power-point ${c.assumption}`}><title>{`${c.assumption} · ${utcLabel(s.time_utc)} · ${s[quantity]} ${unit}`}</title></circle>)}</g>
       })}
+      {solar&&<path className="earth-curve" d={samples.map((s,i)=>`${i?'L':'M'}${x(s.time_utc)},${y(s.load_w)}`).join(' ')}><title>Configured electrical load in W</title></path>}
       <line x1={x(selected.time_utc)} x2={x(selected.time_utc)} y1="22" y2="165" className="model-time-cursor"/>
       <text x="55" y="188">{utcLabel(samples[0].time_utc)}</text><text x="855" y="207" textAnchor="end">{utcLabel(samples.at(-1)!.time_utc)}</text>
     </svg></div>
     <p>Dots are actual returned model samples. Connecting lines only guide the eye; values between dots and exact depletion times are not established by this display. Unknown samples break the line.</p>
   </figure>
 }
-
 export function SimpleEngineering({power,index=0,showNumbers=true,showPlots=true}:{power:PowerAnalysis;index?:number;showNumbers?:boolean;showPlots?:boolean}) {
   return <section className="simple-engineering"><h3>Power and battery</h3><p><strong>{powerOutcome(power)}</strong></p><p>Conservative: conditional sunlight is treated as unavailable. Optimistic: conditional Sun-center clearance can power the configured panels. Neither case guarantees spacecraft survival.</p>
     <p>These are LunAscend calculations under user-defined assumptions: {power.configuration.panel_area_m2} m² panels, {power.configuration.panel_efficiency*100}% panel efficiency, {power.configuration.orientation_mode.replaceAll('_',' ')}, {power.configuration.baseline_load_w} W demand + {power.configuration.heater_load_w} W heater, {power.configuration.battery_capacity_wh} Wh battery, {power.configuration.minimum_soc_pct}% reserve.</p>
@@ -60,13 +57,11 @@ export function SimpleEngineering({power,index=0,showNumbers=true,showPlots=true
     <ModelPowerPlot power={power} quantity="battery_energy_wh" index={index}/><p>Incomplete environmental support can leave full-mission energy totals unavailable even when a known prefix has values. Unknown time is not zero demand or guaranteed survival.</p></>}
   </section>
 }
-
 export function VisibilityTimelines() {
   const {analysis,sampleIndex,selectSample}=useMission(),result=analysis.result
   if(!result?.observations?.length)return null
   return <><SampleTimeline title="Sunlight availability" rows={conditionSamples(result,'sun')} index={sampleIndex} onSelect={selectSample}/><SampleTimeline title="Earth visibility and direct access" rows={conditionSamples(result,'earth')} index={sampleIndex} onSelect={selectSample} earth/></>
 }
-
 export function OperationalConditions({compact=false,showNumbers=true,showGraphs=true}:{compact?:boolean;showNumbers?:boolean;showGraphs?:boolean}) {
   const {analysis,sampleIndex,selectSample,resultsCleared,options,mission}=useMission(),result=analysis.result
   if(!result)return <section className="panel friendly-empty" aria-live="polite"><h2>{analysis.status==='loading'?'Calculating this mission…':analysis.status==='error'?'Analysis could not be completed':resultsCleared?'Inputs changed — previous results cleared':'No analysis yet.'}</h2><p>{analysis.status==='loading'?'The selected scientific provider is working. No estimated progress percentage is shown.':analysis.status==='error'?analysisProblem(analysis.message,analysis.errors):'Choose a landing location and date, then run an analysis to see sunlight and Earth visibility.'}</p>{analysis.status!=='loading'&&<button className="button primary" type="submit" form="mission-analysis-form">Run analysis</button>}<SourceInfo kind="sunlight" result={null}/></section>

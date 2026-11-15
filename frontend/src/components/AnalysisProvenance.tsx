@@ -4,9 +4,9 @@ import { useMission } from '../state/MissionContext'
 export function ResultProvenance({ result }: { result: ScenarioResult }) {
   return <section className="panel provenance-panel" aria-label="Scientific data provenance">
     <h2>Data source & assumptions</h2>
-    <p className="section-explanation">Inspect where these observations came from, how they were produced and the limits of their validation.</p>
-    <p className={result.provider_mode === 'mock' ? 'mock-warning' : 'source-indicator'}>{result.provider_mode === 'mock' ? 'MOCK DATA — NOT LUNAR PREDICTIONS' : 'SPICE EPHEMERIS · geometric Sun/Earth center directions'}</p>
-    <p>Scenario {result.status} · model {result.model_version}. Source identity does not establish global accuracy. Validation labels apply only to the documented scope.</p>
+    <ul className="section-explanation"><li>Inspect where these observations came from, how they were produced and the limits of their validation.</li></ul>
+    <ul className={result.provider_mode === 'mock' ? 'mock-warning' : 'source-indicator'}><li>{result.provider_mode === 'mock' ? 'MOCK DATA — NOT LUNAR PREDICTIONS' : 'SPICE EPHEMERIS · geometric Sun/Earth center directions'}</li></ul>
+    <ul><li>Scenario {result.status} · model {result.model_version}. Source identity does not establish global accuracy. Validation labels apply only to the documented scope.</li></ul>
     <a className="text-link" href="/methodology#horizons-validation" target="_blank" rel="noopener noreferrer">Saved comparison scope & official source registry ↗</a>
     <ul>{result.warnings.map((warning, index) => <li key={index}>{warning}</li>)}</ul>
     <details><summary>Provenance records ({result.provenance.length})</summary>{result.provenance.map(source => <article key={source.id}>

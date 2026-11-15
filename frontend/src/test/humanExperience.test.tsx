@@ -132,7 +132,7 @@ describe('shared presentation, empty states, provenance and comparisons',()=>{
     expect(html).toContain(result.observations![4].time_utc.replace('T',' ').replace('Z',' UTC'))
     expect(html).toContain(sample.solar_generation_w!.toFixed(2)+' W')
     expect(html).toContain('Select calculated mission time');expect(html).toContain('value="4"')
-    expect(html).toContain('Where does this data come from?');expect(html).toContain('not guaranteed radio communication')
+    expect(html).toContain('NASA DATA &amp; SOURCES');expect(html).toContain('not guaranteed radio communication')
   })
   it('withholds a solar-power curve when no power analysis exists and preserves partial/missing states',()=>{
     const result=actual();result.power=null;current.result=result
@@ -155,7 +155,7 @@ describe('shared presentation, empty states, provenance and comparisons',()=>{
   it('keeps location, UTC, conditions, hardware and source information together in a comparison',()=>{
     const result=actual(),scenario:ComparisonScenario={id:'base',name:'Original',selection:{site:{id:'site01',name:'Site01',latitude:result.request.site.latitude_deg,longitude:result.request.site.longitude_deg,description:''},startUtc:result.request.start_utc,durationHours:24},options:initialOptions,analysis:{status:'success',result,message:''}}
     const html=render(<FriendlyComparison scenarios={[scenario]} baselineId="base"/>)
-    for(const phrase of ['Site01',result.request.start_utc,'14698.80 Wh','Limited local coverage','500 Wh battery','not identify a universally better','Where does this data come from?'])expect(html).toContain(phrase)
+    for(const phrase of ['Site01',result.request.start_utc,'14698.80 Wh','Limited local coverage','500 Wh battery','not identify a universally better','NASA DATA &amp; SOURCES'])expect(html).toContain(phrase)
   })
   it('distinguishes LROC photos, LOLA heights, SPICE models and LunAscend calculations using the source registry',()=>{
     const image=render(<SourceInfo kind="images"/>),solar=render(<SourceInfo kind="power" result={actual()}/>)

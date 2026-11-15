@@ -42,7 +42,7 @@ describe('honest offline scientific source disclosures', () => {
     const fetcher = vi.fn(() => Promise.reject(new Error('Offline')))
     vi.stubGlobal('fetch', fetcher)
     const html = renderToStaticMarkup(<MemoryRouter><Methodology/></MemoryRouter>)
-    for (const title of ['Scientific Methodology', 'Official challenge resources', 'Saved Horizons comparison evidence', 'Local computation &amp; terrain provenance']) expect(html).toContain(title)
+    for (const title of ['View Professional Analysis: methods and validation', 'Official challenge resources', 'Saved Horizons comparison evidence', 'Local computation &amp; terrain provenance']) expect(html).toContain(title)
     const terrain = sourceCatalog.sources.find(source => source.id === 'lola')!
     expect(html).toContain(terrain.product!.sha256)
     expect(html).toContain('5 m source pixel spacing; not effective resolution or accuracy')

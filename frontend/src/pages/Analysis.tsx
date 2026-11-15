@@ -1,18 +1,12 @@
-import { SunMoon } from 'lucide-react'
+import {TerrainTimePlots} from '../components/TerrainTimePlots'
 import { MissionControls } from '../components/MissionControls'
 import { ScientificChartPanel } from '../components/ScientificChartPanel'
-import { EmptyState, MetricCard, PageHeader, PanelHeader } from '../components/ui'
+import { MetricCard, PageHeader } from '../components/ui'
 import {MissionReport} from '../components/MissionReport'
 import { TerrainVisibilityPanel } from '../components/TerrainVisibilityPanel'
 import { EngineeringPanel } from '../components/EngineeringPanel'
-import { OperationalConditions, VisibilityTimelines } from '../components/OperationalConditions'
-import { ScientificDetails } from '../components/PresentationControls'
 
 export function Analysis() {
-  return <><PageHeader eyebrow="SUNLIGHT / EARTH / POWER" title="Sunlight & Earth Visibility" description="Inspect Sun, Earth and terrain conditions. Request power and battery estimates when needed."/><div id="mission-configuration"><MissionControls/></div><OperationalConditions showNumbers={false} showGraphs={false}/>
-    <ScientificDetails title="View Scientific Details"><ScientificChartPanel interactive/>
-    <div className="two-columns section-gap"><MetricCard kind="solar"/><MetricCard kind="earth"/></div>
-    <VisibilityTimelines/><TerrainVisibilityPanel/><EngineeringPanel/>
-    <section className="panel"><PanelHeader icon={SunMoon} title="Local sky view"/><EmptyState icon={SunMoon} title="Inspect directions in the Lunar Site Explorer." description="The explorer displays returned Sun/Earth center directions at the shared UTC sample. Use the numerical terrain classifications here; body-disk illumination and validated browser shadows remain unavailable."/></section>
-    </ScientificDetails><MissionReport/></>
+ return <><PageHeader eyebrow="SUNLIGHT / EARTH / POWER" title="Sunlight & Earth Visibility" description="Configure your mission, calculate conditions, then review the results."/><div id="mission-configuration"><MissionControls/></div>
+ <MissionReport geometry={<><ScientificChartPanel interactive/><div className="two-columns section-gap"><MetricCard kind="solar"/><MetricCard kind="earth"/></div></>} terrain={<><TerrainTimePlots/><TerrainVisibilityPanel/></>} power={<EngineeringPanel section="power"/>} communications={<EngineeringPanel section="communications"/>}/></>
 }

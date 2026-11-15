@@ -1,6 +1,6 @@
 """Explicit composition and replay from saved environment; no HTTP dependencies."""
 from hashlib import sha256
-from lunascend.contracts import ScenarioRequest, ScenarioResult, DataProvenance
+from lunascend.contracts import ScenarioRequest, ScenarioResult, DataProvenance, AnalysisError
 from lunascend.ephemeris.kernels import GeometryError, KernelConfiguration
 from .engine import analyze_power, METHOD as POWER_METHOD, ASSUMPTIONS as POWER_ASSUMPTIONS
 from lunascend.communication.engine import analyze_communication, METHOD as DTE_METHOD, ASSUMPTIONS as DTE_ASSUMPTIONS
@@ -25,8 +25,19 @@ def attach_engineering(environment: ScenarioResult, request: ScenarioRequest) ->
         raise GeometryError("FRAME_MISMATCH", "Saved environment must match the requested site, UTC interval, height, frame and terrain configuration exactly.")
     if tuple(r.time_utc for r in environment.observations or ()) != tuple(r.time_utc for r in terrain.observations):
         raise GeometryError("INVALID_REQUEST", "Geometry and terrain timelines must match before engineering composition.")
-    power = analyze_power(terrain,request.settings.power_options,request.start_utc,request.end_utc,request.sample_step_s) if request.settings.power_enabled else None
-    communication = analyze_communication(terrain,request.settings.communication_options,request.start_utc,request.end_utc,request.sample_step_s) if request.settings.communication_enabled else None
+    errors = list(environment.errors)
+    def product(module, enabled, calculate):
+        if not enabled:
+            return None
+        try:
+            return calculate()
+        except (GeometryError, ValueError, ArithmeticError) as error:
+            errors.append(AnalysisError(code="CALCULATION_FAILED", module=module,
+                message=f"{module.capitalize()} calculation failed; independent environmental results are preserved.",
+                recoverable=True, details={"exception_type":type(error).__name__}))
+            return None
+    power = product("power", request.settings.power_enabled, lambda: analyze_power(terrain,request.settings.power_options,request.start_utc,request.end_utc,request.sample_step_s))
+    communication = product("communication", request.settings.communication_enabled, lambda: analyze_communication(terrain,request.settings.communication_options,request.start_utc,request.end_utc,request.sample_step_s))
     sources = list(environment.provenance)
     for enabled,identifier,method,assumptions,config in (
         (power,"power-model",POWER_METHOD,POWER_ASSUMPTIONS,request.settings.power_options),
@@ -44,7 +55,7 @@ def attach_engineering(environment: ScenarioResult, request: ScenarioRequest) ->
     identity = sha256((environment.scenario_id+request.model_dump_json()+VERSION).encode()).hexdigest()[:32]
     return ScenarioResult(**{**environment.model_dump(exclude={"visibility_windows"}),"visibility_windows":environment.visibility_windows,
         "request":request,"scenario_id":identity,"model_version":VERSION,"status":"partial",
-        "power":power,"communication":communication,"provenance":tuple(sources),"warnings":warnings})
+        "power":power,"communication":communication,"errors":tuple(errors),"provenance":tuple(sources),"warnings":warnings})
 
 
 def analyze_engineering(request: ScenarioRequest, configuration: KernelConfiguration | None = None) -> ScenarioResult:

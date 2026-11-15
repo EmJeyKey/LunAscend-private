@@ -1,0 +1,277 @@
+[
+  {
+    "display": "264.110°",
+    "field": "observations.2026-11-14T00:00:00Z.sun_azimuth_deg.value",
+    "value": "264.10982697915534"
+  },
+  {
+    "display": "136.244°",
+    "field": "observations.2026-11-14T00:00:00Z.earth_azimuth_deg.value",
+    "value": "136.24396007706338"
+  },
+  {
+    "display": "1.502°",
+    "field": "observations.2026-11-14T00:00:00Z.sun_elevation_deg.value",
+    "value": "1.501602764526588"
+  },
+  {
+    "display": "-5.036°",
+    "field": "observations.2026-11-14T00:00:00Z.earth_elevation_deg.value",
+    "value": "-5.036238914765133"
+  },
+  {
+    "display": "-4.613°",
+    "field": "terrain_visibility.observations.2026-11-14T00:00:00Z.sun.horizon_elevation_deg",
+    "value": "-4.612548157097288"
+  },
+  {
+    "display": "0.980°",
+    "field": "terrain_visibility.observations.2026-11-14T00:00:00Z.earth.horizon_elevation_deg",
+    "value": "0.9803744697915846"
+  },
+  {
+    "display": "6.114°",
+    "field": "terrain_visibility.observations.2026-11-14T00:00:00Z.sun.clearance_deg",
+    "value": "6.114150921623877"
+  },
+  {
+    "display": "-6.017°",
+    "field": "terrain_visibility.observations.2026-11-14T00:00:00Z.earth.clearance_deg",
+    "value": "-6.016613384556714"
+  },
+  {
+    "display": "-89.4631576 ° N",
+    "field": "request.site.latitude_deg",
+    "value": "-89.46315760953222"
+  },
+  {
+    "display": "-137.5009785 ° E",
+    "field": "request.site.longitude_deg",
+    "value": "-137.50097847854008"
+  },
+  {
+    "display": "-89.4631578 ° N",
+    "field": "terrain_visibility.native_latitude_deg",
+    "value": "-89.46315775697228"
+  },
+  {
+    "display": "-137.5019849 ° E",
+    "field": "terrain_visibility.native_longitude_deg",
+    "value": "-137.50198490762355"
+  },
+  {
+    "display": "1944.767 m",
+    "field": "terrain_visibility.surface_elevation_m",
+    "value": "1944.7670898436575"
+  },
+  {
+    "display": "2.000 m",
+    "field": "terrain_visibility.observer_height_m",
+    "value": "2"
+  },
+  {
+    "display": "0.00 W",
+    "field": "power.cases.conservative.samples.2026-11-14T00:00:00Z.solar_generation_w",
+    "value": "0"
+  },
+  {
+    "display": "16.05 W",
+    "field": "power.cases.optimistic.samples.2026-11-14T00:00:00Z.solar_generation_w",
+    "value": "16.049198495217368"
+  },
+  {
+    "display": "50.00 W",
+    "field": "power.cases.conservative.samples.2026-11-14T00:00:00Z.load_w",
+    "value": "50"
+  },
+  {
+    "display": "50.00 W",
+    "field": "power.cases.optimistic.samples.2026-11-14T00:00:00Z.load_w",
+    "value": "50"
+  },
+  {
+    "display": "500.00 Wh",
+    "field": "power.cases.conservative.samples.2026-11-14T00:00:00Z.battery_energy_wh",
+    "value": "500"
+  },
+  {
+    "display": "500.00 Wh",
+    "field": "power.cases.optimistic.samples.2026-11-14T00:00:00Z.battery_energy_wh",
+    "value": "500"
+  },
+  {
+    "display": "100.00 %",
+    "field": "power.cases.conservative.samples.2026-11-14T00:00:00Z.soc_pct",
+    "value": "100"
+  },
+  {
+    "display": "100.00 %",
+    "field": "power.cases.optimistic.samples.2026-11-14T00:00:00Z.soc_pct",
+    "value": "100"
+  },
+  {
+    "display": "0.00 Wh",
+    "field": "power.cases.conservative.totals.solar_generated_wh",
+    "value": "0"
+  },
+  {
+    "display": "371.36 Wh",
+    "field": "power.cases.optimistic.totals.solar_generated_wh",
+    "value": "371.3641257110819"
+  },
+  {
+    "display": "1200.00 Wh",
+    "field": "power.cases.conservative.totals.electrical_demand_wh",
+    "value": "1200"
+  },
+  {
+    "display": "1200.00 Wh",
+    "field": "power.cases.optimistic.totals.electrical_demand_wh",
+    "value": "1200"
+  },
+  {
+    "display": "50.00 Wh",
+    "field": "power.cases.conservative.totals.minimum_battery_energy_wh",
+    "value": "50"
+  },
+  {
+    "display": "50.00 Wh",
+    "field": "power.cases.optimistic.totals.minimum_battery_energy_wh",
+    "value": "50"
+  },
+  {
+    "display": "10.00 %",
+    "field": "power.cases.conservative.totals.minimum_soc_pct",
+    "value": "10"
+  },
+  {
+    "display": "10.00 %",
+    "field": "power.cases.optimistic.totals.minimum_soc_pct",
+    "value": "10"
+  },
+  {
+    "display": "50.00 Wh",
+    "field": "power.cases.conservative.totals.final_battery_energy_wh",
+    "value": "50"
+  },
+  {
+    "display": "50.00 Wh",
+    "field": "power.cases.optimistic.totals.final_battery_energy_wh",
+    "value": "50"
+  },
+  {
+    "display": "772.50 Wh",
+    "field": "power.cases.conservative.totals.unmet_load_wh",
+    "value": "772.5000000000001"
+  },
+  {
+    "display": "401.14 Wh",
+    "field": "power.cases.optimistic.totals.unmet_load_wh",
+    "value": "401.1358742889181"
+  },
+  {
+    "display": "-6.017°",
+    "field": "communication.access_samples.2026-11-14T00:00:00Z.earth_clearance_deg",
+    "value": "-6.016613384556714"
+  },
+  {
+    "display": "1.000°",
+    "field": "communication.configuration.minimum_earth_clearance_deg",
+    "value": "1"
+  },
+  {
+    "display": "0.000 s",
+    "field": "communication.earth_visibility_duration_s.value",
+    "value": "0"
+  },
+  {
+    "display": "86400.000 s",
+    "field": "communication.longest_interruption_s.value",
+    "value": "86400"
+  },
+  {
+    "display": "0.000 s",
+    "field": "communication.unknown_duration_s",
+    "value": "0"
+  },
+  {
+    "display": "0.00 Wh",
+    "field": "power.cases.conservative.totals.direct_solar_to_load_wh",
+    "value": "0"
+  },
+  {
+    "display": "371.36 Wh",
+    "field": "power.cases.optimistic.totals.direct_solar_to_load_wh",
+    "value": "371.3641257110819"
+  },
+  {
+    "display": "0.00 Wh",
+    "field": "power.cases.conservative.totals.battery_charged_wh",
+    "value": "0"
+  },
+  {
+    "display": "0.00 Wh",
+    "field": "power.cases.optimistic.totals.battery_charged_wh",
+    "value": "0"
+  },
+  {
+    "display": "450.00 Wh",
+    "field": "power.cases.conservative.totals.battery_discharged_wh",
+    "value": "449.99999999999994"
+  },
+  {
+    "display": "450.00 Wh",
+    "field": "power.cases.optimistic.totals.battery_discharged_wh",
+    "value": "450"
+  },
+  {
+    "display": "0.00 Wh",
+    "field": "power.cases.conservative.totals.charging_loss_wh",
+    "value": "0"
+  },
+  {
+    "display": "0.00 Wh",
+    "field": "power.cases.optimistic.totals.charging_loss_wh",
+    "value": "0"
+  },
+  {
+    "display": "22.50 Wh",
+    "field": "power.cases.conservative.totals.discharging_loss_wh",
+    "value": "22.500000000000025"
+  },
+  {
+    "display": "22.50 Wh",
+    "field": "power.cases.optimistic.totals.discharging_loss_wh",
+    "value": "22.500000000000018"
+  },
+  {
+    "display": "0.00 Wh",
+    "field": "power.cases.conservative.totals.curtailed_surplus_wh",
+    "value": "0"
+  },
+  {
+    "display": "0.00 Wh",
+    "field": "power.cases.optimistic.totals.curtailed_surplus_wh",
+    "value": "0"
+  },
+  {
+    "display": "0.00 Wh",
+    "field": "power.cases.conservative.totals.energy_balance_residual_wh",
+    "value": "8.881784197001252e-14"
+  },
+  {
+    "display": "-0.00 Wh",
+    "field": "power.cases.optimistic.totals.energy_balance_residual_wh",
+    "value": "-1.7763568394002505e-14"
+  },
+  {
+    "display": "0.000 s",
+    "field": "power.cases.conservative.unknown_duration_s",
+    "value": "0"
+  },
+  {
+    "display": "0.000 s",
+    "field": "power.cases.optimistic.unknown_duration_s",
+    "value": "0"
+  }
+]

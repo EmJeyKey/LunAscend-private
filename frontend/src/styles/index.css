@@ -1262,3 +1262,18 @@ body, .app-main { background: var(--bg); }
 .engineering-results .model-power-plot svg,.engineering-results .battery-figure svg{min-width:360px}
 .engineering-results .model-power-plot svg text{font-size:14px}
 .terrain-visibility .lunar-horizon svg{min-width:420px}
+
+/* Shared results remain compact; scientific detail sections expand independently. */
+.mission-result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem;margin:1.5rem 0}
+.mission-result-grid article{padding:1.25rem;border:1px solid #293440;background:#101820}
+.mission-result-grid h3{font-size:1.4rem;line-height:1.35;margin:.7rem 0;color:#f0eee9}
+.mission-result-grid strong{display:block;color:#f2dbaa;font-size:1.05rem}
+.mission-result-grid p,.mission-result-grid li{line-height:1.65;color:#bdcbd8}
+.mission-verdict{padding:1.25rem 0;border-bottom:1px solid #34404a}.mission-verdict>strong{font-size:1.35rem;color:#f2dbaa}
+.professional-section{padding:1rem 0;border-bottom:1px solid #34404a}.professional-section>summary{font-size:1.2rem;font-weight:700;padding:.5rem;cursor:pointer}
+.professional-workspace>summary{font-size:1.35rem;font-weight:700}.source-info li{line-height:1.65}.source-info-record{margin:1rem 0}
+.site01-reference{margin:1rem 0}.chosen-site{line-height:1.9}.chosen-site input{margin:.5rem;max-width:18rem}
+.mission-results .atlas-actions{margin-top:1.5rem}.mission-results>h2{font-size:2rem}
+@media(max-width:700px){.mission-result-grid{grid-template-columns:1fr}.mission-results>h2{font-size:1.65rem}}
+
+.mission-controls .control-field>strong,.mission-controls .control-field>a{display:block}.mission-controls .control-field>a{margin-top:.35rem}

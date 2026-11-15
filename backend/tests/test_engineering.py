@@ -190,3 +190,22 @@ def test_saved_identity_mismatch_rejected():
     env=real_environment();r=env.request.model_dump();r['site']['observer_height_m']=3.0
     r['settings'].update(power_enabled=True,power_options=configuration().model_dump())
     with pytest.raises(GeometryError):attach_engineering(env,ScenarioRequest.model_validate(r))
+
+
+@pytest.mark.parametrize("failed", ["power", "communication"])
+def test_independent_engineering_failure_preserves_other_products(monkeypatch, failed):
+    from lunascend.power import service
+    from lunascend.providers.availability import describe_products
+    env = real_environment()
+    values = env.request.model_dump()
+    values['settings'].update(power_enabled=True, communication_enabled=True,
+        power_options=configuration().model_dump(), communication_options={})
+    def broken(*args):
+        raise GeometryError("CALCULATION_FAILED", "Controlled regression failure")
+    monkeypatch.setattr(service, 'analyze_power' if failed == 'power' else 'analyze_communication', broken)
+    result = describe_products(service.attach_engineering(env, ScenarioRequest.model_validate(values)))
+    assert result.observations == env.observations and result.terrain_visibility == env.terrain_visibility
+    assert getattr(result, failed) is None
+    assert getattr(result, 'communication' if failed == 'power' else 'power') is not None
+    assert result.errors[-1].module == failed
+    assert result.availability['power' if failed == 'power' else 'dte'].code == 'calculation_failed'

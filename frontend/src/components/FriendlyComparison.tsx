@@ -22,7 +22,7 @@ export function FriendlyComparison({scenarios,baselineId}:{scenarios:ComparisonS
           {power&&<p>Assumptions: {power.configuration.panel_area_m2} m² panels, {power.configuration.panel_efficiency*100}% efficiency, {power.configuration.orientation_mode.replaceAll('_',' ')}, {power.configuration.battery_capacity_wh} Wh battery, {power.configuration.baseline_load_w} W demand + {power.configuration.heater_load_w} W heater.</p>}
           {scenario.id!==baselineId&&comparisonExplanation(baseline,result).map(text=><p key={text}>{text}</p>)}
           <p>Optimistic results do not guarantee survival. Earth access does not establish radio-link performance. Unknown values are not zero.</p>
-          <NumericalResults result={result}/>
+          <details><summary>View Professional Analysis: numerical record</summary><NumericalResults result={result}/></details>
         </>}
         <SourceInfo kind="comparison" result={result}/>
       </article>
